@@ -529,7 +529,7 @@ dev-manifests: ## Builds dev manifests based on $(REGISTRY) and $(TAG) into the 
 	$(MAKE) release-manifests STAGE=dev MANIFEST_DIR=$(OVERRIDES_DIR)
 
 .PHONY: manifest-modification
-manifest-modification: # Set the manifest images to $(REGISTRY)/$(IMAGE_NAME):$(RELEASE_TAG) and pull policy to $(PULL_POLICY)
+manifest-modification: $(BUILD_DIR) # Set the manifest images to $(REGISTRY)/$(IMAGE_NAME):$(RELEASE_TAG) and pull policy to $(PULL_POLICY)
 	rm -rf $(BUILD_DIR)/config
 	cp -R config $(BUILD_DIR)
 	$(MAKE) set-manifest-image \
@@ -538,7 +538,7 @@ manifest-modification: # Set the manifest images to $(REGISTRY)/$(IMAGE_NAME):$(
 	$(MAKE) set-manifest-pull-policy PULL_POLICY=$(PULL_POLICY) TARGET_RESOURCE="$(BUILD_DIR)/config/base/manager_pull_policy.yaml"
 
 .PHONY: release-manifests
-release-manifests: $(RELEASE_DIR) $(KUSTOMIZE) $(STAGE)-flavors $(MANIFEST_DIR) ## Build the manifests to publish with a release
+release-manifests: $(BUILD_DIR) $(MANIFEST_DIR) $(KUSTOMIZE) $(STAGE)-flavors ## Build the manifests to publish with a release
 	$(KUSTOMIZE) build $(BUILD_DIR)/config/default > $(MANIFEST_DIR)/infrastructure-components.yaml
 	$(KUSTOMIZE) build $(BUILD_DIR)/config/supervisor > $(MANIFEST_DIR)/infrastructure-components-supervisor.yaml
 
@@ -571,7 +571,7 @@ release-alias-tag: ## Add the release alias tag to the last build tag
 	gcloud container images add-tag $(CONTROLLER_IMG):$(TAG) $(CONTROLLER_IMG):$(RELEASE_ALIAS_TAG)
 
 .PHONY: generate-release-notes
-generate-release-notes: $(RELEASE_NOTES_DIR)
+generate-release-notes: $(RELEASE_NOTES_DIR) $(RELEASE_NOTES)
 	if [ -n "${PRE_RELEASE}" ]; then \
 	echo ":rotating_light: This is a RELEASE CANDIDATE. Use it only for testing purposes. If you find any bugs, file an [issue](https://github.com/kubernetes-sigs/cluster-api/issues/new)." > $(RELEASE_NOTES_DIR)/$(RELEASE_TAG).md; \
 	else \
@@ -580,7 +580,7 @@ generate-release-notes: $(RELEASE_NOTES_DIR)
 
 .PHONY: promote-images
 promote-images: $(KPROMO)
-	$(KPROMO) pr --project cluster-api-provider-vsphere --tag $(RELEASE_TAG) --reviewers "$(IMAGE_REVIEWERS)" --fork $(USER_FORK) --image cluster-api-provider-vsphere
+	$(KPROMO) pr --project capi-vsphere --tag $(RELEASE_TAG) --reviewers "$(IMAGE_REVIEWERS)" --fork $(USER_FORK) --image cluster-api-vsphere-controller
 
 ## --------------------------------------
 ## Docker
