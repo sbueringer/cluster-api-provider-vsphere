@@ -5,7 +5,8 @@ on:
     types: [opened, edited, synchronize, reopened]
 
 # Remove all permissions from GITHUB_TOKEN except metadata.
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
   golangci:
