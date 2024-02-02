@@ -1,0 +1,67 @@
+[
+  {
+    "name": "controlPlaneCertificateRotation",
+    "required": false,
+    "schema": {
+      "openAPIV3Schema": {
+        "description": "ControlPlaneCertificateRotation configures cert rotation.",
+        "example": {
+          "activate": true,
+          "daysBefore": 90
+        },
+        "type": "object",
+        "properties": {
+          "activate": {
+            "description": "Activate activates cert rotation.",
+            "type": "boolean",
+            "default": true
+          },
+          "daysBefore": {
+            "description": "DaysBefore configures how many days before expiry control plane machines are rotated.",
+            "type": "integer",
+            "format": "int32",
+            "minimum": 7,
+            "default": 90
+          }
+        },
+        "default": {
+          "activate": true,
+          "daysBefore": 90
+        }
+      }
+    }
+  },
+  {
+    "name": "imageRepository",
+    "required": true,
+    "schema": {
+      "openAPIV3Schema": {
+        "description": "ImageRepository sets the container registry to pull images from. If empty, `registry.k8s.io` will be used by default.",
+        "type": "string",
+        "default": "registry.k8s.io"
+      }
+    }
+  },
+  {
+    "name": "kubeadmControlPlaneMaxSurge",
+    "required": false,
+    "schema": {
+      "openAPIV3Schema": {
+        "description": "KubeadmControlPlaneMaxSurge is the maximum number of control planes that can be scheduled above or under the desired number of control plane machines.",
+        "example": "0",
+        "type": "string"
+      }
+    }
+  },
+  {
+    "name": "lbImageRepository",
+    "required": true,
+    "schema": {
+      "openAPIV3Schema": {
+        "description": "LBImageRepository is the image repository of the load balancer.",
+        "type": "string",
+        "default": "kindest"
+      }
+    }
+  }
+]

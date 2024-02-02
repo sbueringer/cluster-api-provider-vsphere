@@ -1,0 +1,225 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: ClusterClass
+metadata:
+  name: capv-quick-start
+  annotations:
+    run.tanzu.vmware.com/resolve-tkr: ""
+spec:
+  controlPlane:
+    metadata:
+      annotations:
+        run.tanzu.vmware.com/resolve-os-image: os-name=photon
+    ref:
+      apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+      kind: KubeadmControlPlaneTemplate
+      name: "tkc-control-plane"
+    machineInfrastructure:
+      ref:
+        kind: VSphereMachineTemplate
+        apiVersion: vmware.infrastructure.cluster.x-k8s.io/v1beta1
+        name: "tkc-control-plane"
+    machineHealthCheck:
+      maxUnhealthy: 100%
+      nodeStartupTimeout: 2h0m0s
+      unhealthyConditions:
+      - status: Unknown
+        timeout: 5m0s
+        type: Ready
+      - status: "False"
+        timeout: 12m0s
+        type: Ready
+  infrastructure:
+    ref:
+      apiVersion: vmware.infrastructure.cluster.x-k8s.io/v1beta1
+      kind: VSphereClusterTemplate
+      name: "tkc-infrastructure"
+  workers:
+    machineDeployments:
+    - class: node-pool
+      template:
+        metadata:
+          annotations:
+            run.tanzu.vmware.com/resolve-os-image: os-name=photon
+        bootstrap:
+          ref:
+            kind: KubeadmConfigTemplate
+            apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+            name: "tkc-md"
+        infrastructure:
+          ref:
+            kind: VSphereMachineTemplate
+            apiVersion: vmware.infrastructure.cluster.x-k8s.io/v1beta1
+            name: "tkc-md"
+      machineHealthCheck:
+        maxUnhealthy: 100%
+        nodeStartupTimeout: 2h0m0s
+        unhealthyConditions:
+        - status: Unknown
+          timeout: 5m0s
+          type: Ready
+        - status: "False"
+          timeout: 12m0s
+          type: Ready
+  patches:
+  - name: test-patch
+    external:
+      generateExtension: generate-patches.test-extension
+      validateExtension: validate-topology.test-extension
+      discoverVariablesExtension: discover-variables.test-extension
+---
+apiVersion: vmware.infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereClusterTemplate
+metadata:
+  name: "tkc-infrastructure"
+spec:
+  template:
+    spec:
+      controlPlaneEndpoint:
+        host: ""
+        port: 0
+---
+kind: KubeadmControlPlaneTemplate
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+metadata:
+  name: "tkc-control-plane"
+  annotations:
+    controlplane.cluster.x-k8s.io/skip-coredns: ""
+    controlplane.cluster.x-k8s.io/skip-kube-proxy: ""
+spec:
+  template:
+    spec:
+      machineTemplate: {}
+      kubeadmConfigSpec:
+        diskSetup: {}
+        files: []
+        postKubeadmCommands: []
+        preKubeadmCommands: []
+        clusterConfiguration:
+          apiServer:
+            extraArgs:
+              admission-control-config-file: /etc/kubernetes/extra-config/admission-control-config.yaml
+              allow-privileged: "true"
+              audit-log-maxage: "30"
+              audit-log-maxbackup: "10"
+              audit-log-maxsize: "100"
+              audit-log-path: /var/log/kubernetes/kube-apiserver.log
+              audit-policy-file: /etc/kubernetes/extra-config/audit-policy.yaml
+              authentication-token-webhook-config-file: /webhook/webhook-config.yaml
+              client-ca-file: /etc/ssl/certs/extensions-tls.crt
+              cloud-provider: external
+              enable-admission-plugins: PodSecurityPolicy,NodeRestriction,NamespaceLifecycle,ServiceAccount
+              encryption-provider-config: /etc/kubernetes/extra-config/encryption-provider-config.yaml
+              profiling: "false"
+              runtime-config: authentication.k8s.io/v1beta1=true
+              tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+            extraVolumes:
+            - hostPath: /etc/kubernetes/auth-webhook-config.yaml
+              mountPath: /webhook/webhook-config.yaml
+              name: webhook-config
+              pathType: File
+              readOnly: true
+            - hostPath: /etc/kubernetes/extra-config
+              mountPath: /etc/kubernetes/extra-config
+              name: kubernetes-extra-config
+              pathType: Directory
+              readOnly: true
+            - hostPath: /var/log/kubernetes
+              mountPath: /var/log/kubernetes
+              name: audit
+              pathType: Directory
+          controllerManager:
+            extraArgs:
+              profiling: "false"
+              tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+              use-service-account-credentials: "true"
+          dns: {}
+          etcd:
+            local: {}
+          imageRepository: ""
+          networking: { }
+          scheduler:
+            extraArgs:
+              profiling: "false"
+              tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        initConfiguration:
+          localAPIEndpoint: { }
+          nodeRegistration:
+            kubeletExtraArgs:
+              cloud-provider: external
+              event-qps: "0"
+              protect-kernel-defaults: "true"
+              read-only-port: "0"
+              resolv-conf: /run/systemd/resolve/resolv.conf
+              tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+              node-labels: ""
+              register-with-taints: ""
+        joinConfiguration:
+          discovery: { }
+          nodeRegistration:
+            ignorePreflightErrors:
+            - ImagePull
+            kubeletExtraArgs:
+              cloud-provider: external
+              event-qps: "0"
+              protect-kernel-defaults: "true"
+              read-only-port: "0"
+              resolv-conf: /run/systemd/resolve/resolv.conf
+              tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        useExperimentalRetryJoin: true
+        users: []
+        verbosity: 2
+      rolloutStrategy:
+        rollingUpdate:
+          maxSurge: 1
+        type: RollingUpdate
+---
+apiVersion: vmware.infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereMachineTemplate
+metadata:
+  name: "tkc-control-plane"
+spec:
+  template:
+    spec:
+      className: ""
+      imageName: ""
+      storageClass: ""
+---
+apiVersion: vmware.infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereMachineTemplate
+metadata:
+  name: "tkc-md"
+spec:
+  template:
+    spec:
+      className: ""
+      imageName: ""
+      storageClass: ""
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfigTemplate
+metadata:
+  name: "tkc-md"
+spec:
+  template:
+    spec:
+      files: []
+      diskSetup: {}
+      joinConfiguration:
+        discovery: {}
+        nodeRegistration:
+          ignorePreflightErrors:
+          - ImagePull
+          kubeletExtraArgs:
+            cloud-provider: external
+            node-labels: ""
+            register-with-taints: ""
+            event-qps: "0"
+            protect-kernel-defaults: "true"
+            read-only-port: "0"
+            resolv-conf: /run/systemd/resolve/resolv.conf
+            tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+      postKubeadmCommands: []
+      preKubeadmCommands: []
+      useExperimentalRetryJoin: true
+      users: []
+      verbosity: 2
