@@ -292,7 +292,7 @@ func isCreateOrPatchAllowed(ctx context.Context, kubeClient client.Client, targe
 	}
 
 	// 2. If removing members, allow immediately since it doesn't impact placement or placement annotation set.
-	if len(targetMember) < len(currentMemberNames) {
+	if len(targetMember) < len(currentMemberNames) { // FIXME: unsafe: len<len does not mean its only VM deletions, could be -2 +1
 		logger.V(6).Info("Scaling down detected (fewer target members), allowing patch.")
 		return nil
 	}
@@ -311,7 +311,7 @@ func isCreateOrPatchAllowed(ctx context.Context, kubeClient client.Client, targe
 	}
 
 	// 3. If initial placement is still in progress, block adding new member.
-	if !conditions.IsTrue(vmg, vmoprv1.ReadyConditionType) {
+	if !conditions.IsTrue(vmg, vmoprv1.ReadyConditionType) { // FIXME: is it okay to just check ready for "is placement done"
 		return fmt.Errorf("waiting for VirtualMachineGroup %s to get condition %s to true, temporarily blocking patch", klog.KObj(vmg), vmoprv1.ReadyConditionType)
 	}
 
@@ -321,9 +321,9 @@ func isCreateOrPatchAllowed(ctx context.Context, kubeClient client.Client, targe
 	for _, newMember := range newMembers {
 		vsphereMachineKey := types.NamespacedName{
 			Namespace: vmg.Namespace,
-			Name:      newMember.Name, // Member Name is the VSphereMachine Name.
+			Name:      newMember.Name, // Member Name is the VSphereMachine Name. // FIXME: Wrong VM name != VSphereMachine name // We should have test coverage with namingStrategy set we got this wrong multiple times already
 		}
-		vsphereMachine := &vmwarev1.VSphereMachine{}
+		vsphereMachine := &vmwarev1.VSphereMachine{} // FIXME If the Machine has a failureDomain we set the zone label on the VM
 		if err := kubeClient.Get(ctx, vsphereMachineKey, vsphereMachine); err != nil {
 			if apierrors.IsNotFound(err) {
 				return errors.Wrapf(err, "VSphereMachine for new member %s not found, temporarily blocking patch", newMember.Name)
@@ -468,6 +468,14 @@ func generateVirtualMachineGroupAnnotations(ctx context.Context, kubeClient clie
 		}
 	}
 
+	//MD => VM mapping
+	//for each MD
+	//	if we already have placement annotation => done
+	//	for each VM of that MD
+	//	   if placement => add annotation + break
+
+	// FIXME: Also set zone annotation on VMG of Machines with FD (adding a Machine with FD to VMG and adding the corresponding annotation *must* happen in the same patch/create call)
+
 	// Iterate through the VMG's members in Status.
 	for _, member := range vmg.Status.Members {
 		ns := vmg.Namespace
@@ -479,7 +487,7 @@ func generateVirtualMachineGroupAnnotations(ctx context.Context, kubeClient clie
 
 		// Get VSphereMachine which share the same Name of the member Name and get the MachineDeployment Name it belonged to.
 		vsmKey := types.NamespacedName{
-			Name:      member.Name,
+			Name:      member.Name, // FIXME: wrong VM Name != VSphereMachine name, also no need to lookup the VSphereMachine, the VM already has the MachineDeploymentNameLabel
 			Namespace: vmg.Namespace,
 		}
 		vsm := &vmwarev1.VSphereMachine{}
