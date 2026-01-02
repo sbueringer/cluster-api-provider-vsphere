@@ -520,26 +520,6 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*VSphereVMStatus)(nil), (*v1beta2.VSphereVMStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
-		return Convert_v1beta1_VSphereVMStatus_To_v1beta2_VSphereVMStatus(a.(*VSphereVMStatus), b.(*v1beta2.VSphereVMStatus), scope)
-	}); err != nil {
-		return err
-	}
-	if err := s.AddGeneratedConversionFunc((*v1beta2.VSphereVMStatus)(nil), (*VSphereVMStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
-		return Convert_v1beta2_VSphereVMStatus_To_v1beta1_VSphereVMStatus(a.(*v1beta2.VSphereVMStatus), b.(*VSphereVMStatus), scope)
-	}); err != nil {
-		return err
-	}
-	if err := s.AddGeneratedConversionFunc((*VSphereVMV1Beta2Status)(nil), (*v1beta2.VSphereVMV1Beta2Status)(nil), func(a, b interface{}, scope conversion.Scope) error {
-		return Convert_v1beta1_VSphereVMV1Beta2Status_To_v1beta2_VSphereVMV1Beta2Status(a.(*VSphereVMV1Beta2Status), b.(*v1beta2.VSphereVMV1Beta2Status), scope)
-	}); err != nil {
-		return err
-	}
-	if err := s.AddGeneratedConversionFunc((*v1beta2.VSphereVMV1Beta2Status)(nil), (*VSphereVMV1Beta2Status)(nil), func(a, b interface{}, scope conversion.Scope) error {
-		return Convert_v1beta2_VSphereVMV1Beta2Status_To_v1beta1_VSphereVMV1Beta2Status(a.(*v1beta2.VSphereVMV1Beta2Status), b.(*VSphereVMV1Beta2Status), scope)
-	}); err != nil {
-		return err
-	}
 	if err := s.AddGeneratedConversionFunc((*VirtualMachine)(nil), (*v1beta2.VirtualMachine)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_VirtualMachine_To_v1beta2_VirtualMachine(a.(*VirtualMachine), b.(*v1beta2.VirtualMachine), scope)
 	}); err != nil {
@@ -615,6 +595,11 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}); err != nil {
 		return err
 	}
+	if err := s.AddConversionFunc((*VSphereVMStatus)(nil), (*v1beta2.VSphereVMStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_VSphereVMStatus_To_v1beta2_VSphereVMStatus(a.(*VSphereVMStatus), b.(*v1beta2.VSphereVMStatus), scope)
+	}); err != nil {
+		return err
+	}
 	if err := s.AddConversionFunc((*v1beta2.VSphereClusterIdentityStatus)(nil), (*VSphereClusterIdentityStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta2_VSphereClusterIdentityStatus_To_v1beta1_VSphereClusterIdentityStatus(a.(*v1beta2.VSphereClusterIdentityStatus), b.(*VSphereClusterIdentityStatus), scope)
 	}); err != nil {
@@ -627,6 +612,11 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}
 	if err := s.AddConversionFunc((*v1beta2.VSphereDeploymentZoneStatus)(nil), (*VSphereDeploymentZoneStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta2_VSphereDeploymentZoneStatus_To_v1beta1_VSphereDeploymentZoneStatus(a.(*v1beta2.VSphereDeploymentZoneStatus), b.(*VSphereDeploymentZoneStatus), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddConversionFunc((*v1beta2.VSphereVMStatus)(nil), (*VSphereVMStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta2_VSphereVMStatus_To_v1beta1_VSphereVMStatus(a.(*v1beta2.VSphereVMStatus), b.(*VSphereVMStatus), scope)
 	}); err != nil {
 		return err
 	}
@@ -1999,7 +1989,17 @@ func Convert_v1beta2_VSphereVM_To_v1beta1_VSphereVM(in *v1beta2.VSphereVM, out *
 
 func autoConvert_v1beta1_VSphereVMList_To_v1beta2_VSphereVMList(in *VSphereVMList, out *v1beta2.VSphereVMList, s conversion.Scope) error {
 	out.ListMeta = in.ListMeta
-	out.Items = *(*[]v1beta2.VSphereVM)(unsafe.Pointer(&in.Items))
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]v1beta2.VSphereVM, len(*in))
+		for i := range *in {
+			if err := Convert_v1beta1_VSphereVM_To_v1beta2_VSphereVM(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Items = nil
+	}
 	return nil
 }
 
@@ -2010,7 +2010,17 @@ func Convert_v1beta1_VSphereVMList_To_v1beta2_VSphereVMList(in *VSphereVMList, o
 
 func autoConvert_v1beta2_VSphereVMList_To_v1beta1_VSphereVMList(in *v1beta2.VSphereVMList, out *VSphereVMList, s conversion.Scope) error {
 	out.ListMeta = in.ListMeta
-	out.Items = *(*[]VSphereVM)(unsafe.Pointer(&in.Items))
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]VSphereVM, len(*in))
+		for i := range *in {
+			if err := Convert_v1beta2_VSphereVM_To_v1beta1_VSphereVM(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Items = nil
+	}
 	return nil
 }
 
@@ -2082,19 +2092,35 @@ func autoConvert_v1beta1_VSphereVMStatus_To_v1beta2_VSphereVMStatus(in *VSphereV
 	out.Network = *(*[]v1beta2.NetworkStatus)(unsafe.Pointer(&in.Network))
 	out.FailureReason = (*errors.MachineStatusError)(unsafe.Pointer(in.FailureReason))
 	out.FailureMessage = (*string)(unsafe.Pointer(in.FailureMessage))
-	out.Conditions = *(*corev1beta1.Conditions)(unsafe.Pointer(&in.Conditions))
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make([]v1.Condition, len(*in))
+		for i := range *in {
+			if err := Convert_v1beta1_Condition_To_v1_Condition(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Conditions = nil
+	}
 	out.ModuleUUID = (*string)(unsafe.Pointer(in.ModuleUUID))
 	out.VMRef = in.VMRef
-	out.V1Beta2 = (*v1beta2.VSphereVMV1Beta2Status)(unsafe.Pointer(in.V1Beta2))
+	// WARNING: in.V1Beta2 requires manual conversion: does not exist in peer-type
 	return nil
 }
 
-// Convert_v1beta1_VSphereVMStatus_To_v1beta2_VSphereVMStatus is an autogenerated conversion function.
-func Convert_v1beta1_VSphereVMStatus_To_v1beta2_VSphereVMStatus(in *VSphereVMStatus, out *v1beta2.VSphereVMStatus, s conversion.Scope) error {
-	return autoConvert_v1beta1_VSphereVMStatus_To_v1beta2_VSphereVMStatus(in, out, s)
-}
-
 func autoConvert_v1beta2_VSphereVMStatus_To_v1beta1_VSphereVMStatus(in *v1beta2.VSphereVMStatus, out *VSphereVMStatus, s conversion.Scope) error {
+	if in.Conditions != nil {
+		in, out := &in.Conditions, &out.Conditions
+		*out = make(corev1beta1.Conditions, len(*in))
+		for i := range *in {
+			if err := Convert_v1_Condition_To_v1beta1_Condition(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Conditions = nil
+	}
 	out.Host = in.Host
 	out.Ready = in.Ready
 	out.Addresses = *(*[]string)(unsafe.Pointer(&in.Addresses))
@@ -2105,36 +2131,10 @@ func autoConvert_v1beta2_VSphereVMStatus_To_v1beta1_VSphereVMStatus(in *v1beta2.
 	out.Network = *(*[]NetworkStatus)(unsafe.Pointer(&in.Network))
 	out.FailureReason = (*errors.MachineStatusError)(unsafe.Pointer(in.FailureReason))
 	out.FailureMessage = (*string)(unsafe.Pointer(in.FailureMessage))
-	out.Conditions = *(*corev1beta1.Conditions)(unsafe.Pointer(&in.Conditions))
 	out.ModuleUUID = (*string)(unsafe.Pointer(in.ModuleUUID))
 	out.VMRef = in.VMRef
-	out.V1Beta2 = (*VSphereVMV1Beta2Status)(unsafe.Pointer(in.V1Beta2))
+	// WARNING: in.Deprecated requires manual conversion: does not exist in peer-type
 	return nil
-}
-
-// Convert_v1beta2_VSphereVMStatus_To_v1beta1_VSphereVMStatus is an autogenerated conversion function.
-func Convert_v1beta2_VSphereVMStatus_To_v1beta1_VSphereVMStatus(in *v1beta2.VSphereVMStatus, out *VSphereVMStatus, s conversion.Scope) error {
-	return autoConvert_v1beta2_VSphereVMStatus_To_v1beta1_VSphereVMStatus(in, out, s)
-}
-
-func autoConvert_v1beta1_VSphereVMV1Beta2Status_To_v1beta2_VSphereVMV1Beta2Status(in *VSphereVMV1Beta2Status, out *v1beta2.VSphereVMV1Beta2Status, s conversion.Scope) error {
-	out.Conditions = *(*[]v1.Condition)(unsafe.Pointer(&in.Conditions))
-	return nil
-}
-
-// Convert_v1beta1_VSphereVMV1Beta2Status_To_v1beta2_VSphereVMV1Beta2Status is an autogenerated conversion function.
-func Convert_v1beta1_VSphereVMV1Beta2Status_To_v1beta2_VSphereVMV1Beta2Status(in *VSphereVMV1Beta2Status, out *v1beta2.VSphereVMV1Beta2Status, s conversion.Scope) error {
-	return autoConvert_v1beta1_VSphereVMV1Beta2Status_To_v1beta2_VSphereVMV1Beta2Status(in, out, s)
-}
-
-func autoConvert_v1beta2_VSphereVMV1Beta2Status_To_v1beta1_VSphereVMV1Beta2Status(in *v1beta2.VSphereVMV1Beta2Status, out *VSphereVMV1Beta2Status, s conversion.Scope) error {
-	out.Conditions = *(*[]v1.Condition)(unsafe.Pointer(&in.Conditions))
-	return nil
-}
-
-// Convert_v1beta2_VSphereVMV1Beta2Status_To_v1beta1_VSphereVMV1Beta2Status is an autogenerated conversion function.
-func Convert_v1beta2_VSphereVMV1Beta2Status_To_v1beta1_VSphereVMV1Beta2Status(in *v1beta2.VSphereVMV1Beta2Status, out *VSphereVMV1Beta2Status, s conversion.Scope) error {
-	return autoConvert_v1beta2_VSphereVMV1Beta2Status_To_v1beta1_VSphereVMV1Beta2Status(in, out, s)
 }
 
 func autoConvert_v1beta1_VirtualMachine_To_v1beta2_VirtualMachine(in *VirtualMachine, out *v1beta2.VirtualMachine, s conversion.Scope) error {
