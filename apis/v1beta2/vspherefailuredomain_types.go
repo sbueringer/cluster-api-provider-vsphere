@@ -68,7 +68,7 @@ type FailureDomain struct {
 // Topology describes a given failure domain using vSphere constructs.
 type Topology struct {
 	// datacenter as the failure domain.
-	// +kubebuilder:validation:Required
+	// +required
 	// +kubebuilder:validation:MaxLength=2048
 	Datacenter string `json:"datacenter"`
 
@@ -106,7 +106,7 @@ type Topology struct {
 // a failure domain.
 type NetworkConfiguration struct {
 	// networkName is the network name for this machine's VM.
-	// +kubebuilder:validation:Required
+	// +required
 	// +kubebuilder:validation:MaxLength=2048
 	NetworkName string `json:"networkName"`
 

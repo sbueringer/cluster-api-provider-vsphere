@@ -295,12 +295,12 @@ type VirtualMachineResourceShares struct {
 type VSphereDisk struct {
 	// name is used to identify the disk definition. Name is required and needs to be unique so that it can be used to
 	// clearly identify purpose of the disk.
-	// +kubebuilder:validation:Required
+	// +required
 	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name,omitempty"`
 
 	// sizeGiB is the size of the disk in GiB.
-	// +kubebuilder:validation:Required
+	// +required
 	SizeGiB int32 `json:"sizeGiB"`
 
 	// provisioningMode specifies the provisioning type to be used by this vSphere data disk.
