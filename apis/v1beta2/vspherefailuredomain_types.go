@@ -45,7 +45,7 @@ type VSphereFailureDomainSpec struct {
 
 	// topology describes a given failure domain using vSphere constructs
 	// +required
-	Topology Topology `json:"topology"`
+	Topology Topology `json:"topology,omitzero"`
 }
 
 // FailureDomain contains data to identify and configure a failure domain.
@@ -89,7 +89,7 @@ type Topology struct {
 
 	// hosts has information required for placement of machines on VSphere hosts.
 	// +optional
-	Hosts *FailureDomainHosts `json:"hosts,omitempty"`
+	Hosts *FailureDomainHosts `json:"hosts,omitempty,omitzero"`
 
 	// networks is the list of networks within this failure domain
 	// +optional

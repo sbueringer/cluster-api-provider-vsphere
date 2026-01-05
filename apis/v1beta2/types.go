@@ -175,7 +175,7 @@ type VirtualMachineCloneSpec struct {
 
 	// network is the network configuration for this machine's VM.
 	// +required
-	Network NetworkSpec `json:"network"`
+	Network NetworkSpec `json:"network,omitzero"`
 
 	// numCPUs is the number of virtual processors in a virtual machine.
 	// Defaults to the eponymous property value in the template from which the
