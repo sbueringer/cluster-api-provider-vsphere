@@ -144,7 +144,7 @@ var _ = Describe("VsphereMachineReconciler", func() {
 					Template: "ubuntu-k9s-1.19",
 					Network: infrav1.NetworkSpec{
 						Devices: []infrav1.NetworkDeviceSpec{
-							{NetworkName: "network-1", DHCP4: true},
+							{NetworkName: "network-1", DHCP4: ptr.To(true)},
 						},
 					},
 				},
@@ -324,7 +324,7 @@ func Test_machineReconciler_Metadata(t *testing.T) {
 				Template: "ubuntu-k9s-1.19",
 				Network: infrav1.NetworkSpec{
 					Devices: []infrav1.NetworkDeviceSpec{
-						{NetworkName: "network-1", DHCP4: true},
+						{NetworkName: "network-1", DHCP4: ptr.To(true)},
 					},
 				},
 			},
@@ -372,7 +372,7 @@ func Test_machineReconciler_Metadata(t *testing.T) {
 					Template: "ubuntu-k9s-1.19",
 					Network: infrav1.NetworkSpec{
 						Devices: []infrav1.NetworkDeviceSpec{
-							{NetworkName: "network-1", DHCP4: true},
+							{NetworkName: "network-1", DHCP4: ptr.To(true)},
 						},
 					},
 				},

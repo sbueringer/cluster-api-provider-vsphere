@@ -361,8 +361,8 @@ func defaultVirtualMachineCloneSpec() infrav1.VirtualMachineCloneSpec {
 			Devices: []infrav1.NetworkDeviceSpec{
 				{
 					NetworkName: env.VSphereNetworkVar,
-					DHCP4:       true,
-					DHCP6:       false,
+					DHCP4:       ptr.To(true),
+					DHCP6:       ptr.To(false),
 				},
 			},
 		},
@@ -413,8 +413,8 @@ func nodeIPAMVirtualMachineCloneSpec() infrav1.VirtualMachineCloneSpec {
 			Devices: []infrav1.NetworkDeviceSpec{
 				{
 					NetworkName: env.VSphereNetworkVar,
-					DHCP4:       false,
-					DHCP6:       false,
+					DHCP4:       ptr.To(false),
+					DHCP6:       ptr.To(false),
 					AddressesFromPools: []corev1.TypedLocalObjectReference{
 						{
 							APIGroup: ptr.To(env.NodeIPAMPoolAPIGroup),

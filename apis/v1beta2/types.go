@@ -467,13 +467,13 @@ type NetworkDeviceSpec struct {
 	// on this device.
 	// If true then IPAddrs should not contain any IPv4 addresses.
 	// +optional
-	DHCP4 bool `json:"dhcp4,omitempty"`
+	DHCP4 *bool `json:"dhcp4,omitempty"`
 
 	// dhcp6 is a flag that indicates whether or not to use DHCP for IPv6
 	// on this device.
 	// If true then IPAddrs should not contain any IPv6 addresses.
 	// +optional
-	DHCP6 bool `json:"dhcp6,omitempty"`
+	DHCP6 *bool `json:"dhcp6,omitempty"`
 
 	// gateway4 is the IPv4 gateway used by this device.
 	// Required when DHCP4 is false.
@@ -568,7 +568,7 @@ type NetworkDeviceSpec struct {
 	// This is suitable for devices for which IP allocation is handled externally, eg. using Multus CNI.
 	// If true, CAPV will not verify IP address allocation.
 	// +optional
-	SkipIPAllocation bool `json:"skipIPAllocation,omitempty"`
+	SkipIPAllocation *bool `json:"skipIPAllocation,omitempty"`
 }
 
 // DHCPOverrides allows for the control over several DHCP behaviors.

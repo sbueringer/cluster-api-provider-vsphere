@@ -554,12 +554,12 @@ func (r vmReconciler) isWaitingForStaticIPAllocation(vmCtx *capvcontext.VMContex
 	devices := vmCtx.VSphereVM.Spec.Network.Devices
 	for _, dev := range devices {
 		// Ignore device if SkipIPAllocation is set.
-		if dev.SkipIPAllocation {
+		if ptr.Deref(dev.SkipIPAllocation, false) {
 			continue
 		}
 
 		// Ignore device if it is configured to use DHCP.
-		if dev.DHCP4 || dev.DHCP6 {
+		if ptr.Deref(dev.DHCP4, false) || ptr.Deref(dev.DHCP6, false) {
 			continue
 		}
 

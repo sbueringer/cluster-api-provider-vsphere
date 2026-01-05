@@ -152,7 +152,7 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		vm := &infrav1.VSphereVM{
 			Spec: infrav1.VSphereVMSpec{
 				VirtualMachineCloneSpec: infrav1.VirtualMachineCloneSpec{
-					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: false}, {NetworkName: "bar", DHCP6: false}}},
+					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: ptr.To(false)}, {NetworkName: "bar", DHCP6: ptr.To(false)}}},
 				},
 			},
 		}
@@ -179,7 +179,7 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		vm := &infrav1.VSphereVM{
 			Spec: infrav1.VSphereVMSpec{
 				VirtualMachineCloneSpec: infrav1.VirtualMachineCloneSpec{
-					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: false}, {NetworkName: "bar", DHCP6: false}}},
+					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: ptr.To(false)}, {NetworkName: "bar", DHCP6: ptr.To(false)}}},
 				},
 			},
 		}
@@ -192,10 +192,10 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		devices := vm.Spec.Network.Devices
 		g.Expect(devices).To(HaveLen(2))
 		g.Expect(devices[0].NetworkName).To(Equal("nw-one"))
-		g.Expect(devices[0].DHCP4).To(BeTrue())
+		g.Expect(*devices[0].DHCP4).To(BeTrue())
 
 		g.Expect(devices[1].NetworkName).To(Equal("another-nw"))
-		g.Expect(devices[1].DHCP6).To(BeTrue())
+		g.Expect(*devices[1].DHCP6).To(BeTrue())
 	})
 
 	t.Run("appends the n/w names present in the networks list of the topology with number of devices in VMSpec < number of networks in the placement constraint", func(t *testing.T) {
@@ -208,7 +208,7 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		vm := &infrav1.VSphereVM{
 			Spec: infrav1.VSphereVMSpec{
 				VirtualMachineCloneSpec: infrav1.VirtualMachineCloneSpec{
-					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: false}}},
+					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: ptr.To(false)}}},
 				},
 			},
 		}
@@ -235,7 +235,7 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		vm := &infrav1.VSphereVM{
 			Spec: infrav1.VSphereVMSpec{
 				VirtualMachineCloneSpec: infrav1.VirtualMachineCloneSpec{
-					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: false}}},
+					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: ptr.To(false)}}},
 				},
 			},
 		}
@@ -248,10 +248,10 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		devices := vm.Spec.Network.Devices
 		g.Expect(devices).To(HaveLen(2))
 		g.Expect(devices[0].NetworkName).To(Equal("nw-one"))
-		g.Expect(devices[0].DHCP4).To(BeTrue())
+		g.Expect(*devices[0].DHCP4).To(BeTrue())
 
 		g.Expect(devices[1].NetworkName).To(Equal("another-nw"))
-		g.Expect(devices[1].DHCP6).To(BeTrue())
+		g.Expect(*devices[1].DHCP6).To(BeTrue())
 	})
 
 	t.Run("only overrides the n/w names present in the networks list of the topology with number of devices in VMSpec > number of networks in the placement constraint", func(t *testing.T) {
@@ -264,7 +264,7 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		vm := &infrav1.VSphereVM{
 			Spec: infrav1.VSphereVMSpec{
 				VirtualMachineCloneSpec: infrav1.VirtualMachineCloneSpec{
-					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: false}, {NetworkName: "bar", DHCP6: false}, {NetworkName: "baz", DHCP6: false}}},
+					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: ptr.To(false)}, {NetworkName: "bar", DHCP6: ptr.To(false)}, {NetworkName: "baz", DHCP6: ptr.To(false)}}},
 				},
 			},
 		}
@@ -293,7 +293,7 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		vm := &infrav1.VSphereVM{
 			Spec: infrav1.VSphereVMSpec{
 				VirtualMachineCloneSpec: infrav1.VirtualMachineCloneSpec{
-					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: false}, {NetworkName: "bar", DHCP6: false}, {NetworkName: "baz", DHCP6: false}}},
+					Network: infrav1.NetworkSpec{Devices: []infrav1.NetworkDeviceSpec{{NetworkName: "foo", DHCP4: ptr.To(false)}, {NetworkName: "bar", DHCP6: ptr.To(false)}, {NetworkName: "baz", DHCP6: ptr.To(false)}}},
 				},
 			},
 		}
@@ -306,13 +306,13 @@ func Test_VimMachineService_GenerateOverrideFunc(t *testing.T) {
 		devices := vm.Spec.Network.Devices
 		g.Expect(devices).To(HaveLen(3))
 		g.Expect(devices[0].NetworkName).To(Equal("nw-one"))
-		g.Expect(devices[0].DHCP4).To(BeTrue())
+		g.Expect(*devices[0].DHCP4).To(BeTrue())
 
 		g.Expect(devices[1].NetworkName).To(Equal("another-nw"))
-		g.Expect(devices[1].DHCP6).To(BeTrue())
+		g.Expect(*devices[1].DHCP6).To(BeTrue())
 
 		g.Expect(devices[2].NetworkName).To(Equal("baz"))
-		g.Expect(devices[2].DHCP6).To(BeFalse())
+		g.Expect(*devices[2].DHCP6).To(BeFalse())
 	})
 }
 
@@ -347,8 +347,8 @@ func Test_mergeNetworkConfigurationToNetworkDeviceSpec(t *testing.T) {
 
 		g.Expect(device).To(Equal(infrav1.NetworkDeviceSpec{
 			NetworkName:   "nw-name",
-			DHCP4:         true,
-			DHCP6:         false,
+			DHCP4:         ptr.To(true),
+			DHCP6:         ptr.To(false),
 			Nameservers:   []string{"1.1.1.1"},
 			SearchDomains: []string{"vmware.ci"},
 			DHCP4Overrides: &infrav1.DHCPOverrides{
@@ -806,8 +806,8 @@ func Test_VimMachineService_FetchVSphereMachine(t *testing.T) {
 					Devices: []infrav1.NetworkDeviceSpec{
 						{
 							NetworkName: "VM Network",
-							DHCP4:       true,
-							DHCP6:       true,
+							DHCP4:       ptr.To(true),
+							DHCP6:       ptr.To(true),
 						},
 					},
 				},

@@ -865,8 +865,12 @@ func Convert_v1beta2_NetworkConfiguration_To_v1beta1_NetworkConfiguration(in *v1
 func autoConvert_v1beta1_NetworkDeviceSpec_To_v1beta2_NetworkDeviceSpec(in *NetworkDeviceSpec, out *v1beta2.NetworkDeviceSpec, s conversion.Scope) error {
 	out.NetworkName = in.NetworkName
 	out.DeviceName = in.DeviceName
-	out.DHCP4 = in.DHCP4
-	out.DHCP6 = in.DHCP6
+	if err := v1.Convert_bool_To_Pointer_bool(&in.DHCP4, &out.DHCP4, s); err != nil {
+		return err
+	}
+	if err := v1.Convert_bool_To_Pointer_bool(&in.DHCP6, &out.DHCP6, s); err != nil {
+		return err
+	}
 	out.Gateway4 = in.Gateway4
 	out.Gateway6 = in.Gateway6
 	out.IPAddrs = *(*[]string)(unsafe.Pointer(&in.IPAddrs))
@@ -894,7 +898,9 @@ func autoConvert_v1beta1_NetworkDeviceSpec_To_v1beta2_NetworkDeviceSpec(in *Netw
 	} else {
 		out.DHCP6Overrides = nil
 	}
-	out.SkipIPAllocation = in.SkipIPAllocation
+	if err := v1.Convert_bool_To_Pointer_bool(&in.SkipIPAllocation, &out.SkipIPAllocation, s); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -906,8 +912,12 @@ func Convert_v1beta1_NetworkDeviceSpec_To_v1beta2_NetworkDeviceSpec(in *NetworkD
 func autoConvert_v1beta2_NetworkDeviceSpec_To_v1beta1_NetworkDeviceSpec(in *v1beta2.NetworkDeviceSpec, out *NetworkDeviceSpec, s conversion.Scope) error {
 	out.NetworkName = in.NetworkName
 	out.DeviceName = in.DeviceName
-	out.DHCP4 = in.DHCP4
-	out.DHCP6 = in.DHCP6
+	if err := v1.Convert_Pointer_bool_To_bool(&in.DHCP4, &out.DHCP4, s); err != nil {
+		return err
+	}
+	if err := v1.Convert_Pointer_bool_To_bool(&in.DHCP6, &out.DHCP6, s); err != nil {
+		return err
+	}
 	out.Gateway4 = in.Gateway4
 	out.Gateway6 = in.Gateway6
 	out.IPAddrs = *(*[]string)(unsafe.Pointer(&in.IPAddrs))
@@ -935,7 +945,9 @@ func autoConvert_v1beta2_NetworkDeviceSpec_To_v1beta1_NetworkDeviceSpec(in *v1be
 	} else {
 		out.DHCP6Overrides = nil
 	}
-	out.SkipIPAllocation = in.SkipIPAllocation
+	if err := v1.Convert_Pointer_bool_To_bool(&in.SkipIPAllocation, &out.SkipIPAllocation, s); err != nil {
+		return err
+	}
 	return nil
 }
 

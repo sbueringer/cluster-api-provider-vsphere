@@ -148,6 +148,25 @@ func (src *VSphereMachine) ConvertTo(dstRaw conversion.Hub) error {
 	}
 
 	// Recover intent for bool values converted to *bool.
+	if len(src.Spec.Network.Devices) == len(dst.Spec.Network.Devices) {
+		for i, dstDevice := range dst.Spec.Network.Devices {
+			srcDevice := src.Spec.Network.Devices[i]
+			var restoredDeviceDHCP4, restoredDeviceDHCP6, restoredSkipIPAllocation *bool
+			if len(dst.Spec.Network.Devices) == len(restored.Spec.Network.Devices) {
+				restoredDevice := restored.Spec.Network.Devices[i]
+				restoredDeviceDHCP4 = restoredDevice.DHCP4
+				restoredDeviceDHCP6 = restoredDevice.DHCP6
+				restoredSkipIPAllocation = restoredDevice.SkipIPAllocation
+			}
+
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.DHCP4, ok, restoredDeviceDHCP4, &dstDevice.DHCP4)
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.DHCP6, ok, restoredDeviceDHCP6, &dstDevice.DHCP6)
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.SkipIPAllocation, ok, restoredSkipIPAllocation, &dstDevice.SkipIPAllocation)
+
+			dst.Spec.Network.Devices[i] = dstDevice
+		}
+	}
+
 	initialization := infrav1.VSphereMachineInitializationStatus{}
 	clusterv1.Convert_bool_To_Pointer_bool(src.Status.Ready, ok, restored.Status.Initialization.Provisioned, &initialization.Provisioned)
 	if !reflect.DeepEqual(initialization, infrav1.VSphereMachineInitializationStatus{}) {
@@ -175,6 +194,32 @@ func (src *VSphereMachineTemplate) ConvertTo(dstRaw conversion.Hub) error {
 		return err
 	}
 
+	restored := &infrav1.VSphereMachineTemplate{}
+	ok, err := utilconversion.UnmarshalData(src, restored)
+	if err != nil {
+		return err
+	}
+
+	// Recover intent for bool values converted to *bool.
+	if len(src.Spec.Template.Spec.Network.Devices) == len(dst.Spec.Template.Spec.Network.Devices) {
+		for i, dstDevice := range dst.Spec.Template.Spec.Network.Devices {
+			srcDevice := src.Spec.Template.Spec.Network.Devices[i]
+			var restoredDeviceDHCP4, restoredDeviceDHCP6, restoredSkipIPAllocation *bool
+			if len(dst.Spec.Template.Spec.Network.Devices) == len(restored.Spec.Template.Spec.Network.Devices) {
+				restoredDevice := restored.Spec.Template.Spec.Network.Devices[i]
+				restoredDeviceDHCP4 = restoredDevice.DHCP4
+				restoredDeviceDHCP6 = restoredDevice.DHCP6
+				restoredSkipIPAllocation = restoredDevice.SkipIPAllocation
+			}
+
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.DHCP4, ok, restoredDeviceDHCP4, &dstDevice.DHCP4)
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.DHCP6, ok, restoredDeviceDHCP6, &dstDevice.DHCP6)
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.SkipIPAllocation, ok, restoredSkipIPAllocation, &dstDevice.SkipIPAllocation)
+
+			dst.Spec.Template.Spec.Network.Devices[i] = dstDevice
+		}
+	}
+
 	return nil
 }
 
@@ -188,13 +233,39 @@ func (dst *VSphereMachineTemplate) ConvertFrom(srcRaw conversion.Hub) error {
 		dst.Spec.Template.Spec.ProviderID = nil
 	}
 
-	return nil
+	return utilconversion.MarshalData(src, dst)
 }
 
 func (src *VSphereVM) ConvertTo(dstRaw conversion.Hub) error {
 	dst := dstRaw.(*infrav1.VSphereVM)
 	if err := Convert_v1beta1_VSphereVM_To_v1beta2_VSphereVM(src, dst, nil); err != nil {
 		return err
+	}
+
+	restored := &infrav1.VSphereVM{}
+	ok, err := utilconversion.UnmarshalData(src, restored)
+	if err != nil {
+		return err
+	}
+
+	// Recover intent for bool values converted to *bool.
+	if len(src.Spec.Network.Devices) == len(dst.Spec.Network.Devices) {
+		for i, dstDevice := range dst.Spec.Network.Devices {
+			srcDevice := src.Spec.Network.Devices[i]
+			var restoredDeviceDHCP4, restoredDeviceDHCP6, restoredSkipIPAllocation *bool
+			if len(dst.Spec.Network.Devices) == len(restored.Spec.Network.Devices) {
+				restoredDevice := restored.Spec.Network.Devices[i]
+				restoredDeviceDHCP4 = restoredDevice.DHCP4
+				restoredDeviceDHCP6 = restoredDevice.DHCP6
+				restoredSkipIPAllocation = restoredDevice.SkipIPAllocation
+			}
+
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.DHCP4, ok, restoredDeviceDHCP4, &dstDevice.DHCP4)
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.DHCP6, ok, restoredDeviceDHCP6, &dstDevice.DHCP6)
+			clusterv1.Convert_bool_To_Pointer_bool(srcDevice.SkipIPAllocation, ok, restoredSkipIPAllocation, &dstDevice.SkipIPAllocation)
+
+			dst.Spec.Network.Devices[i] = dstDevice
+		}
 	}
 
 	return nil
@@ -206,7 +277,7 @@ func (dst *VSphereVM) ConvertFrom(srcRaw conversion.Hub) error {
 		return err
 	}
 
-	return nil
+	return utilconversion.MarshalData(src, dst)
 }
 
 func Convert_v1beta2_VSphereClusterStatus_To_v1beta1_VSphereClusterStatus(in *infrav1.VSphereClusterStatus, out *VSphereClusterStatus, s apimachineryconversion.Scope) error {

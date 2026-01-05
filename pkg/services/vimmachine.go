@@ -536,10 +536,10 @@ func mergeNetworkConfigurationInNetworkDeviceSpec(device *infrav1.NetworkDeviceS
 		device.NetworkName = nc.NetworkName
 	}
 	if nc.DHCP4 != nil {
-		device.DHCP4 = *nc.DHCP4
+		device.DHCP4 = nc.DHCP4
 	}
 	if nc.DHCP6 != nil {
-		device.DHCP6 = *nc.DHCP6
+		device.DHCP6 = nc.DHCP6
 	}
 	if len(nc.Nameservers) > 0 {
 		device.Nameservers = make([]string, len(nc.Nameservers))

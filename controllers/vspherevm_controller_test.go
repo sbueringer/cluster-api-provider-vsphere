@@ -219,7 +219,7 @@ func TestReconcileNormal_WaitingForIPAddrAllocation(t *testing.T) {
 	t.Run("Waiting for IP addr allocation", func(t *testing.T) {
 		create(infrav1.NetworkSpec{
 			Devices: []infrav1.NetworkDeviceSpec{
-				{NetworkName: "nw-1", DHCP4: true},
+				{NetworkName: "nw-1", DHCP4: ptr.To(true)},
 			},
 		})()
 		fakeVMSvc := new(fake_svc.VMService)
@@ -311,13 +311,13 @@ func TestVmReconciler_WaitingForStaticIPAllocation(t *testing.T) {
 	}{
 		{
 			name:       "for one n/w device with DHCP set to true",
-			devices:    []infrav1.NetworkDeviceSpec{{DHCP4: true, NetworkName: "nw-1"}},
+			devices:    []infrav1.NetworkDeviceSpec{{DHCP4: ptr.To(true), NetworkName: "nw-1"}},
 			shouldWait: false,
 		},
 		{
 			name: "for multiple n/w devices with DHCP set and unset",
 			devices: []infrav1.NetworkDeviceSpec{
-				{DHCP4: true, NetworkName: "nw-1"},
+				{DHCP4: ptr.To(true), NetworkName: "nw-1"},
 				{NetworkName: "nw-2"},
 			},
 			shouldWait: true,
@@ -348,7 +348,7 @@ func TestVmReconciler_WaitingForStaticIPAllocation(t *testing.T) {
 		{
 			name: "for one n/w devices with SkipIPAllocation set",
 			devices: []infrav1.NetworkDeviceSpec{
-				{NetworkName: "nw-1", SkipIPAllocation: true},
+				{NetworkName: "nw-1", SkipIPAllocation: ptr.To(true)},
 			},
 			shouldWait: false,
 		},
@@ -356,7 +356,7 @@ func TestVmReconciler_WaitingForStaticIPAllocation(t *testing.T) {
 			name: "for multiple n/w devices with SkipIPAllocation set for the second one",
 			devices: []infrav1.NetworkDeviceSpec{
 				{NetworkName: "nw-1", IPAddrs: []string{"192.168.1.2/32"}},
-				{NetworkName: "nw-2", SkipIPAllocation: true},
+				{NetworkName: "nw-2", SkipIPAllocation: ptr.To(true)},
 			},
 			shouldWait: false,
 		},
@@ -364,7 +364,7 @@ func TestVmReconciler_WaitingForStaticIPAllocation(t *testing.T) {
 			name: "for multiple n/w devices with SkipIPAllocation set only for one",
 			devices: []infrav1.NetworkDeviceSpec{
 				{NetworkName: "nw-1"},
-				{NetworkName: "nw-2", SkipIPAllocation: true},
+				{NetworkName: "nw-2", SkipIPAllocation: ptr.To(true)},
 			},
 			shouldWait: true,
 		},

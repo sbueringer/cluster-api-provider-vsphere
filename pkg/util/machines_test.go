@@ -252,7 +252,7 @@ func Test_GetMachineMetadata(t *testing.T) {
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP4:       true,
+									DHCP4:       ptr.To(true),
 								},
 							},
 						},
@@ -288,7 +288,7 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP4:       true,
+									DHCP4:       ptr.To(true),
 									DeviceName:  "ens192",
 								},
 							},
@@ -325,7 +325,7 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP6:       true,
+									DHCP6:       ptr.To(true),
 								},
 							},
 						},
@@ -361,8 +361,8 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP4:       true,
-									DHCP6:       true,
+									DHCP4:       ptr.To(true),
+									DHCP6:       ptr.To(true),
 								},
 							},
 						},
@@ -398,7 +398,7 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP4:       true,
+									DHCP4:       ptr.To(true),
 									DHCP4Overrides: &infrav1.DHCPOverrides{
 										Hostname:     toStringPtr("hal"),
 										RouteMetric:  ptr.To[int32](12345),
@@ -410,7 +410,7 @@ network:
 										UseNTP:       toBoolPtr(true),
 										UseRoutes:    toStringPtr("route"),
 									},
-									DHCP6: true,
+									DHCP6: ptr.To(true),
 									DHCP6Overrides: &infrav1.DHCPOverrides{
 										Hostname:     toStringPtr("hal"),
 										RouteMetric:  ptr.To[int32](12345),
@@ -477,9 +477,9 @@ network:
 								{
 									NetworkName:    "network1",
 									MACAddr:        "00:00:00:00:00",
-									DHCP4:          true,
+									DHCP4:          ptr.To(true),
 									DHCP4Overrides: nil,
-									DHCP6:          true,
+									DHCP6:          ptr.To(true),
 									DHCP6Overrides: nil,
 								},
 							},
@@ -516,7 +516,7 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP6:       true,
+									DHCP6:       ptr.To(true),
 									IPAddrs:     []string{"192.168.4.21"},
 									Gateway4:    "192.168.4.1",
 								},
@@ -557,7 +557,7 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP6:       true,
+									DHCP6:       ptr.To(true),
 									IPAddrs:     []string{"192.168.4.21"},
 									Gateway4:    "192.168.4.1",
 								},
@@ -609,7 +609,7 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP4:       true,
+									DHCP4:       ptr.To(true),
 									Routes: []infrav1.NetworkRouteSpec{
 										{
 											To:     "192.168.5.1/24",
@@ -621,7 +621,7 @@ network:
 								{
 									NetworkName: "network12",
 									MACAddr:     "00:00:00:00:01",
-									DHCP6:       true,
+									DHCP6:       ptr.To(true),
 									MTU:         mtu(100),
 								},
 							},
@@ -680,7 +680,7 @@ network:
 								{
 									NetworkName:   "network12",
 									MACAddr:       "00:00:00:00:01",
-									DHCP6:         true,
+									DHCP6:         ptr.To(true),
 									SearchDomains: []string{"vmware6.ci"},
 								},
 							},
@@ -736,12 +736,12 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP4:       true,
+									DHCP4:       ptr.To(true),
 								},
 								{
 									NetworkName: "network12",
 									MACAddr:     "00:00:00:00:01",
-									DHCP6:       true,
+									DHCP6:       ptr.To(true),
 								},
 							},
 						},
@@ -793,7 +793,7 @@ network:
 								{
 									NetworkName: "network2",
 									MACAddr:     "00:00:00:00:01",
-									DHCP4:       true,
+									DHCP4:       ptr.To(true),
 								},
 								{
 									NetworkName: "network3",
@@ -869,12 +869,12 @@ network:
 								{
 									NetworkName: "network1",
 									MACAddr:     "00:00:00:00:00",
-									DHCP4:       true,
+									DHCP4:       ptr.To(true),
 								},
 								{
 									NetworkName: "network12",
 									MACAddr:     "00:00:00:00:01",
-									DHCP6:       true,
+									DHCP6:       ptr.To(true),
 								},
 							},
 						},
@@ -1164,8 +1164,4 @@ func toStringPtr(s string) *string {
 
 func toBoolPtr(b bool) *bool {
 	return &b
-}
-
-func toIntPtr(i int) *int {
-	return &i
 }

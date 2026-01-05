@@ -25,6 +25,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	apitypes "k8s.io/apimachinery/pkg/types"
+	"k8s.io/utils/ptr"
 	ipamv1beta1 "sigs.k8s.io/cluster-api/api/ipam/v1beta1"
 
 	infrav1 "sigs.k8s.io/cluster-api-provider-vsphere/apis/v1beta2"
@@ -207,7 +208,7 @@ func Test_buildIPAMDeviceConfigs(t *testing.T) {
 						Devices: []infrav1.NetworkDeviceSpec{
 							{
 								MACAddr: devMAC,
-								DHCP4:   true,
+								DHCP4:   ptr.To(true),
 							},
 						},
 					},
@@ -425,7 +426,7 @@ func Test_BuildState(t *testing.T) {
 						Devices: []infrav1.NetworkDeviceSpec{
 							{
 								MACAddr: devMAC,
-								DHCP4:   true,
+								DHCP4:   ptr.To(true),
 							},
 						},
 					},
@@ -471,7 +472,7 @@ func Test_BuildState(t *testing.T) {
 					Network: infrav1.NetworkSpec{
 						Devices: []infrav1.NetworkDeviceSpec{
 							{
-								DHCP4: true,
+								DHCP4: ptr.To(true),
 							},
 							{
 								AddressesFromPools: []corev1.TypedLocalObjectReference{
