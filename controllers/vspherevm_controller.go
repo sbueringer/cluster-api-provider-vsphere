@@ -406,8 +406,8 @@ func (r vmReconciler) reconcileDelete(ctx context.Context, vmCtx *capvcontext.VM
 	}
 
 	// Requeue the operation until the VM is "notfound".
-	if vm.State != infrav1.VirtualMachineStateNotFound {
-		log.Info(fmt.Sprintf("VM state is %q, waiting for %q", vm.State, infrav1.VirtualMachineStateNotFound))
+	if vm.State != services.VirtualMachineStateNotFound {
+		log.Info(fmt.Sprintf("VM state is %q, waiting for %q", vm.State, services.VirtualMachineStateNotFound))
 		return reconcile.Result{}, nil
 	}
 
@@ -495,8 +495,8 @@ func (r vmReconciler) reconcileNormal(ctx context.Context, vmCtx *capvcontext.VM
 	}
 
 	// Do not proceed until the backend VM is marked ready.
-	if vm.State != infrav1.VirtualMachineStateReady {
-		log.Info(fmt.Sprintf("VM state is %q, waiting for %q", vm.State, infrav1.VirtualMachineStateReady))
+	if vm.State != services.VirtualMachineStateReady {
+		log.Info(fmt.Sprintf("VM state is %q, waiting for %q", vm.State, services.VirtualMachineStateReady))
 		if !vmCtx.VSphereVM.Status.RetryAfter.IsZero() {
 			return reconcile.Result{RequeueAfter: time.Until(vmCtx.VSphereVM.Status.RetryAfter.Time)}, nil
 		}
@@ -572,7 +572,7 @@ func (r vmReconciler) isWaitingForStaticIPAllocation(vmCtx *capvcontext.VMContex
 	return false
 }
 
-func (r vmReconciler) reconcileNetwork(vmCtx *capvcontext.VMContext, vm infrav1.VirtualMachine) {
+func (r vmReconciler) reconcileNetwork(vmCtx *capvcontext.VMContext, vm services.VirtualMachine) {
 	vmCtx.VSphereVM.Status.Network = vm.Network
 	ipAddrs := make([]string, 0, len(vm.Network))
 	for _, netStatus := range vmCtx.VSphereVM.Status.Network {

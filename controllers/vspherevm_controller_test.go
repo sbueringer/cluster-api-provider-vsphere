@@ -192,10 +192,10 @@ func TestReconcileNormal_WaitingForIPAddrAllocation(t *testing.T) {
 			},
 		})()
 		fakeVMSvc := new(fake_svc.VMService)
-		fakeVMSvc.On("ReconcileVM", mock.Anything).Return(infrav1.VirtualMachine{
+		fakeVMSvc.On("ReconcileVM", mock.Anything).Return(services.VirtualMachine{
 			Name:     vsphereVM.Name,
 			BiosUUID: "265104de-1472-547c-b873-6dc7883fb6cb",
-			State:    infrav1.VirtualMachineStatePending,
+			State:    services.VirtualMachineStatePending,
 			Network:  nil,
 		}, nil)
 		r := setupReconciler(fakeVMSvc)
@@ -223,10 +223,10 @@ func TestReconcileNormal_WaitingForIPAddrAllocation(t *testing.T) {
 			},
 		})()
 		fakeVMSvc := new(fake_svc.VMService)
-		fakeVMSvc.On("ReconcileVM", mock.Anything).Return(infrav1.VirtualMachine{
+		fakeVMSvc.On("ReconcileVM", mock.Anything).Return(services.VirtualMachine{
 			Name:     vsphereVM.Name,
 			BiosUUID: "265104de-1472-547c-b873-6dc7883fb6cb",
-			State:    infrav1.VirtualMachineStateReady,
+			State:    services.VirtualMachineStateReady,
 			Network: []infrav1.NetworkStatus{{
 				Connected:   true,
 				IPAddrs:     []string{}, // empty array to show waiting for IP address
@@ -271,10 +271,10 @@ func TestReconcileNormal_WaitingForIPAddrAllocation(t *testing.T) {
 		vsphereVM.ObjectMeta.DeletionTimestamp = &metav1.Time{Time: time.Now()}
 
 		fakeVMSvc := new(fake_svc.VMService)
-		fakeVMSvc.On("DestroyVM", mock.Anything).Return(reconcile.Result{}, infrav1.VirtualMachine{
+		fakeVMSvc.On("DestroyVM", mock.Anything).Return(reconcile.Result{}, services.VirtualMachine{
 			Name:     vsphereVM.Name,
 			BiosUUID: "265104de-1472-547c-b873-6dc7883fb6cb",
-			State:    infrav1.VirtualMachineStateNotFound,
+			State:    services.VirtualMachineStateNotFound,
 			Network: []infrav1.NetworkStatus{{
 				Connected:   true,
 				IPAddrs:     []string{}, // empty array to show waiting for IP address
@@ -587,10 +587,10 @@ func Test_reconcile(t *testing.T) {
 		t.Run("when info cannot be fetched", func(t *testing.T) {
 			t.Run("when anti affinity feature gate is turned off", func(t *testing.T) {
 				fakeVMSvc := new(fake_svc.VMService)
-				fakeVMSvc.On("ReconcileVM", mock.Anything).Return(infrav1.VirtualMachine{
+				fakeVMSvc.On("ReconcileVM", mock.Anything).Return(services.VirtualMachine{
 					Name:     vsphereVM.Name,
 					BiosUUID: "265104de-1472-547c-b873-6dc7883fb6cb",
-					State:    infrav1.VirtualMachineStateReady,
+					State:    services.VirtualMachineStateReady,
 				}, nil)
 				r := setupReconciler(fakeVMSvc, initObjs...)
 				_, err := r.reconcile(ctx, &capvcontext.VMContext{
@@ -625,10 +625,10 @@ func Test_reconcile(t *testing.T) {
 			objsWithHierarchy := initObjs
 			objsWithHierarchy = append(objsWithHierarchy, createMachineOwnerHierarchy(machine)...)
 			fakeVMSvc := new(fake_svc.VMService)
-			fakeVMSvc.On("ReconcileVM", mock.Anything).Return(infrav1.VirtualMachine{
+			fakeVMSvc.On("ReconcileVM", mock.Anything).Return(services.VirtualMachine{
 				Name:     vsphereVM.Name,
 				BiosUUID: "265104de-1472-547c-b873-6dc7883fb6cb",
-				State:    infrav1.VirtualMachineStateReady,
+				State:    services.VirtualMachineStateReady,
 				VMRef:    "VirtualMachine:vm-129",
 			}, nil)
 
@@ -653,10 +653,10 @@ func Test_reconcile(t *testing.T) {
 		deletedVM.Finalizers = append(deletedVM.Finalizers, "keep-this-for-the-test")
 
 		fakeVMSvc := new(fake_svc.VMService)
-		fakeVMSvc.On("DestroyVM", mock.Anything).Return(reconcile.Result{}, infrav1.VirtualMachine{
+		fakeVMSvc.On("DestroyVM", mock.Anything).Return(reconcile.Result{}, services.VirtualMachine{
 			Name:     deletedVM.Name,
 			BiosUUID: "265104de-1472-547c-b873-6dc7883fb6cb",
-			State:    infrav1.VirtualMachineStateNotFound,
+			State:    services.VirtualMachineStateNotFound,
 		}, nil)
 
 		initObjs := []client.Object{vsphereCluster, machine, deletedVM}

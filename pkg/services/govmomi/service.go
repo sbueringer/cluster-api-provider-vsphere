@@ -43,6 +43,7 @@ import (
 
 	infrav1 "sigs.k8s.io/cluster-api-provider-vsphere/apis/v1beta2"
 	capvcontext "sigs.k8s.io/cluster-api-provider-vsphere/pkg/context"
+	"sigs.k8s.io/cluster-api-provider-vsphere/pkg/services"
 	"sigs.k8s.io/cluster-api-provider-vsphere/pkg/services/govmomi/cluster"
 	"sigs.k8s.io/cluster-api-provider-vsphere/pkg/services/govmomi/clustermodules"
 	"sigs.k8s.io/cluster-api-provider-vsphere/pkg/services/govmomi/extra"
@@ -60,11 +61,11 @@ type VMService struct{}
 //  2. Updating the VM with the bootstrap data, such as the cloud-init meta and user data, before...
 //  3. Powering on the VM, and finally...
 //  4. Returning the real-time state of the VM to the caller
-func (vms *VMService) ReconcileVM(ctx context.Context, vmCtx *capvcontext.VMContext) (vm infrav1.VirtualMachine, _ error) {
+func (vms *VMService) ReconcileVM(ctx context.Context, vmCtx *capvcontext.VMContext) (vm services.VirtualMachine, _ error) {
 	// Initialize the result.
-	vm = infrav1.VirtualMachine{
+	vm = services.VirtualMachine{
 		Name:  vmCtx.VSphereVM.Name,
-		State: infrav1.VirtualMachineStatePending,
+		State: services.VirtualMachineStatePending,
 	}
 
 	// If there is an in-flight task associated with this VM then do not
@@ -97,7 +98,7 @@ func (vms *VMService) ReconcileVM(ctx context.Context, vmCtx *capvcontext.VMCont
 				Reason:  infrav1.VSphereVMVirtualMachineNotFoundByBIOSUUIDV1Beta2Reason,
 				Message: err.Error(),
 			})
-			vm.State = infrav1.VirtualMachineStateNotFound
+			vm.State = services.VirtualMachineStateNotFound
 			return vm, err
 		}
 
@@ -207,17 +208,17 @@ func (vms *VMService) ReconcileVM(ctx context.Context, vmCtx *capvcontext.VMCont
 		return vm, err
 	}
 
-	vm.State = infrav1.VirtualMachineStateReady
+	vm.State = services.VirtualMachineStateReady
 	return vm, nil
 }
 
 // DestroyVM powers off and destroys a virtual machine.
-func (vms *VMService) DestroyVM(ctx context.Context, vmCtx *capvcontext.VMContext) (reconcile.Result, infrav1.VirtualMachine, error) {
+func (vms *VMService) DestroyVM(ctx context.Context, vmCtx *capvcontext.VMContext) (reconcile.Result, services.VirtualMachine, error) {
 	log := ctrl.LoggerFrom(ctx)
 
-	vm := infrav1.VirtualMachine{
+	vm := services.VirtualMachine{
 		Name:  vmCtx.VSphereVM.Name,
-		State: infrav1.VirtualMachineStatePending,
+		State: services.VirtualMachineStatePending,
 	}
 
 	// If there is an in-flight task associated with this VM then do not
@@ -238,7 +239,7 @@ func (vms *VMService) DestroyVM(ctx context.Context, vmCtx *capvcontext.VMContex
 		// If the VM's MoRef could not be found then the VM no longer exists. This
 		// is the desired state.
 		if isNotFound(err) || isFolderNotFound(err) {
-			vm.State = infrav1.VirtualMachineStateNotFound
+			vm.State = services.VirtualMachineStateNotFound
 			return reconcile.Result{}, vm, nil
 		}
 		return reconcile.Result{}, vm, err

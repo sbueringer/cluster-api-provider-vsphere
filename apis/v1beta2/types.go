@@ -641,22 +641,6 @@ type NetworkStatus struct {
 	NetworkName string `json:"networkName,omitempty"`
 }
 
-// VirtualMachineState describes the state of a VM.
-// +kubebuilder:validation:Enum=notfound;pending;ready
-type VirtualMachineState string
-
-const (
-	// VirtualMachineStateNotFound is the string representing a VM that
-	// cannot be located.
-	VirtualMachineStateNotFound VirtualMachineState = "notfound"
-
-	// VirtualMachineStatePending is the string representing a VM with an in-flight task.
-	VirtualMachineStatePending VirtualMachineState = "pending"
-
-	// VirtualMachineStateReady is the string representing a powered-on VM with reported IP addresses.
-	VirtualMachineStateReady VirtualMachineState = "ready"
-)
-
 // VirtualMachinePowerState describe the power state of a VM.
 type VirtualMachinePowerState string
 
@@ -670,28 +654,6 @@ const (
 	// VirtualMachinePowerStateSuspended is the string representing a VM in suspended state.
 	VirtualMachinePowerStateSuspended = "suspended"
 )
-
-// VirtualMachine represents data about a vSphere virtual machine object.
-type VirtualMachine struct {
-	// name is the VM's name.
-	// +kubebuilder:validation:MaxLength=1024
-	Name string `json:"name"`
-
-	// biosUUID is the VM's BIOS UUID.
-	// +kubebuilder:validation:MaxLength=1024
-	BiosUUID string `json:"biosUUID"`
-
-	// state is the VM's state.
-	State VirtualMachineState `json:"state"`
-
-	// network is the status of the VM's network devices.
-	// +kubebuilder:validation:MaxItems=128
-	Network []NetworkStatus `json:"network"`
-
-	// vmRef is the VM's Managed Object Reference on vSphere.
-	// +kubebuilder:validation:MaxLength=2048
-	VMRef string `json:"vmRef"`
-}
 
 // SSHUser is granted remote access to a system.
 type SSHUser struct {
