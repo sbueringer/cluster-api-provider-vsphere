@@ -134,11 +134,12 @@ type VSphereDeploymentZoneSpec struct {
 
 	// placementConstraint encapsulates the placement constraints
 	// used within this deployment zone.
-	// +required
-	PlacementConstraint PlacementConstraint `json:"placementConstraint"`
+	// +optional
+	PlacementConstraint PlacementConstraint `json:"placementConstraint,omitempty,omitzero"`
 }
 
 // PlacementConstraint is the context information for VM placements within a failure domain.
+// +kubebuilder:validation:MinProperties=1
 type PlacementConstraint struct {
 	// resourcePool is the name or inventory path of the resource pool in which
 	// the virtual machine is created/located.

@@ -108,13 +108,13 @@ func NewVCenterVersion(version string) VCenterVersion {
 // VSphereClusterSpec defines the desired state of VSphereCluster.
 type VSphereClusterSpec struct {
 	// server is the address of the vSphere endpoint.
-	// +optional
+	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
 	// thumbprint is the colon-separated SHA-1 checksum of the given vCenter server's host certificate
-	// +optional
+	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Thumbprint string `json:"thumbprint,omitempty"`
@@ -267,7 +267,7 @@ type VSphereCluster struct {
 
 	// spec is the desired state of VSphereCluster.
 	// +required
-	Spec VSphereClusterSpec `json:"spec,omitempty"`
+	Spec VSphereClusterSpec `json:"spec,omitempty,omitzero"`
 
 	// status is the observed state of VSphereCluster.
 	// +optional

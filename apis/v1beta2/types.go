@@ -344,6 +344,7 @@ var (
 )
 
 // VSphereMachineTemplateResource describes the data needed to create a VSphereMachine from a template.
+// +kubebuilder:validation:MinProperties=1
 type VSphereMachineTemplateResource struct {
 	// metadata is the standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata

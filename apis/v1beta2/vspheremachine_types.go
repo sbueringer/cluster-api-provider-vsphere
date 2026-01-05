@@ -177,7 +177,7 @@ type VSphereVMNamingStrategy struct {
 	// +optional
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
-	Template *string `json:"template,omitempty"`
+	Template *string `json:"template,omitempty,omitzero"`
 }
 
 // VSphereMachineStatus defines the observed state of VSphereMachine.
