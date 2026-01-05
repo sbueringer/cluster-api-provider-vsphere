@@ -966,6 +966,7 @@ spec:
                   type: integer
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               biosUUID:
                 description: |-
                   biosUUID is the VM's BIOS UUID that is assigned at runtime after
@@ -1169,6 +1170,7 @@ spec:
                             x-kubernetes-map-type: atomic
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         deviceName:
                           description: |-
                             deviceName may be used to explicitly assign a name to the network device
@@ -1329,6 +1331,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         macAddr:
                           description: |-
                             macAddr is the MAC address used by this device.
@@ -1354,6 +1357,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         networkName:
                           description: |-
                             networkName is the name, managed object reference or the managed
@@ -1387,6 +1391,7 @@ spec:
                             type: object
                           maxItems: 256
                           type: array
+                          x-kubernetes-list-type: atomic
                         searchDomains:
                           description: |-
                             searchDomains is a list of search domains used when resolving IP
@@ -1397,6 +1402,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         skipIPAllocation:
                           description: |-
                             skipIPAllocation allows the device to not have IP address or DHCP configured.
@@ -1408,6 +1414,7 @@ spec:
                       type: object
                     maxItems: 128
                     type: array
+                    x-kubernetes-list-type: atomic
                   preferredAPIServerCidr:
                     description: |-
                       preferredAPIServerCidr is the preferred CIDR for the Kubernetes API
@@ -1442,6 +1449,7 @@ spec:
                       type: object
                     maxItems: 256
                     type: array
+                    x-kubernetes-list-type: atomic
                 required:
                 - devices
                 type: object
@@ -1509,6 +1517,7 @@ spec:
                   type: object
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               powerOffMode:
                 default: hard
                 description: |-
@@ -1634,6 +1643,7 @@ spec:
                   type: string
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               template:
                 description: |-
                   template is the name, inventory path, managed object reference or the managed
@@ -1655,6 +1665,7 @@ spec:
             type: object
           status:
             description: status is the observed state of VSphereVM.
+            minProperties: 1
             properties:
               addresses:
                 description: |-
@@ -1667,6 +1678,7 @@ spec:
                   type: string
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               cloneMode:
                 description: |-
                   cloneMode is the type of clone operation used to clone this VM. Since
@@ -1798,6 +1810,7 @@ spec:
                         type: string
                       maxItems: 128
                       type: array
+                      x-kubernetes-list-type: atomic
                     macAddr:
                       description: macAddr is the MAC address of the network device.
                       maxLength: 17
@@ -1811,6 +1824,7 @@ spec:
                   type: object
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               ready:
                 description: |-
                   ready is true when the provider resource is ready.

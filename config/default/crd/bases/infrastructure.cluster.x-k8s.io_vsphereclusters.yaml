@@ -420,6 +420,7 @@ spec:
                   type: object
                 maxItems: 512
                 type: array
+                x-kubernetes-list-type: atomic
               controlPlaneEndpoint:
                 description: controlPlaneEndpoint represents the endpoint used to
                   communicate with the control plane.
@@ -527,6 +528,7 @@ spec:
             type: object
           status:
             description: status is the observed state of VSphereCluster.
+            minProperties: 1
             properties:
               conditions:
                 description: |-

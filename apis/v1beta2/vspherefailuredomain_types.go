@@ -90,6 +90,7 @@ type Topology struct {
 
 	// networks is the list of networks within this failure domain
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=2048
@@ -129,6 +130,7 @@ type NetworkConfiguration struct {
 	// nameservers.
 	// Please note that Linux allows only three nameservers (https://linux.die.net/man/5/resolv.conf).
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=39
@@ -137,6 +139,7 @@ type NetworkConfiguration struct {
 	// searchDomains is a list of search domains used when resolving IP
 	// addresses with DNS.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=1024
@@ -164,6 +167,7 @@ type NetworkConfiguration struct {
 	// to IPAddressClaims. The machine's cloud-init metadata will be populated
 	// with IPAddresses fulfilled by an IPAM provider.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	AddressesFromPools []corev1.TypedLocalObjectReference `json:"addressesFromPools,omitempty"`
 }

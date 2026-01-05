@@ -245,6 +245,7 @@ type VSphereVMStatus struct {
 	// This field is required at runtime for other controllers that read
 	// this CRD as unstructured data.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=256
@@ -277,6 +278,7 @@ type VSphereVMStatus struct {
 	// network returns the network status for each of the machine's configured
 	// network interfaces.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	Network []NetworkStatus `json:"network,omitempty"`
 

@@ -190,12 +190,14 @@ type VSphereMachineStatus struct {
 
 	// addresses contains the VSphere instance associated addresses.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	Addresses []clusterv1.MachineAddress `json:"addresses,omitempty"`
 
 	// network returns the network status for each of the machine's configured
 	// network interfaces.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	Network []NetworkStatus `json:"network,omitempty"`
 

@@ -970,6 +970,7 @@ spec:
                   type: integer
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               cloneMode:
                 description: |-
                   cloneMode specifies the type of clone operation.
@@ -1149,6 +1150,7 @@ spec:
                             x-kubernetes-map-type: atomic
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         deviceName:
                           description: |-
                             deviceName may be used to explicitly assign a name to the network device
@@ -1309,6 +1311,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         macAddr:
                           description: |-
                             macAddr is the MAC address used by this device.
@@ -1334,6 +1337,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         networkName:
                           description: |-
                             networkName is the name, managed object reference or the managed
@@ -1367,6 +1371,7 @@ spec:
                             type: object
                           maxItems: 256
                           type: array
+                          x-kubernetes-list-type: atomic
                         searchDomains:
                           description: |-
                             searchDomains is a list of search domains used when resolving IP
@@ -1377,6 +1382,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         skipIPAllocation:
                           description: |-
                             skipIPAllocation allows the device to not have IP address or DHCP configured.
@@ -1388,6 +1394,7 @@ spec:
                       type: object
                     maxItems: 128
                     type: array
+                    x-kubernetes-list-type: atomic
                   preferredAPIServerCidr:
                     description: |-
                       preferredAPIServerCidr is the preferred CIDR for the Kubernetes API
@@ -1422,6 +1429,7 @@ spec:
                       type: object
                     maxItems: 256
                     type: array
+                    x-kubernetes-list-type: atomic
                 required:
                 - devices
                 type: object
@@ -1489,6 +1497,7 @@ spec:
                   type: object
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               powerOffMode:
                 default: hard
                 description: |-
@@ -1621,6 +1630,7 @@ spec:
                   type: string
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               template:
                 description: |-
                   template is the name, inventory path, managed object reference or the managed
@@ -1642,6 +1652,7 @@ spec:
             type: object
           status:
             description: status is the observed state of VSphereMachine.
+            minProperties: 1
             properties:
               addresses:
                 description: addresses contains the VSphere instance associated addresses.
@@ -1670,6 +1681,7 @@ spec:
                   type: object
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               conditions:
                 description: conditions defines current service state of the VSphereMachine.
                 items:
@@ -1812,6 +1824,7 @@ spec:
                         type: string
                       maxItems: 128
                       type: array
+                      x-kubernetes-list-type: atomic
                     macAddr:
                       description: macAddr is the MAC address of the network device.
                       maxLength: 17
@@ -1825,6 +1838,7 @@ spec:
                   type: object
                 maxItems: 128
                 type: array
+                x-kubernetes-list-type: atomic
               v1beta2:
                 description: v1beta2 groups all the fields that will be added or modified
                   in VSphereMachine's status with the V1Beta2 version.

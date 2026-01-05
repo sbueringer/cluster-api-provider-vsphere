@@ -129,6 +129,7 @@ type VSphereClusterSpec struct {
 	// clusterModules hosts information regarding the anti-affinity vSphere constructs
 	// for each of the objects responsible for creation of VM objects belonging to the cluster.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=512
 	ClusterModules []ClusterModule `json:"clusterModules,omitempty"`
 

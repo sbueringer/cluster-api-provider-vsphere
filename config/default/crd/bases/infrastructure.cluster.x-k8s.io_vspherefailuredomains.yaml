@@ -459,6 +459,7 @@ spec:
                             x-kubernetes-map-type: atomic
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         dhcp4:
                           description: dhcp4 is a flag that indicates whether or not
                             to use DHCP for IPv4.
@@ -598,6 +599,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                         networkName:
                           description: networkName is the network name for this machine's
                             VM.
@@ -613,6 +615,7 @@ spec:
                             type: string
                           maxItems: 128
                           type: array
+                          x-kubernetes-list-type: atomic
                       required:
                       - networkName
                       type: object
@@ -630,6 +633,7 @@ spec:
                       type: string
                     maxItems: 128
                     type: array
+                    x-kubernetes-list-type: atomic
                 required:
                 - datacenter
                 type: object

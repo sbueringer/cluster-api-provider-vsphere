@@ -203,6 +203,7 @@ type VirtualMachineCloneSpec struct {
 	// Defaults to the eponymous property value in the template from which the
 	// virtual machine is cloned.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	AdditionalDisksGiB []int32 `json:"additionalDisksGiB,omitempty"`
 
@@ -214,6 +215,7 @@ type VirtualMachineCloneSpec struct {
 	// tagIDs is an optional set of tags to add to an instance. Specified tagIDs
 	// must use URN-notation instead of display names.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=1024
@@ -221,6 +223,7 @@ type VirtualMachineCloneSpec struct {
 
 	// pciDevices is the list of pci devices used by the virtual machine.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	PciDevices []PCIDeviceSpec `json:"pciDevices,omitempty"`
 
@@ -407,13 +410,15 @@ type NetworkSpec struct {
 	// devices is the list of network devices used by the virtual machine.
 	//
 	// TODO(akutz) Make sure at least one network matches the ClusterSpec.CloudProviderConfiguration.Network.Name
-	// +kubebuilder:validation:MaxItems=128
 	// +required
+	// +listType=atomic
+	// +kubebuilder:validation:MaxItems=128
 	Devices []NetworkDeviceSpec `json:"devices"`
 
 	// routes is a list of optional, static routes applied to the virtual
 	// machine.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=256
 	Routes []NetworkRouteSpec `json:"routes,omitempty"`
 
@@ -469,6 +474,7 @@ type NetworkDeviceSpec struct {
 	// CIDR notation.
 	// Required when DHCP4, DHCP6 and SkipIPAllocation are false.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=39
@@ -491,6 +497,7 @@ type NetworkDeviceSpec struct {
 	// nameservers.
 	// Please note that Linux allows only three nameservers (https://linux.die.net/man/5/resolv.conf).
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=39
@@ -498,12 +505,14 @@ type NetworkDeviceSpec struct {
 
 	// routes is a list of optional, static routes applied to the device.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=256
 	Routes []NetworkRouteSpec `json:"routes,omitempty"`
 
 	// searchDomains is a list of search domains used when resolving IP
 	// addresses with DNS.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=1024
@@ -513,6 +522,7 @@ type NetworkDeviceSpec struct {
 	// to IPAddressClaims. The machine's cloud-init metadata will be populated
 	// with IPAddresses fulfilled by an IPAM provider.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	AddressesFromPools []corev1.TypedLocalObjectReference `json:"addressesFromPools,omitempty"`
 
@@ -625,6 +635,7 @@ type NetworkStatus struct {
 
 	// ipAddrs is one or more IP addresses reported by vm-tools.
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=39
@@ -664,6 +675,7 @@ type SSHUser struct {
 
 	// authorizedKeys is one or more public SSH keys that grant remote access.
 	// +required
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=10240
