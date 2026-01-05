@@ -194,6 +194,7 @@ type VSphereVMSpec struct {
 	// This field is required at runtime for other controllers that read
 	// this CRD as unstructured data.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	BiosUUID string `json:"biosUUID,omitempty"`
 
@@ -261,6 +262,7 @@ type VSphereVMStatus struct {
 	// snapshot is the name of the snapshot from which the VM was cloned if
 	// LinkedMode is enabled.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Snapshot string `json:"snapshot,omitempty"`
 
@@ -272,6 +274,7 @@ type VSphereVMStatus struct {
 	// This value is set automatically at runtime and should not be set or
 	// modified by users.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	TaskRef string `json:"taskRef,omitempty"`
 
@@ -312,7 +315,7 @@ type VSphereVMStatus struct {
 	// +optional
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=10240
-	FailureMessage *string `json:"failureMessage,omitempty"`
+	FailureMessage *string `json:"failureMessage,omitempty"` //nolint:kubeapilinter // field will be removed when v1beta1 is removed
 
 	// conditions defines current service state of the VSphereVM.
 	// +optional
@@ -330,6 +333,7 @@ type VSphereVMStatus struct {
 	// to programatically get this VM representation on vSphere in case of the need to retrieve informations.
 	// This field is set once the machine is created and should not be changed
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	VMRef string `json:"vmRef,omitempty"`
 

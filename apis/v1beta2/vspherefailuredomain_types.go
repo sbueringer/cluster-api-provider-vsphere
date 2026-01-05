@@ -52,6 +52,7 @@ type VSphereFailureDomainSpec struct {
 type FailureDomain struct {
 	// name is the name of the tag that represents this failure domain
 	// +required
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name"`
 
@@ -62,6 +63,7 @@ type FailureDomain struct {
 
 	// tagCategory is the category used for the tag
 	// +required
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	TagCategory string `json:"tagCategory"`
 
@@ -76,6 +78,7 @@ type FailureDomain struct {
 type Topology struct {
 	// datacenter as the failure domain.
 	// +required
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	Datacenter string `json:"datacenter"`
 
@@ -106,6 +109,7 @@ type Topology struct {
 	// datastore is the name or inventory path of the datastore in which the
 	// virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	Datastore string `json:"datastore,omitempty"`
 }
@@ -115,6 +119,7 @@ type Topology struct {
 type NetworkConfiguration struct {
 	// networkName is the network name for this machine's VM.
 	// +required
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	NetworkName string `json:"networkName"`
 
@@ -176,11 +181,13 @@ type NetworkConfiguration struct {
 type FailureDomainHosts struct {
 	// vmGroupName is the name of the VM group
 	// +required
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	VMGroupName string `json:"vmGroupName"`
 
 	// hostGroupName is the name of the Host group
 	// +required
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	HostGroupName string `json:"hostGroupName"`
 }

@@ -109,11 +109,13 @@ func NewVCenterVersion(version string) VCenterVersion {
 type VSphereClusterSpec struct {
 	// server is the address of the vSphere endpoint.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
 	// thumbprint is the colon-separated SHA-1 checksum of the given vCenter server's host certificate
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Thumbprint string `json:"thumbprint,omitempty"`
 
@@ -166,6 +168,7 @@ type ClusterModule struct {
 
 	// moduleUUID is the unique identifier of the `ClusterModule` used by the object.
 	// +required
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	ModuleUUID string `json:"moduleUUID"`
 }
@@ -196,6 +199,7 @@ type VSphereClusterStatus struct {
 
 	// vCenterVersion defines the version of the vCenter server defined in the spec.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=256
 	VCenterVersion VCenterVersion `json:"vCenterVersion,omitempty"`
 

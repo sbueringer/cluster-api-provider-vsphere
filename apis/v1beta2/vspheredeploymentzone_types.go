@@ -118,6 +118,7 @@ const (
 type VSphereDeploymentZoneSpec struct {
 	// server is the address of the vSphere endpoint.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
@@ -142,12 +143,14 @@ type PlacementConstraint struct {
 	// resourcePool is the name or inventory path of the resource pool in which
 	// the virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	ResourcePool string `json:"resourcePool,omitempty"`
 
 	// folder is the name or inventory path of the folder in which the
 	// virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	Folder string `json:"folder,omitempty"`
 }
