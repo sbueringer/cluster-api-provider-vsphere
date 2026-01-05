@@ -250,6 +250,7 @@ spec:
                           - moduleUUID
                           - targetObjectName
                           type: object
+                        maxItems: 512
                         type: array
                       controlPlaneEndpoint:
                         description: controlPlaneEndpoint represents the endpoint

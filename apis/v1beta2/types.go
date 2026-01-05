@@ -201,6 +201,7 @@ type VirtualMachineCloneSpec struct {
 	// Defaults to the eponymous property value in the template from which the
 	// virtual machine is cloned.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	AdditionalDisksGiB []int32 `json:"additionalDisksGiB,omitempty"`
 
 	// customVMXKeys is a dictionary of advanced VMX options that can be set on VM
@@ -215,6 +216,7 @@ type VirtualMachineCloneSpec struct {
 
 	// pciDevices is the list of pci devices used by the virtual machine.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	PciDevices []PCIDeviceSpec `json:"pciDevices,omitempty"`
 
 	// os is the Operating System of the virtual machine
@@ -399,11 +401,13 @@ type NetworkSpec struct {
 	// devices is the list of network devices used by the virtual machine.
 	//
 	// TODO(akutz) Make sure at least one network matches the ClusterSpec.CloudProviderConfiguration.Network.Name
+	// +kubebuilder:validation:MaxItems=128
 	Devices []NetworkDeviceSpec `json:"devices"`
 
 	// routes is a list of optional, static routes applied to the virtual
 	// machine.
 	// +optional
+	// +kubebuilder:validation:MaxItems=256
 	Routes []NetworkRouteSpec `json:"routes,omitempty"`
 
 	// preferredAPIServerCidr is the preferred CIDR for the Kubernetes API
@@ -480,6 +484,7 @@ type NetworkDeviceSpec struct {
 
 	// routes is a list of optional, static routes applied to the device.
 	// +optional
+	// +kubebuilder:validation:MaxItems=256
 	Routes []NetworkRouteSpec `json:"routes,omitempty"`
 
 	// searchDomains is a list of search domains used when resolving IP
@@ -491,6 +496,7 @@ type NetworkDeviceSpec struct {
 	// to IPAddressClaims. The machine's cloud-init metadata will be populated
 	// with IPAddresses fulfilled by an IPAM provider.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	AddressesFromPools []corev1.TypedLocalObjectReference `json:"addressesFromPools,omitempty"`
 
 	// dhcp4Overrides allows for the control over several DHCP behaviors.
@@ -654,6 +660,7 @@ type VirtualMachine struct {
 	State VirtualMachineState `json:"state"`
 
 	// network is the status of the VM's network devices.
+	// +kubebuilder:validation:MaxItems=128
 	Network []NetworkStatus `json:"network"`
 
 	// vmRef is the VM's Managed Object Reference on vSphere.

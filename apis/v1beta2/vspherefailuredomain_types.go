@@ -89,6 +89,7 @@ type Topology struct {
 	// +optional
 	// +listType=map
 	// +listMapKey=networkName
+	// +kubebuilder:validation:MaxItems=128
 	NetworkConfigurations []NetworkConfiguration `json:"networkConfigurations,omitempty"`
 
 	// datastore is the name or inventory path of the datastore in which the
@@ -147,6 +148,7 @@ type NetworkConfiguration struct {
 	// to IPAddressClaims. The machine's cloud-init metadata will be populated
 	// with IPAddresses fulfilled by an IPAM provider.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	AddressesFromPools []corev1.TypedLocalObjectReference `json:"addressesFromPools,omitempty"`
 }
 

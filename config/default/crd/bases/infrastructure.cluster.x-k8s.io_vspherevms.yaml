@@ -964,6 +964,7 @@ spec:
                 items:
                   format: int32
                   type: integer
+                maxItems: 128
                 type: array
               biosUUID:
                 description: |-
@@ -1166,6 +1167,7 @@ spec:
                             - name
                             type: object
                             x-kubernetes-map-type: atomic
+                          maxItems: 128
                           type: array
                         deviceName:
                           description: |-
@@ -1377,6 +1379,7 @@ spec:
                             - to
                             - via
                             type: object
+                          maxItems: 256
                           type: array
                         searchDomains:
                           description: |-
@@ -1394,6 +1397,7 @@ spec:
                       required:
                       - networkName
                       type: object
+                    maxItems: 128
                     type: array
                   preferredAPIServerCidr:
                     description: |-
@@ -1427,6 +1431,7 @@ spec:
                       - to
                       - via
                       type: object
+                    maxItems: 256
                     type: array
                 required:
                 - devices
@@ -1493,6 +1498,7 @@ spec:
                       format: int32
                       type: integer
                   type: object
+                maxItems: 128
                 type: array
               powerOffMode:
                 default: hard
@@ -1785,6 +1791,7 @@ spec:
                   required:
                   - macAddr
                   type: object
+                maxItems: 128
                 type: array
               ready:
                 description: |-

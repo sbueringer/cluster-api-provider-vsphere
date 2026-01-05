@@ -273,6 +273,7 @@ type VSphereVMStatus struct {
 	// network returns the network status for each of the machine's configured
 	// network interfaces.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	Network []NetworkStatus `json:"network,omitempty"`
 
 	// failureReason will be set in the event that there is a terminal problem
