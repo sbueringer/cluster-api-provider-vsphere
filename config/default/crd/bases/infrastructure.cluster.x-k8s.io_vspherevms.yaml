@@ -1324,6 +1324,8 @@ spec:
                             CIDR notation.
                             Required when DHCP4, DHCP6 and SkipIPAllocation are false.
                           items:
+                            maxLength: 39
+                            minLength: 1
                             type: string
                           type: array
                         macAddr:
@@ -1346,6 +1348,8 @@ spec:
                             nameservers.
                             Please note that Linux allows only three nameservers (https://linux.die.net/man/5/resolv.conf).
                           items:
+                            maxLength: 39
+                            minLength: 1
                             type: string
                           type: array
                         networkName:
@@ -1386,6 +1390,8 @@ spec:
                             searchDomains is a list of search domains used when resolving IP
                             addresses with DNS.
                           items:
+                            maxLength: 1024
+                            minLength: 1
                             type: string
                           type: array
                         skipIPAllocation:
@@ -1620,6 +1626,8 @@ spec:
                   tagIDs is an optional set of tags to add to an instance. Specified tagIDs
                   must use URN-notation instead of display names.
                 items:
+                  maxLength: 1024
+                  minLength: 1
                   type: string
                 type: array
               template:
@@ -1650,6 +1658,8 @@ spec:
                   This field is required at runtime for other controllers that read
                   this CRD as unstructured data.
                 items:
+                  maxLength: 256
+                  minLength: 1
                   type: string
                 type: array
               cloneMode:
@@ -1778,6 +1788,8 @@ spec:
                       description: ipAddrs is one or more IP addresses reported by
                         vm-tools.
                       items:
+                        maxLength: 39
+                        minLength: 1
                         type: string
                       type: array
                     macAddr:

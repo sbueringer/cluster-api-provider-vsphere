@@ -83,6 +83,8 @@ type Topology struct {
 
 	// networks is the list of networks within this failure domain
 	// +optional
+	// +kubebuilder:validation:items:MinLength=1
+	// +kubebuilder:validation:items:MaxLength=2048
 	Networks []string `json:"networks,omitempty"`
 
 	// networkConfigurations is a list of network configurations within this failure domain.
@@ -119,11 +121,15 @@ type NetworkConfiguration struct {
 	// nameservers.
 	// Please note that Linux allows only three nameservers (https://linux.die.net/man/5/resolv.conf).
 	// +optional
+	// +kubebuilder:validation:items:MinLength=1
+	// +kubebuilder:validation:items:MaxLength=39
 	Nameservers []string `json:"nameservers,omitempty"`
 
 	// searchDomains is a list of search domains used when resolving IP
 	// addresses with DNS.
 	// +optional
+	// +kubebuilder:validation:items:MinLength=1
+	// +kubebuilder:validation:items:MaxLength=1024
 	SearchDomains []string `json:"searchDomains,omitempty"`
 
 	// dhcp4Overrides allows for the control over several DHCP behaviors.

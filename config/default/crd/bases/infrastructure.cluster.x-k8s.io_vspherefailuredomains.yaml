@@ -593,6 +593,8 @@ spec:
                             nameservers.
                             Please note that Linux allows only three nameservers (https://linux.die.net/man/5/resolv.conf).
                           items:
+                            maxLength: 39
+                            minLength: 1
                             type: string
                           type: array
                         networkName:
@@ -605,6 +607,8 @@ spec:
                             searchDomains is a list of search domains used when resolving IP
                             addresses with DNS.
                           items:
+                            maxLength: 1024
+                            minLength: 1
                             type: string
                           type: array
                       required:
@@ -619,6 +623,8 @@ spec:
                     description: networks is the list of networks within this failure
                       domain
                     items:
+                      maxLength: 2048
+                      minLength: 1
                       type: string
                     type: array
                 required:
