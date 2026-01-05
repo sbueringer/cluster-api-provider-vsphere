@@ -153,6 +153,7 @@ type PlacementConstraint struct {
 }
 
 // VSphereDeploymentZoneStatus contains the status for a VSphereDeploymentZone.
+// +kubebuilder:validation:MinProperties=1
 type VSphereDeploymentZoneStatus struct {
 	// conditions represents the observations of a VSphereDeploymentZone's current state.
 	// Known condition types are Ready, VCenterAvailable, PlacementConstraintReady, FailureDomainValidated and Paused.
@@ -210,7 +211,7 @@ type VSphereDeploymentZone struct {
 
 	// status is the observed state of VSphereDeploymentZone.
 	// +optional
-	Status VSphereDeploymentZoneStatus `json:"status,omitempty"`
+	Status VSphereDeploymentZoneStatus `json:"status,omitempty,omitzero"`
 }
 
 // GetV1Beta1Conditions returns the set of conditions for this object.

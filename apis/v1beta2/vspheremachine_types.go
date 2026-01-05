@@ -181,6 +181,7 @@ type VSphereVMNamingStrategy struct {
 }
 
 // VSphereMachineStatus defines the observed state of VSphereMachine.
+// +kubebuilder:validation:MinProperties=1
 type VSphereMachineStatus struct {
 	// initialization provides observations of the VSphereMachine initialization process.
 	// NOTE: Fields in this struct are part of the Cluster API contract and are used to orchestrate initial Machine provisioning.
@@ -317,7 +318,7 @@ type VSphereMachine struct {
 
 	// status is the observed state of VSphereMachine.
 	// +optional
-	Status VSphereMachineStatus `json:"status,omitempty"`
+	Status VSphereMachineStatus `json:"status,omitempty,omitzero"`
 }
 
 // GetConditions returns the conditions for a VSphereMachine.

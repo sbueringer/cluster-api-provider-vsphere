@@ -170,6 +170,7 @@ type ClusterModule struct {
 }
 
 // VSphereClusterStatus defines the observed state of VSphereClusterSpec.
+// +kubebuilder:validation:MinProperties=1
 type VSphereClusterStatus struct {
 	// conditions represents the observations of a VSphereCluster's current state.
 	// Known condition types are Ready, FailureDomainsReady, VCenterAvailable, ClusterModulesReady and Paused.
@@ -265,7 +266,7 @@ type VSphereCluster struct {
 
 	// status is the observed state of VSphereCluster.
 	// +optional
-	Status VSphereClusterStatus `json:"status,omitempty"`
+	Status VSphereClusterStatus `json:"status,omitempty,omitzero"`
 }
 
 // GetV1Beta1Conditions returns the set of conditions for this object.

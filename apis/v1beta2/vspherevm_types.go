@@ -226,6 +226,7 @@ type VSphereVMSpec struct {
 }
 
 // VSphereVMStatus defines the observed state of VSphereVM.
+// +kubebuilder:validation:MinProperties=1
 type VSphereVMStatus struct {
 	// host describes the hostname or IP address of the infrastructure host
 	// that the VSphereVM is residing on.
@@ -367,7 +368,7 @@ type VSphereVM struct {
 
 	// status is the observed state of VSphereVM.
 	// +optional
-	Status VSphereVMStatus `json:"status,omitempty"`
+	Status VSphereVMStatus `json:"status,omitempty,omitzero"`
 }
 
 // GetConditions returns the conditions for a VSphereVM.

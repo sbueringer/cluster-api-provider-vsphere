@@ -65,6 +65,7 @@ type VSphereClusterIdentitySpec struct {
 }
 
 // VSphereClusterIdentityStatus contains the status of the VSphereClusterIdentity.
+// +kubebuilder:validation:MinProperties=1
 type VSphereClusterIdentityStatus struct {
 	// conditions represents the observations of a VSphereClusterIdentity's current state.
 	// Known condition types are Available and Paused.
@@ -181,7 +182,7 @@ type VSphereClusterIdentity struct {
 
 	// status is the observed state of VSphereClusterIdentity.
 	// +optional
-	Status VSphereClusterIdentityStatus `json:"status,omitempty"`
+	Status VSphereClusterIdentityStatus `json:"status,omitempty,omitzero"`
 }
 
 // +kubebuilder:object:root=true
