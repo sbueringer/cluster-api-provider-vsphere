@@ -52,6 +52,7 @@ const (
 // VSphereClusterIdentitySpec contains a secret reference and a group of allowed namespaces.
 type VSphereClusterIdentitySpec struct {
 	// secretName references a Secret inside the controller namespace with the credentials to use
+	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
 	SecretName string `json:"secretName,omitempty"`
@@ -121,10 +122,12 @@ var (
 // VSphereIdentityReference is the mechanism used to handle credentials for the VCenter API.
 type VSphereIdentityReference struct {
 	// kind of the identity. Can either be VSphereClusterIdentity or Secret
+	// +required
 	// +kubebuilder:validation:Enum=VSphereClusterIdentity;Secret
 	Kind VSphereIdentityKind `json:"kind"`
 
 	// name of the identity.
+	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
 	Name string `json:"name"`
@@ -169,12 +172,15 @@ type VSphereClusterIdentity struct {
 	metav1.TypeMeta `json:",inline"`
 	// metadata is the standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec is the desired state of VSphereClusterIdentity.
+	// +required
 	Spec VSphereClusterIdentitySpec `json:"spec,omitempty"`
 
 	// status is the observed state of VSphereClusterIdentity.
+	// +optional
 	Status VSphereClusterIdentityStatus `json:"status,omitempty"`
 }
 

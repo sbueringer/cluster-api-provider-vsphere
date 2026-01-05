@@ -36,32 +36,39 @@ const (
 // VSphereFailureDomainSpec defines the desired state of VSphereFailureDomain.
 type VSphereFailureDomainSpec struct {
 	// region defines the name and type of a region
+	// +required
 	Region FailureDomain `json:"region"`
 
 	// zone defines the name and type of a zone
+	// +required
 	Zone FailureDomain `json:"zone"`
 
 	// topology describes a given failure domain using vSphere constructs
+	// +required
 	Topology Topology `json:"topology"`
 }
 
 // FailureDomain contains data to identify and configure a failure domain.
 type FailureDomain struct {
 	// name is the name of the tag that represents this failure domain
+	// +required
 	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name"`
 
 	// type is the type of failure domain, the current values are "Datacenter", "ComputeCluster" and "HostGroup"
+	// +required
 	// +kubebuilder:validation:Enum=Datacenter;ComputeCluster;HostGroup
 	Type FailureDomainType `json:"type"`
 
 	// tagCategory is the category used for the tag
+	// +required
 	// +kubebuilder:validation:MaxLength=1024
 	TagCategory string `json:"tagCategory"`
 
 	// autoConfigure tags the Type which is specified in the Topology
 	//
 	// Deprecated: This field is going to be removed in a future release.
+	// +optional
 	AutoConfigure *bool `json:"autoConfigure,omitempty"`
 }
 
@@ -164,10 +171,12 @@ type NetworkConfiguration struct {
 // FailureDomainHosts has information required for placement of machines on VSphere hosts.
 type FailureDomainHosts struct {
 	// vmGroupName is the name of the VM group
+	// +required
 	// +kubebuilder:validation:MaxLength=2048
 	VMGroupName string `json:"vmGroupName"`
 
 	// hostGroupName is the name of the Host group
+	// +required
 	// +kubebuilder:validation:MaxLength=2048
 	HostGroupName string `json:"hostGroupName"`
 }
@@ -178,12 +187,14 @@ type FailureDomainHosts struct {
 
 // VSphereFailureDomain is the Schema for the vspherefailuredomains API.
 type VSphereFailureDomain struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
 	// metadata is the standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec is the desired state of VSphereFailureDomain.
+	// +required
 	Spec VSphereFailureDomainSpec `json:"spec,omitempty"`
 }
 

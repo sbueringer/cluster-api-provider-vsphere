@@ -669,6 +669,8 @@ spec:
             - topology
             - zone
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

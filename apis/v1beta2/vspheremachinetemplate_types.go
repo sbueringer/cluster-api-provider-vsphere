@@ -23,6 +23,7 @@ import (
 // VSphereMachineTemplateSpec defines the desired state of VSphereMachineTemplate.
 type VSphereMachineTemplateSpec struct {
 	// template defines the desired state of VSphereMachineTemplate.
+	// +required
 	Template VSphereMachineTemplateResource `json:"template"`
 }
 
@@ -32,12 +33,14 @@ type VSphereMachineTemplateSpec struct {
 
 // VSphereMachineTemplate is the Schema for the vspheremachinetemplates API.
 type VSphereMachineTemplate struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
 	// metadata is the standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec is the desired state of VSphereMachineTemplate.
+	// +optional
 	Spec VSphereMachineTemplateSpec `json:"spec,omitempty"`
 }
 

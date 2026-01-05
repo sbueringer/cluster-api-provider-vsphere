@@ -108,6 +108,7 @@ func NewVCenterVersion(version string) VCenterVersion {
 // VSphereClusterSpec defines the desired state of VSphereCluster.
 type VSphereClusterSpec struct {
 	// server is the address of the vSphere endpoint.
+	// +optional
 	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
@@ -152,15 +153,18 @@ type ClusterModule struct {
 	// controlPlane indicates whether the referred object is responsible for control plane nodes.
 	// Currently, only the KubeadmControlPlane objects have this flag set to true.
 	// Only a single object in the slice can have this value set to true.
+	// +required
 	ControlPlane bool `json:"controlPlane"`
 
 	// targetObjectName points to the object that uses the Cluster Module information to enforce
 	// anti-affinity amongst its descendant VM objects.
+	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
 	TargetObjectName string `json:"targetObjectName"`
 
 	// moduleUUID is the unique identifier of the `ClusterModule` used by the object.
+	// +required
 	// +kubebuilder:validation:MaxLength=2048
 	ModuleUUID string `json:"moduleUUID"`
 }
@@ -189,6 +193,7 @@ type VSphereClusterStatus struct {
 	FailureDomains []clusterv1.FailureDomain `json:"failureDomains,omitempty"`
 
 	// vCenterVersion defines the version of the vCenter server defined in the spec.
+	// +optional
 	// +kubebuilder:validation:MaxLength=256
 	VCenterVersion VCenterVersion `json:"vCenterVersion,omitempty"`
 
@@ -251,12 +256,15 @@ type VSphereCluster struct {
 	metav1.TypeMeta `json:",inline"`
 	// metadata is the standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec is the desired state of VSphereCluster.
+	// +required
 	Spec VSphereClusterSpec `json:"spec,omitempty"`
 
 	// status is the observed state of VSphereCluster.
+	// +optional
 	Status VSphereClusterStatus `json:"status,omitempty"`
 }
 

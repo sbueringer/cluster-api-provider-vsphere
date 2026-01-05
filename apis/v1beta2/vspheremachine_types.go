@@ -121,6 +121,7 @@ type VSphereMachineSpec struct {
 
 	// failureDomain is the failure domain unique identifier this Machine should be attached to, as defined in Cluster API.
 	// For this infrastructure provider, the name is equivalent to the name of the VSphereDeploymentZone.
+	// +optional
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
 	FailureDomain *string `json:"failureDomain,omitempty"`
@@ -304,15 +305,18 @@ type VSphereMachineV1Beta1DeprecatedStatus struct {
 
 // VSphereMachine is the Schema for the vspheremachines API.
 type VSphereMachine struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
 	// metadata is the standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec is the desired state of VSphereMachine.
-	Spec   VSphereMachineSpec   `json:"spec,omitempty"`
+	// +required
+	Spec VSphereMachineSpec `json:"spec,omitempty"`
 
 	// status is the observed state of VSphereMachine.
+	// +optional
 	Status VSphereMachineStatus `json:"status,omitempty"`
 }
 

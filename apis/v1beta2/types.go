@@ -97,6 +97,7 @@ const (
 type VirtualMachineCloneSpec struct {
 	// template is the name, inventory path, managed object reference or the managed
 	// object ID of the template used to clone the virtual machine.
+	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
 	Template string `json:"template"`
@@ -165,6 +166,7 @@ type VirtualMachineCloneSpec struct {
 	ResourcePool string `json:"resourcePool,omitempty"`
 
 	// network is the network configuration for this machine's VM.
+	// +required
 	Network NetworkSpec `json:"network"`
 
 	// numCPUs is the number of virtual processors in a virtual machine.
@@ -335,6 +337,7 @@ type VSphereMachineTemplateResource struct {
 	ObjectMeta clusterv1.ObjectMeta `json:"metadata,omitempty,omitzero"`
 
 	// spec is the specification of the desired behavior of the machine.
+	// +optional
 	Spec VSphereMachineSpec `json:"spec"`
 }
 
@@ -405,6 +408,7 @@ type NetworkSpec struct {
 	//
 	// TODO(akutz) Make sure at least one network matches the ClusterSpec.CloudProviderConfiguration.Network.Name
 	// +kubebuilder:validation:MaxItems=128
+	// +required
 	Devices []NetworkDeviceSpec `json:"devices"`
 
 	// routes is a list of optional, static routes applied to the virtual
@@ -428,6 +432,7 @@ type NetworkDeviceSpec struct {
 	// networkName is the name, managed object reference or the managed
 	// object ID of the vSphere network to which the device will be connected.
 	// +kubebuilder:validation:MaxLength=2048
+	// +required
 	NetworkName string `json:"networkName"`
 
 	// deviceName may be used to explicitly assign a name to the network device
@@ -598,13 +603,16 @@ type DHCPOverrides struct {
 type NetworkRouteSpec struct {
 	// to is an IPv4 or IPv6 address.
 	// +kubebuilder:validation:MaxLength=39
+	// +required
 	To string `json:"to"`
 
 	// via is an IPv4 or IPv6 address.
 	// +kubebuilder:validation:MaxLength=39
+	// +required
 	Via string `json:"via"`
 
 	// metric is the weight/priority of the route.
+	// +required
 	Metric int32 `json:"metric"`
 }
 
@@ -612,6 +620,7 @@ type NetworkRouteSpec struct {
 type NetworkStatus struct {
 	// connected is a flag that indicates whether this network is currently
 	// connected to the VM.
+	// +optional
 	Connected bool `json:"connected,omitempty"`
 
 	// ipAddrs is one or more IP addresses reported by vm-tools.
@@ -622,6 +631,7 @@ type NetworkStatus struct {
 	IPAddrs []string `json:"ipAddrs,omitempty"`
 
 	// macAddr is the MAC address of the network device.
+	// +required
 	// +kubebuilder:validation:MaxLength=17
 	MACAddr string `json:"macAddr"`
 
@@ -687,9 +697,11 @@ type VirtualMachine struct {
 type SSHUser struct {
 	// name is the name of the SSH user.
 	// +kubebuilder:validation:MaxLength=1024
+	// +required
 	Name string `json:"name"`
 
 	// authorizedKeys is one or more public SSH keys that grant remote access.
+	// +required
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=10240

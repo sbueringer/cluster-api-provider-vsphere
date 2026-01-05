@@ -117,10 +117,12 @@ const (
 // VSphereDeploymentZoneSpec defines the desired state of VSphereDeploymentZone.
 type VSphereDeploymentZoneSpec struct {
 	// server is the address of the vSphere endpoint.
+	// +optional
 	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
 	// failureDomain is the name of the VSphereFailureDomain used for this VSphereDeploymentZone
+	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
 	FailureDomain string `json:"failureDomain,omitempty"`
@@ -131,6 +133,7 @@ type VSphereDeploymentZoneSpec struct {
 
 	// placementConstraint encapsulates the placement constraints
 	// used within this deployment zone.
+	// +required
 	PlacementConstraint PlacementConstraint `json:"placementConstraint"`
 }
 
@@ -210,15 +213,18 @@ type VSphereDeploymentZoneV1Beta1DeprecatedStatus struct {
 
 // VSphereDeploymentZone is the Schema for the vspheredeploymentzones API.
 type VSphereDeploymentZone struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
 	// metadata is the standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// spec is the desired state of VSphereDeploymentZone.
-	Spec   VSphereDeploymentZoneSpec   `json:"spec,omitempty"`
+	// +required
+	Spec VSphereDeploymentZoneSpec `json:"spec,omitempty"`
 
 	// status is the observed state of VSphereDeploymentZone.
+	// +optional
 	Status VSphereDeploymentZoneStatus `json:"status,omitempty"`
 }
 
