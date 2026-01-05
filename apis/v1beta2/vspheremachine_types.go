@@ -121,6 +121,8 @@ type VSphereMachineSpec struct {
 
 	// failureDomain is the failure domain unique identifier this Machine should be attached to, as defined in Cluster API.
 	// For this infrastructure provider, the name is equivalent to the name of the VSphereDeploymentZone.
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=253
 	FailureDomain *string `json:"failureDomain,omitempty"`
 
 	// powerOffMode describes the desired behavior when powering off a VM.
@@ -172,6 +174,8 @@ type VSphereVMNamingStrategy struct {
 	// * Names are automatically truncated at 63 characters. Please note that this can lead to name conflicts,
 	//   so we highly recommend to use a template which leads to a name shorter than 63 characters.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=1024
 	Template *string `json:"template,omitempty"`
 }
 
@@ -281,6 +285,8 @@ type VSphereMachineV1Beta1DeprecatedStatus struct {
 	// Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
 	//
 	// +optional
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=10240
 	FailureMessage *string `json:"failureMessage,omitempty"`
 }
 

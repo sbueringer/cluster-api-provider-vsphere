@@ -48,6 +48,7 @@ type VSphereFailureDomainSpec struct {
 // FailureDomain contains data to identify and configure a failure domain.
 type FailureDomain struct {
 	// name is the name of the tag that represents this failure domain
+	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name"`
 
 	// type is the type of failure domain, the current values are "Datacenter", "ComputeCluster" and "HostGroup"
@@ -55,6 +56,7 @@ type FailureDomain struct {
 	Type FailureDomainType `json:"type"`
 
 	// tagCategory is the category used for the tag
+	// +kubebuilder:validation:MaxLength=1024
 	TagCategory string `json:"tagCategory"`
 
 	// autoConfigure tags the Type which is specified in the Topology
@@ -67,10 +69,12 @@ type FailureDomain struct {
 type Topology struct {
 	// datacenter as the failure domain.
 	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MaxLength=2048
 	Datacenter string `json:"datacenter"`
 
 	// computeCluster as the failure domain
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	ComputeCluster *string `json:"computeCluster,omitempty"`
 
 	// hosts has information required for placement of machines on VSphere hosts.
@@ -90,6 +94,7 @@ type Topology struct {
 	// datastore is the name or inventory path of the datastore in which the
 	// virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	Datastore string `json:"datastore,omitempty"`
 }
 
@@ -98,6 +103,7 @@ type Topology struct {
 type NetworkConfiguration struct {
 	// networkName is the network name for this machine's VM.
 	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MaxLength=2048
 	NetworkName string `json:"networkName"`
 
 	// dhcp4 is a flag that indicates whether or not to use DHCP for IPv4.
@@ -147,9 +153,11 @@ type NetworkConfiguration struct {
 // FailureDomainHosts has information required for placement of machines on VSphere hosts.
 type FailureDomainHosts struct {
 	// vmGroupName is the name of the VM group
+	// +kubebuilder:validation:MaxLength=2048
 	VMGroupName string `json:"vmGroupName"`
 
 	// hostGroupName is the name of the Host group
+	// +kubebuilder:validation:MaxLength=2048
 	HostGroupName string `json:"hostGroupName"`
 }
 

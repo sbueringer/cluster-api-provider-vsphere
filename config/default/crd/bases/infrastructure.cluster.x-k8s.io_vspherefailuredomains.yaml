@@ -369,9 +369,11 @@ spec:
                   name:
                     description: name is the name of the tag that represents this
                       failure domain
+                    maxLength: 1024
                     type: string
                   tagCategory:
                     description: tagCategory is the category used for the tag
+                    maxLength: 1024
                     type: string
                   type:
                     description: type is the type of failure domain, the current values
@@ -392,14 +394,17 @@ spec:
                 properties:
                   computeCluster:
                     description: computeCluster as the failure domain
+                    maxLength: 2048
                     type: string
                   datacenter:
                     description: datacenter as the failure domain.
+                    maxLength: 2048
                     type: string
                   datastore:
                     description: |-
                       datastore is the name or inventory path of the datastore in which the
                       virtual machine is created/located.
+                    maxLength: 2048
                     type: string
                   hosts:
                     description: hosts has information required for placement of machines
@@ -407,9 +412,11 @@ spec:
                     properties:
                       hostGroupName:
                         description: hostGroupName is the name of the Host group
+                        maxLength: 2048
                         type: string
                       vmGroupName:
                         description: vmGroupName is the name of the VM group
+                        maxLength: 2048
                         type: string
                     required:
                     - hostGroupName
@@ -468,6 +475,7 @@ spec:
                               description: |-
                                 hostname is the name which will be sent to the DHCP server instead of
                                 the machine's hostname.
+                              maxLength: 1024
                               type: string
                             routeMetric:
                               description: |-
@@ -490,6 +498,7 @@ spec:
                                 the domain name from the DHCP server will be used as the DNS search
                                 domain for this device. When `route`, the domain name from the DHCP
                                 response will be used for routing DNS only, not for searching.
+                              maxLength: 128
                               type: string
                             useHostname:
                               description: |-
@@ -510,6 +519,7 @@ spec:
                               description: |-
                                 useRoutes when `true`, the routes from the DHCP server will be installed
                                 in the routing table.
+                              maxLength: 128
                               type: string
                           type: object
                         dhcp6:
@@ -529,6 +539,7 @@ spec:
                               description: |-
                                 hostname is the name which will be sent to the DHCP server instead of
                                 the machine's hostname.
+                              maxLength: 1024
                               type: string
                             routeMetric:
                               description: |-
@@ -551,6 +562,7 @@ spec:
                                 the domain name from the DHCP server will be used as the DNS search
                                 domain for this device. When `route`, the domain name from the DHCP
                                 response will be used for routing DNS only, not for searching.
+                              maxLength: 128
                               type: string
                             useHostname:
                               description: |-
@@ -571,6 +583,7 @@ spec:
                               description: |-
                                 useRoutes when `true`, the routes from the DHCP server will be installed
                                 in the routing table.
+                              maxLength: 128
                               type: string
                           type: object
                         nameservers:
@@ -584,6 +597,7 @@ spec:
                         networkName:
                           description: networkName is the network name for this machine's
                             VM.
+                          maxLength: 2048
                           type: string
                         searchDomains:
                           description: |-
@@ -620,9 +634,11 @@ spec:
                   name:
                     description: name is the name of the tag that represents this
                       failure domain
+                    maxLength: 1024
                     type: string
                   tagCategory:
                     description: tagCategory is the category used for the tag
+                    maxLength: 1024
                     type: string
                   type:
                     description: type is the type of failure domain, the current values

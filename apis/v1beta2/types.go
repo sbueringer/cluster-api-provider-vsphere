@@ -38,6 +38,7 @@ const (
 )
 
 // CloneMode is the type of clone operation used to clone a VM from a template.
+// +kubebuilder:validation:Enum=fullClone;linkedClone
 type CloneMode string
 
 const (
@@ -97,6 +98,7 @@ type VirtualMachineCloneSpec struct {
 	// template is the name, inventory path, managed object reference or the managed
 	// object ID of the template used to clone the virtual machine.
 	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=2048
 	Template string `json:"template"`
 
 	// cloneMode specifies the type of clone operation.
@@ -114,11 +116,13 @@ type VirtualMachineCloneSpec struct {
 	// This field is ignored if LinkedClone is not enabled.
 	// Defaults to the source's current snapshot.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	Snapshot string `json:"snapshot,omitempty"`
 
 	// server is the IP address or FQDN of the vSphere server on which
 	// the virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
 	// thumbprint is the colon-separated SHA-1 checksum of the given vCenter server's host certificate
@@ -126,32 +130,38 @@ type VirtualMachineCloneSpec struct {
 	// without TLS certificate validation of the communication between Cluster API Provider vSphere
 	// and the VMware vCenter server.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	Thumbprint string `json:"thumbprint,omitempty"`
 
 	// datacenter is the name, inventory path, managed object reference or the managed
 	// object ID of the datacenter in which the virtual machine is created/located.
 	// Defaults to * which selects the default datacenter.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	Datacenter string `json:"datacenter,omitempty"`
 
 	// folder is the name, inventory path, managed object reference or the managed
 	// object ID of the folder in which the virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	Folder string `json:"folder,omitempty"`
 
 	// datastore is the name, inventory path, managed object reference or the managed
 	// object ID of the datastore in which the virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	Datastore string `json:"datastore,omitempty"`
 
 	// storagePolicyName of the storage policy to use with this
 	// Virtual Machine
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	StoragePolicyName string `json:"storagePolicyName,omitempty"`
 
 	// resourcePool is the name, inventory path, managed object reference or the managed
 	// object ID in which the virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	ResourcePool string `json:"resourcePool,omitempty"`
 
 	// network is the network configuration for this machine's VM.
@@ -210,6 +220,7 @@ type VirtualMachineCloneSpec struct {
 	// os is the Operating System of the virtual machine
 	// Defaults to Linux
 	// +optional
+	// +kubebuilder:validation:MaxLength=128
 	OS OS `json:"os,omitempty"`
 
 	// hardwareVersion is the hardware version of the virtual machine.
@@ -217,6 +228,7 @@ type VirtualMachineCloneSpec struct {
 	// virtual machine is cloned.
 	// Check the compatibility with the ESXi version before setting the value.
 	// +optional
+	// +kubebuilder:validation:MaxLength=128
 	HardwareVersion string `json:"hardwareVersion,omitempty"`
 
 	// dataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
@@ -279,6 +291,7 @@ type VSphereDisk struct {
 	// name is used to identify the disk definition. Name is required and needs to be unique so that it can be used to
 	// clearly identify purpose of the disk.
 	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name,omitempty"`
 
 	// sizeGiB is the size of the disk in GiB.
@@ -370,12 +383,14 @@ type PCIDeviceSpec struct {
 	// Mutually exclusive with DeviceID and VendorID as VGPUProfile and DeviceID + VendorID
 	// are two independent ways to define PCI devices.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	VGPUProfile string `json:"vGPUProfile,omitempty"`
 
 	// customLabel is the hardware label of a virtual machine's PCI device.
 	// Defaults to the eponymous property value in the template from which the
 	// virtual machine is cloned.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	CustomLabel string `json:"customLabel,omitempty"`
 }
 
@@ -396,6 +411,7 @@ type NetworkSpec struct {
 	// +optional
 	//
 	// Deprecated: This field is going to be removed in a future release.
+	// +kubebuilder:validation:MaxLength=1024
 	PreferredAPIServerCIDR string `json:"preferredAPIServerCidr,omitempty"`
 }
 
@@ -404,11 +420,13 @@ type NetworkSpec struct {
 type NetworkDeviceSpec struct {
 	// networkName is the name, managed object reference or the managed
 	// object ID of the vSphere network to which the device will be connected.
+	// +kubebuilder:validation:MaxLength=2048
 	NetworkName string `json:"networkName"`
 
 	// deviceName may be used to explicitly assign a name to the network device
 	// as it exists in the guest operating system.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	DeviceName string `json:"deviceName,omitempty"`
 
 	// dhcp4 is a flag that indicates whether or not to use DHCP for IPv4
@@ -426,10 +444,12 @@ type NetworkDeviceSpec struct {
 	// gateway4 is the IPv4 gateway used by this device.
 	// Required when DHCP4 is false.
 	// +optional
+	// +kubebuilder:validation:MaxLength=64
 	Gateway4 string `json:"gateway4,omitempty"`
 
-	// gateway6 is the IPv4 gateway used by this device.
+	// gateway6 is the IPv6 gateway used by this device.
 	// +optional
+	// +kubebuilder:validation:MaxLength=64
 	Gateway6 string `json:"gateway6,omitempty"`
 
 	// ipAddrs is a list of one or more IPv4 and/or IPv6 addresses to assign
@@ -449,6 +469,7 @@ type NetworkDeviceSpec struct {
 	// Please note that this value must use the VMware OUI to work with the
 	// in-tree vSphere cloud provider.
 	// +optional
+	// +kubebuilder:validation:MaxLength=17
 	MACAddr string `json:"macAddr,omitempty"`
 
 	// nameservers is a list of IPv4 and/or IPv6 addresses used as DNS
@@ -507,6 +528,7 @@ type DHCPOverrides struct {
 	// hostname is the name which will be sent to the DHCP server instead of
 	// the machine's hostname.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	Hostname *string `json:"hostname,omitempty"`
 
 	// routeMetric is used to prioritize routes for devices. A lower metric for
@@ -529,6 +551,7 @@ type DHCPOverrides struct {
 	// domain for this device. When `route`, the domain name from the DHCP
 	// response will be used for routing DNS only, not for searching.
 	// +optional
+	// +kubebuilder:validation:MaxLength=128
 	UseDomains *string `json:"useDomains,omitempty"`
 
 	// useHostname when `true`, the hostname from the DHCP server will be set
@@ -549,15 +572,18 @@ type DHCPOverrides struct {
 	// useRoutes when `true`, the routes from the DHCP server will be installed
 	// in the routing table.
 	// +optional
+	// +kubebuilder:validation:MaxLength=128
 	UseRoutes *string `json:"useRoutes,omitempty"`
 }
 
 // NetworkRouteSpec defines a static network route.
 type NetworkRouteSpec struct {
 	// to is an IPv4 or IPv6 address.
+	// +kubebuilder:validation:MaxLength=39
 	To string `json:"to"`
 
 	// via is an IPv4 or IPv6 address.
+	// +kubebuilder:validation:MaxLength=39
 	Via string `json:"via"`
 
 	// metric is the weight/priority of the route.
@@ -575,14 +601,17 @@ type NetworkStatus struct {
 	IPAddrs []string `json:"ipAddrs,omitempty"`
 
 	// macAddr is the MAC address of the network device.
+	// +kubebuilder:validation:MaxLength=17
 	MACAddr string `json:"macAddr"`
 
 	// networkName is the name of the network.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	NetworkName string `json:"networkName,omitempty"`
 }
 
 // VirtualMachineState describes the state of a VM.
+// +kubebuilder:validation:Enum=notfound;pending;ready
 type VirtualMachineState string
 
 const (
@@ -591,10 +620,10 @@ const (
 	VirtualMachineStateNotFound VirtualMachineState = "notfound"
 
 	// VirtualMachineStatePending is the string representing a VM with an in-flight task.
-	VirtualMachineStatePending = "pending"
+	VirtualMachineStatePending VirtualMachineState = "pending"
 
 	// VirtualMachineStateReady is the string representing a powered-on VM with reported IP addresses.
-	VirtualMachineStateReady = "ready"
+	VirtualMachineStateReady VirtualMachineState = "ready"
 )
 
 // VirtualMachinePowerState describe the power state of a VM.
@@ -614,9 +643,11 @@ const (
 // VirtualMachine represents data about a vSphere virtual machine object.
 type VirtualMachine struct {
 	// name is the VM's name.
+	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name"`
 
 	// biosUUID is the VM's BIOS UUID.
+	// +kubebuilder:validation:MaxLength=1024
 	BiosUUID string `json:"biosUUID"`
 
 	// state is the VM's state.
@@ -626,13 +657,16 @@ type VirtualMachine struct {
 	Network []NetworkStatus `json:"network"`
 
 	// vmRef is the VM's Managed Object Reference on vSphere.
+	// +kubebuilder:validation:MaxLength=2048
 	VMRef string `json:"vmRef"`
 }
 
 // SSHUser is granted remote access to a system.
 type SSHUser struct {
 	// name is the name of the SSH user.
+	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name"`
+
 	// authorizedKeys is one or more public SSH keys that grant remote access.
 	AuthorizedKeys []string `json:"authorizedKeys"`
 }

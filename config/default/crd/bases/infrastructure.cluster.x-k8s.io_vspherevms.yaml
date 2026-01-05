@@ -971,6 +971,7 @@ spec:
                   the VM has been created.
                   This field is required at runtime for other controllers that read
                   this CRD as unstructured data.
+                maxLength: 1024
                 type: string
               bootstrapRef:
                 description: |-
@@ -1029,6 +1030,9 @@ spec:
                   not possible to expand disks of linked clones.
                   Defaults to LinkedClone, but fails gracefully to FullClone if the source
                   of the clone operation has no snapshots.
+                enum:
+                - fullClone
+                - linkedClone
                 type: string
               customVMXKeys:
                 additionalProperties:
@@ -1048,6 +1052,7 @@ spec:
                       description: |-
                         name is used to identify the disk definition. Name is required and needs to be unique so that it can be used to
                         clearly identify purpose of the disk.
+                      maxLength: 1024
                       type: string
                     provisioningMode:
                       description: |-
@@ -1076,11 +1081,13 @@ spec:
                   datacenter is the name, inventory path, managed object reference or the managed
                   object ID of the datacenter in which the virtual machine is created/located.
                   Defaults to * which selects the default datacenter.
+                maxLength: 2048
                 type: string
               datastore:
                 description: |-
                   datastore is the name, inventory path, managed object reference or the managed
                   object ID of the datastore in which the virtual machine is created/located.
+                maxLength: 2048
                 type: string
               diskGiB:
                 description: |-
@@ -1093,6 +1100,7 @@ spec:
                 description: |-
                   folder is the name, inventory path, managed object reference or the managed
                   object ID of the folder in which the virtual machine is created/located.
+                maxLength: 2048
                 type: string
               guestSoftPowerOffTimeout:
                 description: |-
@@ -1110,6 +1118,7 @@ spec:
                   Defaults to the eponymous property value in the template from which the
                   virtual machine is cloned.
                   Check the compatibility with the ESXi version before setting the value.
+                maxLength: 128
                 type: string
               memoryMiB:
                 description: |-
@@ -1162,6 +1171,7 @@ spec:
                           description: |-
                             deviceName may be used to explicitly assign a name to the network device
                             as it exists in the guest operating system.
+                          maxLength: 1024
                           type: string
                         dhcp4:
                           description: |-
@@ -1182,6 +1192,7 @@ spec:
                               description: |-
                                 hostname is the name which will be sent to the DHCP server instead of
                                 the machine's hostname.
+                              maxLength: 1024
                               type: string
                             routeMetric:
                               description: |-
@@ -1204,6 +1215,7 @@ spec:
                                 the domain name from the DHCP server will be used as the DNS search
                                 domain for this device. When `route`, the domain name from the DHCP
                                 response will be used for routing DNS only, not for searching.
+                              maxLength: 128
                               type: string
                             useHostname:
                               description: |-
@@ -1224,6 +1236,7 @@ spec:
                               description: |-
                                 useRoutes when `true`, the routes from the DHCP server will be installed
                                 in the routing table.
+                              maxLength: 128
                               type: string
                           type: object
                         dhcp6:
@@ -1245,6 +1258,7 @@ spec:
                               description: |-
                                 hostname is the name which will be sent to the DHCP server instead of
                                 the machine's hostname.
+                              maxLength: 1024
                               type: string
                             routeMetric:
                               description: |-
@@ -1267,6 +1281,7 @@ spec:
                                 the domain name from the DHCP server will be used as the DNS search
                                 domain for this device. When `route`, the domain name from the DHCP
                                 response will be used for routing DNS only, not for searching.
+                              maxLength: 128
                               type: string
                             useHostname:
                               description: |-
@@ -1287,15 +1302,18 @@ spec:
                               description: |-
                                 useRoutes when `true`, the routes from the DHCP server will be installed
                                 in the routing table.
+                              maxLength: 128
                               type: string
                           type: object
                         gateway4:
                           description: |-
                             gateway4 is the IPv4 gateway used by this device.
                             Required when DHCP4 is false.
+                          maxLength: 64
                           type: string
                         gateway6:
-                          description: gateway6 is the IPv4 gateway used by this device.
+                          description: gateway6 is the IPv6 gateway used by this device.
+                          maxLength: 64
                           type: string
                         ipAddrs:
                           description: |-
@@ -1313,6 +1331,7 @@ spec:
                             to be generated.
                             Please note that this value must use the VMware OUI to work with the
                             in-tree vSphere cloud provider.
+                          maxLength: 17
                           type: string
                         mtu:
                           description: mtu is the device’s Maximum Transmission Unit
@@ -1331,6 +1350,7 @@ spec:
                           description: |-
                             networkName is the name, managed object reference or the managed
                             object ID of the vSphere network to which the device will be connected.
+                          maxLength: 2048
                           type: string
                         routes:
                           description: routes is a list of optional, static routes
@@ -1346,9 +1366,11 @@ spec:
                                 type: integer
                               to:
                                 description: to is an IPv4 or IPv6 address.
+                                maxLength: 39
                                 type: string
                               via:
                                 description: via is an IPv4 or IPv6 address.
+                                maxLength: 39
                                 type: string
                             required:
                             - metric
@@ -1379,6 +1401,7 @@ spec:
                       server endpoint on this machine
 
                       Deprecated: This field is going to be removed in a future release.
+                    maxLength: 1024
                     type: string
                   routes:
                     description: |-
@@ -1393,9 +1416,11 @@ spec:
                           type: integer
                         to:
                           description: to is an IPv4 or IPv6 address.
+                          maxLength: 39
                           type: string
                         via:
                           description: via is an IPv4 or IPv6 address.
+                          maxLength: 39
                           type: string
                       required:
                       - metric
@@ -1425,6 +1450,7 @@ spec:
                 description: |-
                   os is the Operating System of the virtual machine
                   Defaults to Linux
+                maxLength: 128
                 type: string
               pciDevices:
                 description: pciDevices is the list of pci devices used by the virtual
@@ -1437,6 +1463,7 @@ spec:
                         customLabel is the hardware label of a virtual machine's PCI device.
                         Defaults to the eponymous property value in the template from which the
                         virtual machine is cloned.
+                      maxLength: 1024
                       type: string
                     deviceId:
                       description: |-
@@ -1454,6 +1481,7 @@ spec:
                         virtual machine is cloned.
                         Mutually exclusive with DeviceID and VendorID as VGPUProfile and DeviceID + VendorID
                         are two independent ways to define PCI devices.
+                      maxLength: 1024
                       type: string
                     vendorId:
                       description: |-
@@ -1489,6 +1517,7 @@ spec:
                 description: |-
                   resourcePool is the name, inventory path, managed object reference or the managed
                   object ID in which the virtual machine is created/located.
+                maxLength: 2048
                 type: string
               resources:
                 description: |-
@@ -1565,17 +1594,20 @@ spec:
                 description: |-
                   server is the IP address or FQDN of the vSphere server on which
                   the virtual machine is created/located.
+                maxLength: 1024
                 type: string
               snapshot:
                 description: |-
                   snapshot is the name of the snapshot from which to create a linked clone.
                   This field is ignored if LinkedClone is not enabled.
                   Defaults to the source's current snapshot.
+                maxLength: 1024
                 type: string
               storagePolicyName:
                 description: |-
                   storagePolicyName of the storage policy to use with this
                   Virtual Machine
+                maxLength: 1024
                 type: string
               tagIDs:
                 description: |-
@@ -1588,6 +1620,7 @@ spec:
                 description: |-
                   template is the name, inventory path, managed object reference or the managed
                   object ID of the template used to clone the virtual machine.
+                maxLength: 2048
                 minLength: 1
                 type: string
               thumbprint:
@@ -1596,6 +1629,7 @@ spec:
                   When this is set to empty, this VirtualMachine would be created
                   without TLS certificate validation of the communication between Cluster API Provider vSphere
                   and the VMware vCenter server.
+                maxLength: 1024
                 type: string
             required:
             - network
@@ -1618,6 +1652,9 @@ spec:
                   LinkedMode is the default but fails gracefully if the source of the
                   clone has no snapshots, this field may be used to determine the actual
                   type of clone operation used to create this VM.
+                enum:
+                - fullClone
+                - linkedClone
                 type: string
               conditions:
                 description: conditions defines current service state of the VSphereVM.
@@ -1685,6 +1722,8 @@ spec:
                   Any transient errors that occur during the reconciliation of vspherevms
                   can be added as events to the vspherevm object and/or logged in the
                   controller's output.
+                maxLength: 10240
+                minLength: 1
                 type: string
               failureReason:
                 description: |-
@@ -1705,6 +1744,8 @@ spec:
                 description: |-
                   host describes the hostname or IP address of the infrastructure host
                   that the VSphereVM is residing on.
+                maxLength: 512
+                minLength: 1
                 type: string
               moduleUUID:
                 description: |-
@@ -1712,6 +1753,7 @@ spec:
                   which is used to configure anti-affinity. Objects with the same ModuleUUID
                   will be anti-affined, meaning that the vCenter DRS will best effort schedule
                   the VMs on separate hosts.
+                maxLength: 2048
                 type: string
               network:
                 description: |-
@@ -1734,9 +1776,11 @@ spec:
                       type: array
                     macAddr:
                       description: macAddr is the MAC address of the network device.
+                      maxLength: 17
                       type: string
                     networkName:
                       description: networkName is the name of the network.
+                      maxLength: 1024
                       type: string
                   required:
                   - macAddr
@@ -1756,12 +1800,14 @@ spec:
                 description: |-
                   snapshot is the name of the snapshot from which the VM was cloned if
                   LinkedMode is enabled.
+                maxLength: 1024
                 type: string
               taskRef:
                 description: |-
                   taskRef is a managed object reference to a Task related to the machine.
                   This value is set automatically at runtime and should not be set or
                   modified by users.
+                maxLength: 2048
                 type: string
               v1beta2:
                 description: v1beta2 groups all the fields that will be added or modified
@@ -1838,6 +1884,7 @@ spec:
                   vmRef is the VM's Managed Object Reference on vSphere. It can be used by consumers
                   to programatically get this VM representation on vSphere in case of the need to retrieve informations.
                   This field is set once the machine is created and should not be changed
+                maxLength: 2048
                 type: string
             type: object
         type: object

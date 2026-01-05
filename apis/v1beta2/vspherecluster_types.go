@@ -108,10 +108,12 @@ func NewVCenterVersion(version string) VCenterVersion {
 // VSphereClusterSpec defines the desired state of VSphereCluster.
 type VSphereClusterSpec struct {
 	// server is the address of the vSphere endpoint.
+	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
 	// thumbprint is the colon-separated SHA-1 checksum of the given vCenter server's host certificate
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	Thumbprint string `json:"thumbprint,omitempty"`
 
 	// controlPlaneEndpoint represents the endpoint used to communicate with the control plane.
@@ -153,9 +155,12 @@ type ClusterModule struct {
 
 	// targetObjectName points to the object that uses the Cluster Module information to enforce
 	// anti-affinity amongst its descendant VM objects.
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=253
 	TargetObjectName string `json:"targetObjectName"`
 
 	// moduleUUID is the unique identifier of the `ClusterModule` used by the object.
+	// +kubebuilder:validation:MaxLength=2048
 	ModuleUUID string `json:"moduleUUID"`
 }
 
@@ -183,6 +188,7 @@ type VSphereClusterStatus struct {
 	FailureDomains []clusterv1.FailureDomain `json:"failureDomains,omitempty"`
 
 	// vCenterVersion defines the version of the vCenter server defined in the spec.
+	// +kubebuilder:validation:MaxLength=256
 	VCenterVersion VCenterVersion `json:"vCenterVersion,omitempty"`
 
 	// deprecated groups all the status fields that are deprecated and will be removed when all the nested field are removed.

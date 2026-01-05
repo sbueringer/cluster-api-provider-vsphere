@@ -319,6 +319,7 @@ spec:
               secretName:
                 description: secretName references a Secret inside the controller
                   namespace with the credentials to use
+                maxLength: 253
                 minLength: 1
                 type: string
             type: object

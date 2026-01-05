@@ -117,9 +117,12 @@ const (
 // VSphereDeploymentZoneSpec defines the desired state of VSphereDeploymentZone.
 type VSphereDeploymentZoneSpec struct {
 	// server is the address of the vSphere endpoint.
+	// +kubebuilder:validation:MaxLength=1024
 	Server string `json:"server,omitempty"`
 
 	// failureDomain is the name of the VSphereFailureDomain used for this VSphereDeploymentZone
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=253
 	FailureDomain string `json:"failureDomain,omitempty"`
 
 	// controlPlane determines if this failure domain is suitable for use by control plane machines.
@@ -136,17 +139,20 @@ type PlacementConstraint struct {
 	// resourcePool is the name or inventory path of the resource pool in which
 	// the virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	ResourcePool string `json:"resourcePool,omitempty"`
 
 	// folder is the name or inventory path of the folder in which the
 	// virtual machine is created/located.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	Folder string `json:"folder,omitempty"`
 }
 
 // Network holds information about the network.
 type Network struct {
 	// name is the network name for this machine's VM.
+	// +kubebuilder:validation:MaxLength=1024
 	Name string `json:"name,omitempty"`
 
 	// dhcp4 is a flag that indicates whether or not to use DHCP for IPv4

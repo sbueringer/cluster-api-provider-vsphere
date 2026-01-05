@@ -53,6 +53,7 @@ const (
 type VSphereClusterIdentitySpec struct {
 	// secretName references a Secret inside the controller namespace with the credentials to use
 	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=253
 	SecretName string `json:"secretName,omitempty"`
 
 	// allowedNamespaces is used to identify which namespaces are allowed to use this account.
@@ -125,6 +126,7 @@ type VSphereIdentityReference struct {
 
 	// name of the identity.
 	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=253
 	Name string `json:"name"`
 }
 

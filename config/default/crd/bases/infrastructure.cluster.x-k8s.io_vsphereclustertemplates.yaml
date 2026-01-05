@@ -236,11 +236,14 @@ spec:
                             moduleUUID:
                               description: moduleUUID is the unique identifier of
                                 the `ClusterModule` used by the object.
+                              maxLength: 2048
                               type: string
                             targetObjectName:
                               description: |-
                                 targetObjectName points to the object that uses the Cluster Module information to enforce
                                 anti-affinity amongst its descendant VM objects.
+                              maxLength: 253
+                              minLength: 1
                               type: string
                           required:
                           - controlPlane
@@ -338,6 +341,7 @@ spec:
                             type: string
                           name:
                             description: name of the identity.
+                            maxLength: 253
                             minLength: 1
                             type: string
                         required:
@@ -346,10 +350,12 @@ spec:
                         type: object
                       server:
                         description: server is the address of the vSphere endpoint.
+                        maxLength: 1024
                         type: string
                       thumbprint:
                         description: thumbprint is the colon-separated SHA-1 checksum
                           of the given vCenter server's host certificate
+                        maxLength: 1024
                         type: string
                     type: object
                 required:

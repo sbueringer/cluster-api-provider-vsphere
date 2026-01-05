@@ -194,6 +194,7 @@ type VSphereVMSpec struct {
 	// This field is required at runtime for other controllers that read
 	// this CRD as unstructured data.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	BiosUUID string `json:"biosUUID,omitempty"`
 
 	// powerOffMode describes the desired behavior when powering off a VM.
@@ -229,6 +230,8 @@ type VSphereVMStatus struct {
 	// host describes the hostname or IP address of the infrastructure host
 	// that the VSphereVM is residing on.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=512
 	Host string `json:"host,omitempty"`
 
 	// ready is true when the provider resource is ready.
@@ -253,6 +256,7 @@ type VSphereVMStatus struct {
 	// snapshot is the name of the snapshot from which the VM was cloned if
 	// LinkedMode is enabled.
 	// +optional
+	// +kubebuilder:validation:MaxLength=1024
 	Snapshot string `json:"snapshot,omitempty"`
 
 	// retryAfter tracks the time we can retry queueing a task
@@ -263,6 +267,7 @@ type VSphereVMStatus struct {
 	// This value is set automatically at runtime and should not be set or
 	// modified by users.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	TaskRef string `json:"taskRef,omitempty"`
 
 	// network returns the network status for each of the machine's configured
@@ -298,6 +303,8 @@ type VSphereVMStatus struct {
 	// can be added as events to the vspherevm object and/or logged in the
 	// controller's output.
 	// +optional
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=10240
 	FailureMessage *string `json:"failureMessage,omitempty"`
 
 	// conditions defines current service state of the VSphereVM.
@@ -309,12 +316,14 @@ type VSphereVMStatus struct {
 	// will be anti-affined, meaning that the vCenter DRS will best effort schedule
 	// the VMs on separate hosts.
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	ModuleUUID *string `json:"moduleUUID,omitempty"`
 
 	// vmRef is the VM's Managed Object Reference on vSphere. It can be used by consumers
 	// to programatically get this VM representation on vSphere in case of the need to retrieve informations.
 	// This field is set once the machine is created and should not be changed
 	// +optional
+	// +kubebuilder:validation:MaxLength=2048
 	VMRef string `json:"vmRef,omitempty"`
 
 	// v1beta2 groups all the fields that will be added or modified in VSphereVM's status with the V1Beta2 version.
