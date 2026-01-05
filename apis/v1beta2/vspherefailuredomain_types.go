@@ -37,11 +37,11 @@ const (
 type VSphereFailureDomainSpec struct {
 	// region defines the name and type of a region
 	// +required
-	Region FailureDomain `json:"region"`
+	Region FailureDomain `json:"region,omitzero"`
 
 	// zone defines the name and type of a zone
 	// +required
-	Zone FailureDomain `json:"zone"`
+	Zone FailureDomain `json:"zone,omitzero"`
 
 	// topology describes a given failure domain using vSphere constructs
 	// +required
@@ -195,7 +195,7 @@ type VSphereFailureDomain struct {
 
 	// spec is the desired state of VSphereFailureDomain.
 	// +required
-	Spec VSphereFailureDomainSpec `json:"spec,omitempty"`
+	Spec VSphereFailureDomainSpec `json:"spec,omitempty,omitzero"`
 }
 
 // +kubebuilder:object:root=true

@@ -338,7 +338,7 @@ type VSphereMachineTemplateResource struct {
 
 	// spec is the specification of the desired behavior of the machine.
 	// +optional
-	Spec VSphereMachineSpec `json:"spec"`
+	Spec VSphereMachineSpec `json:"spec,omitzero"`
 }
 
 // APIEndpoint represents a reachable Kubernetes API endpoint.

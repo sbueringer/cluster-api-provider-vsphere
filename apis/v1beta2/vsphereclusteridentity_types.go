@@ -61,7 +61,7 @@ type VSphereClusterIdentitySpec struct {
 	// Namespaces can be selected with a label selector.
 	// If this object is nil, no namespaces will be allowed
 	// +optional
-	AllowedNamespaces *AllowedNamespaces `json:"allowedNamespaces,omitempty"`
+	AllowedNamespaces *AllowedNamespaces `json:"allowedNamespaces,omitempty,omitzero"`
 }
 
 // VSphereClusterIdentityStatus contains the status of the VSphereClusterIdentity.
@@ -178,7 +178,7 @@ type VSphereClusterIdentity struct {
 
 	// spec is the desired state of VSphereClusterIdentity.
 	// +required
-	Spec VSphereClusterIdentitySpec `json:"spec,omitempty"`
+	Spec VSphereClusterIdentitySpec `json:"spec,omitempty,omitzero"`
 
 	// status is the observed state of VSphereClusterIdentity.
 	// +optional

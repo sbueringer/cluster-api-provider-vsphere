@@ -124,7 +124,7 @@ type VSphereClusterSpec struct {
 	// identityRef is a reference to either a Secret or VSphereClusterIdentity that contains
 	// the identity to use when reconciling the cluster.
 	// +optional
-	IdentityRef *VSphereIdentityReference `json:"identityRef,omitempty"`
+	IdentityRef *VSphereIdentityReference `json:"identityRef,omitempty,omitzero"`
 
 	// clusterModules hosts information regarding the anti-affinity vSphere constructs
 	// for each of the objects responsible for creation of VM objects belonging to the cluster.

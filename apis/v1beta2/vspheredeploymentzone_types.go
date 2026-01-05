@@ -207,7 +207,7 @@ type VSphereDeploymentZone struct {
 
 	// spec is the desired state of VSphereDeploymentZone.
 	// +required
-	Spec VSphereDeploymentZoneSpec `json:"spec,omitempty"`
+	Spec VSphereDeploymentZoneSpec `json:"spec,omitempty,omitzero"`
 
 	// status is the observed state of VSphereDeploymentZone.
 	// +optional

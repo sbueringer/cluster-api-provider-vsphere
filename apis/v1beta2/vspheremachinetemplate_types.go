@@ -24,7 +24,7 @@ import (
 type VSphereMachineTemplateSpec struct {
 	// template defines the desired state of VSphereMachineTemplate.
 	// +required
-	Template VSphereMachineTemplateResource `json:"template"`
+	Template VSphereMachineTemplateResource `json:"template,omitzero"`
 }
 
 // +kubebuilder:object:root=true
@@ -41,7 +41,7 @@ type VSphereMachineTemplate struct {
 
 	// spec is the desired state of VSphereMachineTemplate.
 	// +optional
-	Spec VSphereMachineTemplateSpec `json:"spec,omitempty"`
+	Spec VSphereMachineTemplateSpec `json:"spec,omitempty,omitzero"`
 }
 
 // +kubebuilder:object:root=true

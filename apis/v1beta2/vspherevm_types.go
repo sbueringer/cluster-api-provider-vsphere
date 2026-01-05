@@ -364,7 +364,7 @@ type VSphereVM struct {
 
 	// spec is the desired state of VSphereVM.
 	// +required
-	Spec VSphereVMSpec `json:"spec,omitempty"`
+	Spec VSphereVMSpec `json:"spec,omitempty,omitzero"`
 
 	// status is the observed state of VSphereVM.
 	// +optional

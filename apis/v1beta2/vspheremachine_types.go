@@ -314,7 +314,7 @@ type VSphereMachine struct {
 
 	// spec is the desired state of VSphereMachine.
 	// +required
-	Spec VSphereMachineSpec `json:"spec,omitempty"`
+	Spec VSphereMachineSpec `json:"spec,omitempty,omitzero"`
 
 	// status is the observed state of VSphereMachine.
 	// +optional
