@@ -170,7 +170,7 @@ type ClusterModule struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
-	ModuleUUID string `json:"moduleUUID"`
+	ModuleUUID string `json:"moduleUUID,omitempty"`
 }
 
 // VSphereClusterStatus defines the observed state of VSphereClusterSpec.

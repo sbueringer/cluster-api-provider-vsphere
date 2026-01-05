@@ -54,7 +54,7 @@ type FailureDomain struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
-	Name string `json:"name"`
+	Name string `json:"name,omitempty"`
 
 	// type is the type of failure domain, the current values are "Datacenter", "ComputeCluster" and "HostGroup"
 	// +required
@@ -65,7 +65,7 @@ type FailureDomain struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
-	TagCategory string `json:"tagCategory"`
+	TagCategory string `json:"tagCategory,omitempty"`
 
 	// autoConfigure tags the Type which is specified in the Topology
 	//
@@ -80,7 +80,7 @@ type Topology struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
-	Datacenter string `json:"datacenter"`
+	Datacenter string `json:"datacenter,omitempty"`
 
 	// computeCluster as the failure domain
 	// +optional
@@ -121,7 +121,7 @@ type NetworkConfiguration struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
-	NetworkName string `json:"networkName"`
+	NetworkName string `json:"networkName,omitempty"`
 
 	// dhcp4 is a flag that indicates whether or not to use DHCP for IPv4.
 	// +optional
@@ -183,13 +183,13 @@ type FailureDomainHosts struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
-	VMGroupName string `json:"vmGroupName"`
+	VMGroupName string `json:"vmGroupName,omitempty"`
 
 	// hostGroupName is the name of the Host group
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
-	HostGroupName string `json:"hostGroupName"`
+	HostGroupName string `json:"hostGroupName,omitempty"`
 }
 
 // +kubebuilder:object:root=true

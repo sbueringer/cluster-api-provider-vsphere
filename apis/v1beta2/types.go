@@ -453,7 +453,7 @@ type NetworkDeviceSpec struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
-	NetworkName string `json:"networkName"`
+	NetworkName string `json:"networkName,omitempty"`
 
 	// deviceName may be used to explicitly assign a name to the network device
 	// as it exists in the guest operating system.
@@ -634,13 +634,13 @@ type NetworkRouteSpec struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=39
-	To string `json:"to"`
+	To string `json:"to,omitempty"`
 
 	// via is an IPv4 or IPv6 address.
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=39
-	Via string `json:"via"`
+	Via string `json:"via,omitempty"`
 
 	// metric is the weight/priority of the route.
 	// +required
@@ -666,7 +666,7 @@ type NetworkStatus struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=17
-	MACAddr string `json:"macAddr"`
+	MACAddr string `json:"macAddr,omitempty"`
 
 	// networkName is the name of the network.
 	// +optional
@@ -695,7 +695,7 @@ type SSHUser struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
-	Name string `json:"name"`
+	Name string `json:"name,omitempty"`
 
 	// authorizedKeys is one or more public SSH keys that grant remote access.
 	// +required
