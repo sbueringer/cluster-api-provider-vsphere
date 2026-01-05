@@ -152,21 +152,6 @@ type PlacementConstraint struct {
 	Folder string `json:"folder,omitempty"`
 }
 
-// Network holds information about the network.
-type Network struct {
-	// name is the network name for this machine's VM.
-	// +kubebuilder:validation:MaxLength=1024
-	Name string `json:"name,omitempty"`
-
-	// dhcp4 is a flag that indicates whether or not to use DHCP for IPv4
-	// +optional
-	DHCP4 *bool `json:"dhcp4,omitempty"`
-
-	// dhcp6 indicates whether or not to use DHCP for IPv6
-	// +optional
-	DHCP6 *bool `json:"dhcp6,omitempty"`
-}
-
 // VSphereDeploymentZoneStatus contains the status for a VSphereDeploymentZone.
 type VSphereDeploymentZoneStatus struct {
 	// conditions represents the observations of a VSphereDeploymentZone's current state.
