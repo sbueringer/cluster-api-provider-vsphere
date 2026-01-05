@@ -330,11 +330,11 @@ func Test_mergeNetworkConfigurationToNetworkDeviceSpec(t *testing.T) {
 			SearchDomains: []string{"vmware.ci"},
 			DHCP4Overrides: &infrav1.DHCPOverrides{
 				Hostname:    ptr.To("hal"),
-				RouteMetric: ptr.To(12345),
+				RouteMetric: ptr.To[int32](12345),
 			},
 			DHCP6Overrides: &infrav1.DHCPOverrides{
 				Hostname:    ptr.To("hal"),
-				RouteMetric: ptr.To(23456),
+				RouteMetric: ptr.To[int32](23456),
 			},
 			AddressesFromPools: []corev1.TypedLocalObjectReference{
 				{
@@ -353,11 +353,11 @@ func Test_mergeNetworkConfigurationToNetworkDeviceSpec(t *testing.T) {
 			SearchDomains: []string{"vmware.ci"},
 			DHCP4Overrides: &infrav1.DHCPOverrides{
 				Hostname:    ptr.To("hal"),
-				RouteMetric: ptr.To(12345),
+				RouteMetric: ptr.To[int32](12345),
 			},
 			DHCP6Overrides: &infrav1.DHCPOverrides{
 				Hostname:    ptr.To("hal"),
-				RouteMetric: ptr.To(23456),
+				RouteMetric: ptr.To[int32](23456),
 			},
 			AddressesFromPools: []corev1.TypedLocalObjectReference{
 				{

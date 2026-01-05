@@ -567,7 +567,7 @@ type DHCPOverrides struct {
 	// routeMetric is used to prioritize routes for devices. A lower metric for
 	// an interface will have a higher priority.
 	// +optional
-	RouteMetric *int `json:"routeMetric,omitempty"`
+	RouteMetric *int32 `json:"routeMetric,omitempty"`
 
 	// sendHostname when `true`, the hostname of the machine will be sent to the
 	// DHCP server.

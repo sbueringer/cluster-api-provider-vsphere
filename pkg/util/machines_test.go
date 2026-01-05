@@ -24,6 +24,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/utils/ptr"
 	clusterv1 "sigs.k8s.io/cluster-api/api/core/v1beta2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
@@ -400,7 +401,7 @@ network:
 									DHCP4:       true,
 									DHCP4Overrides: &infrav1.DHCPOverrides{
 										Hostname:     toStringPtr("hal"),
-										RouteMetric:  toIntPtr(12345),
+										RouteMetric:  ptr.To[int32](12345),
 										SendHostname: toBoolPtr(true),
 										UseDNS:       toBoolPtr(true),
 										UseDomains:   toStringPtr("true"),
@@ -412,7 +413,7 @@ network:
 									DHCP6: true,
 									DHCP6Overrides: &infrav1.DHCPOverrides{
 										Hostname:     toStringPtr("hal"),
-										RouteMetric:  toIntPtr(12345),
+										RouteMetric:  ptr.To[int32](12345),
 										SendHostname: toBoolPtr(true),
 										UseDNS:       toBoolPtr(true),
 										UseDomains:   toStringPtr("true"),

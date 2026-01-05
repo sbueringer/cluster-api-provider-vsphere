@@ -995,6 +995,7 @@ spec:
                                       description: |-
                                         routeMetric is used to prioritize routes for devices. A lower metric for
                                         an interface will have a higher priority.
+                                      format: int32
                                       type: integer
                                     sendHostname:
                                       description: |-
@@ -1061,6 +1062,7 @@ spec:
                                       description: |-
                                         routeMetric is used to prioritize routes for devices. A lower metric for
                                         an interface will have a higher priority.
+                                      format: int32
                                       type: integer
                                     sendHostname:
                                       description: |-

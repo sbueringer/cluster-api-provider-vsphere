@@ -85,7 +85,7 @@ func (in *DHCPOverrides) DeepCopyInto(out *DHCPOverrides) {
 	}
 	if in.RouteMetric != nil {
 		in, out := &in.RouteMetric, &out.RouteMetric
-		*out = new(int)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.SendHostname != nil {
