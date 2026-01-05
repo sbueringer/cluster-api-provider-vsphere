@@ -631,7 +631,7 @@ type DHCPOverrides struct {
 
 // NetworkRouteSpec defines a static network route.
 type NetworkRouteSpec struct {
-	// to is an IPv4 or IPv6 address
+	// to is an IPv4 or IPv6 address.
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=39

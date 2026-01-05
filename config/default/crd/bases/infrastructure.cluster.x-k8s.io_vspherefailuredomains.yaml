@@ -370,10 +370,12 @@ spec:
                     description: name is the name of the tag that represents this
                       failure domain
                     maxLength: 1024
+                    minLength: 1
                     type: string
                   tagCategory:
                     description: tagCategory is the category used for the tag
                     maxLength: 1024
+                    minLength: 1
                     type: string
                   type:
                     description: type is the type of failure domain, the current values
@@ -399,12 +401,14 @@ spec:
                   datacenter:
                     description: datacenter as the failure domain.
                     maxLength: 2048
+                    minLength: 1
                     type: string
                   datastore:
                     description: |-
                       datastore is the name or inventory path of the datastore in which the
                       virtual machine is created/located.
                     maxLength: 2048
+                    minLength: 1
                     type: string
                   hosts:
                     description: hosts has information required for placement of machines
@@ -413,10 +417,12 @@ spec:
                       hostGroupName:
                         description: hostGroupName is the name of the Host group
                         maxLength: 2048
+                        minLength: 1
                         type: string
                       vmGroupName:
                         description: vmGroupName is the name of the VM group
                         maxLength: 2048
+                        minLength: 1
                         type: string
                     required:
                     - hostGroupName
@@ -606,6 +612,7 @@ spec:
                           description: networkName is the network name for this machine's
                             VM.
                           maxLength: 2048
+                          minLength: 1
                           type: string
                         searchDomains:
                           description: |-
@@ -652,10 +659,12 @@ spec:
                     description: name is the name of the tag that represents this
                       failure domain
                     maxLength: 1024
+                    minLength: 1
                     type: string
                   tagCategory:
                     description: tagCategory is the category used for the tag
                     maxLength: 1024
+                    minLength: 1
                     type: string
                   type:
                     description: type is the type of failure domain, the current values

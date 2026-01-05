@@ -1004,6 +1004,7 @@ spec:
                         name is used to identify the disk definition. Name is required and needs to be unique so that it can be used to
                         clearly identify purpose of the disk.
                       maxLength: 1024
+                      minLength: 1
                       type: string
                     provisioningMode:
                       description: |-
@@ -1033,12 +1034,14 @@ spec:
                   object ID of the datacenter in which the virtual machine is created/located.
                   Defaults to * which selects the default datacenter.
                 maxLength: 2048
+                minLength: 1
                 type: string
               datastore:
                 description: |-
                   datastore is the name, inventory path, managed object reference or the managed
                   object ID of the datastore in which the virtual machine is created/located.
                 maxLength: 2048
+                minLength: 1
                 type: string
               diskGiB:
                 description: |-
@@ -1059,6 +1062,7 @@ spec:
                   folder is the name, inventory path, managed object reference or the managed
                   object ID of the folder in which the virtual machine is created/located.
                 maxLength: 2048
+                minLength: 1
                 type: string
               guestSoftPowerOffTimeout:
                 description: |-
@@ -1077,6 +1081,7 @@ spec:
                   virtual machine is cloned.
                   Check the compatibility with the ESXi version before setting the value.
                 maxLength: 128
+                minLength: 1
                 type: string
               memoryMiB:
                 description: |-
@@ -1156,6 +1161,7 @@ spec:
                             deviceName may be used to explicitly assign a name to the network device
                             as it exists in the guest operating system.
                           maxLength: 1024
+                          minLength: 1
                           type: string
                         dhcp4:
                           description: |-
@@ -1296,10 +1302,12 @@ spec:
                             gateway4 is the IPv4 gateway used by this device.
                             Required when DHCP4 is false.
                           maxLength: 64
+                          minLength: 1
                           type: string
                         gateway6:
                           description: gateway6 is the IPv6 gateway used by this device.
                           maxLength: 64
+                          minLength: 1
                           type: string
                         ipAddrs:
                           description: |-
@@ -1322,6 +1330,7 @@ spec:
                             Please note that this value must use the VMware OUI to work with the
                             in-tree vSphere cloud provider.
                           maxLength: 17
+                          minLength: 1
                           type: string
                         mtu:
                           description: mtu is the device’s Maximum Transmission Unit
@@ -1345,6 +1354,7 @@ spec:
                             networkName is the name, managed object reference or the managed
                             object ID of the vSphere network to which the device will be connected.
                           maxLength: 2048
+                          minLength: 1
                           type: string
                         routes:
                           description: routes is a list of optional, static routes
@@ -1361,10 +1371,12 @@ spec:
                               to:
                                 description: to is an IPv4 or IPv6 address.
                                 maxLength: 39
+                                minLength: 1
                                 type: string
                               via:
                                 description: via is an IPv4 or IPv6 address.
                                 maxLength: 39
+                                minLength: 1
                                 type: string
                             required:
                             - metric
@@ -1404,6 +1416,7 @@ spec:
 
                       Deprecated: This field is going to be removed in a future release.
                     maxLength: 1024
+                    minLength: 1
                     type: string
                   routes:
                     description: |-
@@ -1419,10 +1432,12 @@ spec:
                         to:
                           description: to is an IPv4 or IPv6 address.
                           maxLength: 39
+                          minLength: 1
                           type: string
                         via:
                           description: via is an IPv4 or IPv6 address.
                           maxLength: 39
+                          minLength: 1
                           type: string
                       required:
                       - metric
@@ -1455,6 +1470,7 @@ spec:
                   os is the Operating System of the virtual machine
                   Defaults to Linux
                 maxLength: 128
+                minLength: 1
                 type: string
               pciDevices:
                 description: pciDevices is the list of pci devices used by the virtual
@@ -1468,6 +1484,7 @@ spec:
                         Defaults to the eponymous property value in the template from which the
                         virtual machine is cloned.
                       maxLength: 1024
+                      minLength: 1
                       type: string
                     deviceId:
                       description: |-
@@ -1486,6 +1503,7 @@ spec:
                         Mutually exclusive with DeviceID and VendorID as VGPUProfile and DeviceID + VendorID
                         are two independent ways to define PCI devices.
                       maxLength: 1024
+                      minLength: 1
                       type: string
                     vendorId:
                       description: |-
@@ -1531,6 +1549,7 @@ spec:
                   resourcePool is the name, inventory path, managed object reference or the managed
                   object ID in which the virtual machine is created/located.
                 maxLength: 2048
+                minLength: 1
                 type: string
               resources:
                 description: |-
@@ -1608,6 +1627,7 @@ spec:
                   server is the IP address or FQDN of the vSphere server on which
                   the virtual machine is created/located.
                 maxLength: 1024
+                minLength: 1
                 type: string
               snapshot:
                 description: |-
@@ -1615,12 +1635,14 @@ spec:
                   This field is ignored if LinkedClone is not enabled.
                   Defaults to the source's current snapshot.
                 maxLength: 1024
+                minLength: 1
                 type: string
               storagePolicyName:
                 description: |-
                   storagePolicyName of the storage policy to use with this
                   Virtual Machine
                 maxLength: 1024
+                minLength: 1
                 type: string
               tagIDs:
                 description: |-
@@ -1647,6 +1669,7 @@ spec:
                   without TLS certificate validation of the communication between Cluster API Provider vSphere
                   and the VMware vCenter server.
                 maxLength: 1024
+                minLength: 1
                 type: string
             required:
             - network
@@ -1830,10 +1853,12 @@ spec:
                     macAddr:
                       description: macAddr is the MAC address of the network device.
                       maxLength: 17
+                      minLength: 1
                       type: string
                     networkName:
                       description: networkName is the name of the network.
                       maxLength: 1024
+                      minLength: 1
                       type: string
                   required:
                   - macAddr
