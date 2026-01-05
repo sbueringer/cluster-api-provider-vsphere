@@ -100,7 +100,7 @@ type VirtualMachineCloneSpec struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=2048
-	Template string `json:"template"`
+	Template string `json:"template,omitempty"`
 
 	// cloneMode specifies the type of clone operation.
 	// The LinkedClone mode is only support for templates that have at least
@@ -413,7 +413,7 @@ type NetworkSpec struct {
 	// +required
 	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=128
-	Devices []NetworkDeviceSpec `json:"devices"`
+	Devices []NetworkDeviceSpec `json:"devices,omitempty"`
 
 	// routes is a list of optional, static routes applied to the virtual
 	// machine.
@@ -679,5 +679,5 @@ type SSHUser struct {
 	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=10240
-	AuthorizedKeys []string `json:"authorizedKeys"`
+	AuthorizedKeys []string `json:"authorizedKeys,omitempty"`
 }

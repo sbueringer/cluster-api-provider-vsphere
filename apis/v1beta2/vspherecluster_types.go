@@ -162,7 +162,7 @@ type ClusterModule struct {
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
-	TargetObjectName string `json:"targetObjectName"`
+	TargetObjectName string `json:"targetObjectName,omitempty"`
 
 	// moduleUUID is the unique identifier of the `ClusterModule` used by the object.
 	// +required

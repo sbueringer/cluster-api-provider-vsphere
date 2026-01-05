@@ -58,7 +58,7 @@ type FailureDomain struct {
 	// type is the type of failure domain, the current values are "Datacenter", "ComputeCluster" and "HostGroup"
 	// +required
 	// +kubebuilder:validation:Enum=Datacenter;ComputeCluster;HostGroup
-	Type FailureDomainType `json:"type"`
+	Type FailureDomainType `json:"type,omitempty"`
 
 	// tagCategory is the category used for the tag
 	// +required

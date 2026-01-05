@@ -107,7 +107,7 @@ type VSphereClusterIdentityV1Beta1DeprecatedStatus struct {
 type AllowedNamespaces struct {
 	// selector is a standard Kubernetes LabelSelector. A label query over a set of resources.
 	// +optional
-	Selector metav1.LabelSelector `json:"selector"`
+	Selector metav1.LabelSelector `json:"selector,omitempty,omitzero"`
 }
 
 // VSphereIdentityKind is the kind of mechanism used to handle credentials for the VCenter API.
@@ -125,13 +125,13 @@ type VSphereIdentityReference struct {
 	// kind of the identity. Can either be VSphereClusterIdentity or Secret
 	// +required
 	// +kubebuilder:validation:Enum=VSphereClusterIdentity;Secret
-	Kind VSphereIdentityKind `json:"kind"`
+	Kind VSphereIdentityKind `json:"kind,omitempty"`
 
 	// name of the identity.
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
-	Name string `json:"name"`
+	Name string `json:"name,omitempty"`
 }
 
 // GetV1Beta1Conditions returns the set of conditions for this object.
