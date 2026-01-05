@@ -1307,6 +1307,7 @@ spec:
                             maxLength: 39
                             minLength: 1
                             type: string
+                          maxItems: 128
                           type: array
                         macAddr:
                           description: |-
@@ -1331,6 +1332,7 @@ spec:
                             maxLength: 39
                             minLength: 1
                             type: string
+                          maxItems: 128
                           type: array
                         networkName:
                           description: |-
@@ -1373,6 +1375,7 @@ spec:
                             maxLength: 1024
                             minLength: 1
                             type: string
+                          maxItems: 128
                           type: array
                         skipIPAllocation:
                           description: |-
@@ -1616,6 +1619,7 @@ spec:
                   maxLength: 1024
                   minLength: 1
                   type: string
+                maxItems: 128
                 type: array
               template:
                 description: |-
@@ -1806,6 +1810,7 @@ spec:
                         maxLength: 39
                         minLength: 1
                         type: string
+                      maxItems: 128
                       type: array
                     macAddr:
                       description: macAddr is the MAC address of the network device.

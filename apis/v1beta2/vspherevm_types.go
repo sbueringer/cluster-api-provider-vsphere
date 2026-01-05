@@ -244,6 +244,7 @@ type VSphereVMStatus struct {
 	// This field is required at runtime for other controllers that read
 	// this CRD as unstructured data.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=256
 	Addresses []string `json:"addresses,omitempty"`

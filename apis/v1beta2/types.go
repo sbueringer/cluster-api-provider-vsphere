@@ -212,6 +212,7 @@ type VirtualMachineCloneSpec struct {
 	// tagIDs is an optional set of tags to add to an instance. Specified tagIDs
 	// must use URN-notation instead of display names.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=1024
 	TagIDs []string `json:"tagIDs,omitempty"`
@@ -463,6 +464,7 @@ type NetworkDeviceSpec struct {
 	// CIDR notation.
 	// Required when DHCP4, DHCP6 and SkipIPAllocation are false.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=39
 	IPAddrs []string `json:"ipAddrs,omitempty"`
@@ -484,6 +486,7 @@ type NetworkDeviceSpec struct {
 	// nameservers.
 	// Please note that Linux allows only three nameservers (https://linux.die.net/man/5/resolv.conf).
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=39
 	Nameservers []string `json:"nameservers,omitempty"`
@@ -496,6 +499,7 @@ type NetworkDeviceSpec struct {
 	// searchDomains is a list of search domains used when resolving IP
 	// addresses with DNS.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=1024
 	SearchDomains []string `json:"searchDomains,omitempty"`
@@ -612,6 +616,7 @@ type NetworkStatus struct {
 
 	// ipAddrs is one or more IP addresses reported by vm-tools.
 	// +optional
+	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=39
 	IPAddrs []string `json:"ipAddrs,omitempty"`
@@ -685,6 +690,7 @@ type SSHUser struct {
 	Name string `json:"name"`
 
 	// authorizedKeys is one or more public SSH keys that grant remote access.
+	// +kubebuilder:validation:MaxItems=128
 	// +kubebuilder:validation:items:MinLength=1
 	// +kubebuilder:validation:items:MaxLength=10240
 	AuthorizedKeys []string `json:"authorizedKeys"`

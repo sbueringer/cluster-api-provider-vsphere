@@ -596,6 +596,7 @@ spec:
                             maxLength: 39
                             minLength: 1
                             type: string
+                          maxItems: 128
                           type: array
                         networkName:
                           description: networkName is the network name for this machine's
@@ -610,6 +611,7 @@ spec:
                             maxLength: 1024
                             minLength: 1
                             type: string
+                          maxItems: 128
                           type: array
                       required:
                       - networkName
@@ -626,6 +628,7 @@ spec:
                       maxLength: 2048
                       minLength: 1
                       type: string
+                    maxItems: 128
                     type: array
                 required:
                 - datacenter
