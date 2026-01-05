@@ -91,7 +91,9 @@ var _ = Describe("VsphereMachineReconciler", func() {
 					},
 				},
 			},
-			Spec: infrav1.VSphereClusterSpec{},
+			Spec: infrav1.VSphereClusterSpec{
+				Server: "test-server",
+			},
 		}
 		Expect(testEnv.Create(ctx, infraCluster)).To(Succeed())
 
@@ -264,7 +266,9 @@ func Test_machineReconciler_Metadata(t *testing.T) {
 				},
 			},
 		},
-		Spec: infrav1.VSphereClusterSpec{},
+		Spec: infrav1.VSphereClusterSpec{
+			Server: "test-server",
+		},
 	}
 
 	capiMachine := &clusterv1.Machine{

@@ -47,6 +47,9 @@ var _ = Describe("GetCredentials", func() {
 				GenerateName: "cluster-",
 				Namespace:    ns.Name,
 			},
+			Spec: infrav1.VSphereClusterSpec{
+				Server: "test-server",
+			},
 		}
 
 		Expect(k8sclient.Create(ctx, cluster)).To(Succeed())
@@ -83,6 +86,7 @@ var _ = Describe("GetCredentials", func() {
 					Kind: infrav1.SecretKind,
 					Name: credentialSecret.Name,
 				},
+				Server: "test-server",
 			}
 			Expect(k8sclient.Update(ctx, cluster)).To(Succeed())
 			creds, err := GetCredentials(ctx, k8sclient, cluster, manager.DefaultPodNamespace)
@@ -98,6 +102,7 @@ var _ = Describe("GetCredentials", func() {
 					Kind: infrav1.SecretKind,
 					Name: credentialSecret.Name,
 				},
+				Server: "test-server",
 			}
 			Expect(k8sclient.Update(ctx, cluster)).To(Succeed())
 
@@ -124,6 +129,7 @@ var _ = Describe("GetCredentials", func() {
 					Kind: infrav1.VSphereClusterIdentityKind,
 					Name: identity.Name,
 				},
+				Server: "test-server",
 			}
 			Expect(k8sclient.Update(ctx, cluster)).To(Succeed())
 
@@ -154,6 +160,7 @@ var _ = Describe("GetCredentials", func() {
 					Kind: infrav1.VSphereClusterIdentityKind,
 					Name: identity.Name,
 				},
+				Server: "test-server",
 			}
 			Expect(k8sclient.Update(ctx, cluster)).To(Succeed())
 
@@ -170,6 +177,7 @@ var _ = Describe("GetCredentials", func() {
 					Kind: infrav1.VSphereClusterIdentityKind,
 					Name: identity.Name,
 				},
+				Server: "test-server",
 			}
 			Expect(k8sclient.Update(ctx, cluster)).To(Succeed())
 
@@ -196,6 +204,7 @@ var _ = Describe("GetCredentials", func() {
 					Kind: infrav1.VSphereClusterIdentityKind,
 					Name: identity.Name,
 				},
+				Server: "test-server",
 			}
 			Expect(k8sclient.Update(ctx, cluster)).To(Succeed())
 
@@ -224,6 +233,9 @@ var _ = Describe("validateInputs", func() {
 			ObjectMeta: metav1.ObjectMeta{
 				GenerateName: "cluster-",
 				Namespace:    ns.Name,
+			},
+			Spec: infrav1.VSphereClusterSpec{
+				Server: "test-server",
 			},
 		}
 		Expect(k8sclient.Create(ctx, cluster)).To(Succeed())

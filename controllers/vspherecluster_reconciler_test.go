@@ -210,6 +210,7 @@ var _ = Describe("VIM based VSphere ClusterReconciler", func() {
 						Kind: infrav1.SecretKind,
 						Name: secret.Name,
 					},
+					Server: "test-server",
 				},
 			}
 
@@ -284,6 +285,7 @@ var _ = Describe("VIM based VSphere ClusterReconciler", func() {
 					Kind: infrav1.SecretKind,
 					Name: "foo",
 				},
+				Server: "test-server",
 			},
 		}
 
@@ -319,6 +321,9 @@ var _ = Describe("VIM based VSphere ClusterReconciler", func() {
 				Finalizers: []string{infrav1.ClusterFinalizer},
 				Name:       "vsphere-test1",
 				Namespace:  "default",
+			},
+			Spec: infrav1.VSphereClusterSpec{
+				Server: "test-server",
 			},
 		}
 

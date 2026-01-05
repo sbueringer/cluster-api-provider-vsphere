@@ -114,7 +114,7 @@ type VSphereClusterSpec struct {
 	Server string `json:"server,omitempty"`
 
 	// thumbprint is the colon-separated SHA-1 checksum of the given vCenter server's host certificate
-	// +required
+	// +optional
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=1024
 	Thumbprint string `json:"thumbprint,omitempty"`

@@ -530,7 +530,6 @@ spec:
                 type: string
             required:
             - server
-            - thumbprint
             type: object
           status:
             description: status is the observed state of VSphereCluster.

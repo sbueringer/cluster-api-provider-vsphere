@@ -365,7 +365,6 @@ spec:
                         type: string
                     required:
                     - server
-                    - thumbprint
                     type: object
                 type: object
             required:
