@@ -51,11 +51,11 @@ const (
 
 // VSphereClusterIdentitySpec contains a secret reference and a group of allowed namespaces.
 type VSphereClusterIdentitySpec struct {
-	// SecretName references a Secret inside the controller namespace with the credentials to use
+	// secretName references a Secret inside the controller namespace with the credentials to use
 	// +kubebuilder:validation:MinLength=1
 	SecretName string `json:"secretName,omitempty"`
 
-	// AllowedNamespaces is used to identify which namespaces are allowed to use this account.
+	// allowedNamespaces is used to identify which namespaces are allowed to use this account.
 	// Namespaces can be selected with a label selector.
 	// If this object is nil, no namespaces will be allowed
 	// +optional
@@ -72,6 +72,7 @@ type VSphereClusterIdentityStatus struct {
 	// +kubebuilder:validation:MaxItems=32
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
+	// ready is true when the VSphereClusterIdentity is ready.
 	// +optional
 	Ready bool `json:"ready,omitempty"`
 
@@ -101,7 +102,7 @@ type VSphereClusterIdentityV1Beta1DeprecatedStatus struct {
 
 // AllowedNamespaces restricts the namespaces this VSphereClusterIdentity can be used from.
 type AllowedNamespaces struct {
-	// Selector is a standard Kubernetes LabelSelector. A label query over a set of resources.
+	// selector is a standard Kubernetes LabelSelector. A label query over a set of resources.
 	// +optional
 	Selector metav1.LabelSelector `json:"selector"`
 }
@@ -118,11 +119,11 @@ var (
 
 // VSphereIdentityReference is the mechanism used to handle credentials for the VCenter API.
 type VSphereIdentityReference struct {
-	// Kind of the identity. Can either be VSphereClusterIdentity or Secret
+	// kind of the identity. Can either be VSphereClusterIdentity or Secret
 	// +kubebuilder:validation:Enum=VSphereClusterIdentity;Secret
 	Kind VSphereIdentityKind `json:"kind"`
 
-	// Name of the identity.
+	// name of the identity.
 	// +kubebuilder:validation:MinLength=1
 	Name string `json:"name"`
 }
@@ -163,10 +164,15 @@ func (c *VSphereClusterIdentity) SetConditions(conditions []metav1.Condition) {
 
 // VSphereClusterIdentity defines the account to be used for reconciling clusters.
 type VSphereClusterIdentity struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
+	// metadata is the standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VSphereClusterIdentitySpec   `json:"spec,omitempty"`
+	// spec is the desired state of VSphereClusterIdentity.
+	Spec VSphereClusterIdentitySpec `json:"spec,omitempty"`
+
+	// status is the observed state of VSphereClusterIdentity.
 	Status VSphereClusterIdentityStatus `json:"status,omitempty"`
 }
 

@@ -182,21 +182,21 @@ const (
 type VSphereVMSpec struct {
 	VirtualMachineCloneSpec `json:",inline"`
 
-	// BootstrapRef is a reference to a bootstrap provider-specific resource
+	// bootstrapRef is a reference to a bootstrap provider-specific resource
 	// that holds configuration details.
 	// This field is optional in case no bootstrap data is required to create
 	// a VM.
 	// +optional
 	BootstrapRef *corev1.ObjectReference `json:"bootstrapRef,omitempty"`
 
-	// BiosUUID is the VM's BIOS UUID that is assigned at runtime after
+	// biosUUID is the VM's BIOS UUID that is assigned at runtime after
 	// the VM has been created.
 	// This field is required at runtime for other controllers that read
 	// this CRD as unstructured data.
 	// +optional
 	BiosUUID string `json:"biosUUID,omitempty"`
 
-	// PowerOffMode describes the desired behavior when powering off a VM.
+	// powerOffMode describes the desired behavior when powering off a VM.
 	//
 	// There are three, supported power off modes: hard, soft, and
 	// trySoft. The first mode, hard, is the equivalent of a physical
@@ -212,7 +212,7 @@ type VSphereVMSpec struct {
 	// +kubebuilder:default=hard
 	PowerOffMode VirtualMachinePowerOpMode `json:"powerOffMode,omitempty"`
 
-	// GuestSoftPowerOffTimeout sets the wait timeout for shutdown in the VM guest.
+	// guestSoftPowerOffTimeout sets the wait timeout for shutdown in the VM guest.
 	// The VM will be powered off forcibly after the timeout if the VM is still
 	// up and running when the PowerOffMode is set to trySoft.
 	//
@@ -226,51 +226,51 @@ type VSphereVMSpec struct {
 
 // VSphereVMStatus defines the observed state of VSphereVM.
 type VSphereVMStatus struct {
-	// Host describes the hostname or IP address of the infrastructure host
+	// host describes the hostname or IP address of the infrastructure host
 	// that the VSphereVM is residing on.
 	// +optional
 	Host string `json:"host,omitempty"`
 
-	// Ready is true when the provider resource is ready.
+	// ready is true when the provider resource is ready.
 	// This field is required at runtime for other controllers that read
 	// this CRD as unstructured data.
 	// +optional
 	Ready bool `json:"ready,omitempty"`
 
-	// Addresses is a list of the VM's IP addresses.
+	// addresses is a list of the VM's IP addresses.
 	// This field is required at runtime for other controllers that read
 	// this CRD as unstructured data.
 	// +optional
 	Addresses []string `json:"addresses,omitempty"`
 
-	// CloneMode is the type of clone operation used to clone this VM. Since
+	// cloneMode is the type of clone operation used to clone this VM. Since
 	// LinkedMode is the default but fails gracefully if the source of the
 	// clone has no snapshots, this field may be used to determine the actual
 	// type of clone operation used to create this VM.
 	// +optional
 	CloneMode CloneMode `json:"cloneMode,omitempty"`
 
-	// Snapshot is the name of the snapshot from which the VM was cloned if
+	// snapshot is the name of the snapshot from which the VM was cloned if
 	// LinkedMode is enabled.
 	// +optional
 	Snapshot string `json:"snapshot,omitempty"`
 
-	// RetryAfter tracks the time we can retry queueing a task
+	// retryAfter tracks the time we can retry queueing a task
 	// +optional
 	RetryAfter metav1.Time `json:"retryAfter,omitempty"`
 
-	// TaskRef is a managed object reference to a Task related to the machine.
+	// taskRef is a managed object reference to a Task related to the machine.
 	// This value is set automatically at runtime and should not be set or
 	// modified by users.
 	// +optional
 	TaskRef string `json:"taskRef,omitempty"`
 
-	// Network returns the network status for each of the machine's configured
+	// network returns the network status for each of the machine's configured
 	// network interfaces.
 	// +optional
 	Network []NetworkStatus `json:"network,omitempty"`
 
-	// FailureReason will be set in the event that there is a terminal problem
+	// failureReason will be set in the event that there is a terminal problem
 	// reconciling the vspherevm and will contain a succinct value suitable
 	// for vm interpretation.
 	//
@@ -285,7 +285,7 @@ type VSphereVMStatus struct {
 	// +optional
 	FailureReason *errors.MachineStatusError `json:"failureReason,omitempty"`
 
-	// FailureMessage will be set in the event that there is a terminal problem
+	// failureMessage will be set in the event that there is a terminal problem
 	// reconciling the vspherevm and will contain a more verbose string suitable
 	// for logging and human consumption.
 	//
@@ -300,18 +300,18 @@ type VSphereVMStatus struct {
 	// +optional
 	FailureMessage *string `json:"failureMessage,omitempty"`
 
-	// Conditions defines current service state of the VSphereVM.
+	// conditions defines current service state of the VSphereVM.
 	// +optional
 	Conditions clusterv1beta1.Conditions `json:"conditions,omitempty"`
 
-	// ModuleUUID is the unique identifier for the vCenter cluster module construct
+	// moduleUUID is the unique identifier for the vCenter cluster module construct
 	// which is used to configure anti-affinity. Objects with the same ModuleUUID
 	// will be anti-affined, meaning that the vCenter DRS will best effort schedule
 	// the VMs on separate hosts.
 	// +optional
 	ModuleUUID *string `json:"moduleUUID,omitempty"`
 
-	// VMRef is the VM's Managed Object Reference on vSphere. It can be used by consumers
+	// vmRef is the VM's Managed Object Reference on vSphere. It can be used by consumers
 	// to programatically get this VM representation on vSphere in case of the need to retrieve informations.
 	// This field is set once the machine is created and should not be changed
 	// +optional
@@ -342,10 +342,15 @@ type VSphereVMV1Beta2Status struct {
 
 // VSphereVM is the Schema for the vspherevms API.
 type VSphereVM struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
+	// metadata is the standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VSphereVMSpec   `json:"spec,omitempty"`
+	// spec is the desired state of VSphereVM.
+	Spec VSphereVMSpec `json:"spec,omitempty"`
+
+	// status is the observed state of VSphereVM.
 	Status VSphereVMStatus `json:"status,omitempty"`
 }
 

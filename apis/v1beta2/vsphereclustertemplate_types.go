@@ -22,6 +22,7 @@ import (
 
 // VSphereClusterTemplateSpec defines the desired state of VSphereClusterTemplate.
 type VSphereClusterTemplateSpec struct {
+	// template defines the desired state of VSphereClusterTemplate.
 	Template VSphereClusterTemplateResource `json:"template"`
 }
 
@@ -31,9 +32,12 @@ type VSphereClusterTemplateSpec struct {
 
 // VSphereClusterTemplate is the Schema for the vsphereclustertemplates API.
 type VSphereClusterTemplate struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
+	// metadata is the standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// spec is the desired state of VSphereClusterTemplate.
 	Spec VSphereClusterTemplateSpec `json:"spec,omitempty"`
 }
 
@@ -52,5 +56,6 @@ func init() {
 
 // VSphereClusterTemplateResource describes the data for creating a VSphereCluster from a template.
 type VSphereClusterTemplateResource struct {
+	// spec is the desired state of VSphereClusterTemplateResource.
 	Spec VSphereClusterSpec `json:"spec"`
 }

@@ -35,30 +35,29 @@ const (
 
 // VSphereFailureDomainSpec defines the desired state of VSphereFailureDomain.
 type VSphereFailureDomainSpec struct {
-
-	// Region defines the name and type of a region
+	// region defines the name and type of a region
 	Region FailureDomain `json:"region"`
 
-	// Zone defines the name and type of a zone
+	// zone defines the name and type of a zone
 	Zone FailureDomain `json:"zone"`
 
-	// Topology describes a given failure domain using vSphere constructs
+	// topology describes a given failure domain using vSphere constructs
 	Topology Topology `json:"topology"`
 }
 
 // FailureDomain contains data to identify and configure a failure domain.
 type FailureDomain struct {
-	// Name is the name of the tag that represents this failure domain
+	// name is the name of the tag that represents this failure domain
 	Name string `json:"name"`
 
-	// Type is the type of failure domain, the current values are "Datacenter", "ComputeCluster" and "HostGroup"
+	// type is the type of failure domain, the current values are "Datacenter", "ComputeCluster" and "HostGroup"
 	// +kubebuilder:validation:Enum=Datacenter;ComputeCluster;HostGroup
 	Type FailureDomainType `json:"type"`
 
-	// TagCategory is the category used for the tag
+	// tagCategory is the category used for the tag
 	TagCategory string `json:"tagCategory"`
 
-	// AutoConfigure tags the Type which is specified in the Topology
+	// autoConfigure tags the Type which is specified in the Topology
 	//
 	// Deprecated: This field is going to be removed in a future release.
 	AutoConfigure *bool `json:"autoConfigure,omitempty"`
@@ -66,29 +65,29 @@ type FailureDomain struct {
 
 // Topology describes a given failure domain using vSphere constructs.
 type Topology struct {
-	// Datacenter as the failure domain.
+	// datacenter as the failure domain.
 	// +kubebuilder:validation:Required
 	Datacenter string `json:"datacenter"`
 
-	// ComputeCluster as the failure domain
+	// computeCluster as the failure domain
 	// +optional
 	ComputeCluster *string `json:"computeCluster,omitempty"`
 
-	// Hosts has information required for placement of machines on VSphere hosts.
+	// hosts has information required for placement of machines on VSphere hosts.
 	// +optional
 	Hosts *FailureDomainHosts `json:"hosts,omitempty"`
 
-	// Networks is the list of networks within this failure domain
+	// networks is the list of networks within this failure domain
 	// +optional
 	Networks []string `json:"networks,omitempty"`
 
-	// NetworkConfigurations is a list of network configurations within this failure domain.
+	// networkConfigurations is a list of network configurations within this failure domain.
 	// +optional
 	// +listType=map
 	// +listMapKey=networkName
 	NetworkConfigurations []NetworkConfiguration `json:"networkConfigurations,omitempty"`
 
-	// Datastore is the name or inventory path of the datastore in which the
+	// datastore is the name or inventory path of the datastore in which the
 	// virtual machine is created/located.
 	// +optional
 	Datastore string `json:"datastore,omitempty"`
@@ -97,30 +96,30 @@ type Topology struct {
 // NetworkConfiguration defines a network configuration that should be used when consuming
 // a failure domain.
 type NetworkConfiguration struct {
-	// NetworkName is the network name for this machine's VM.
+	// networkName is the network name for this machine's VM.
 	// +kubebuilder:validation:Required
 	NetworkName string `json:"networkName"`
 
-	// DHCP4 is a flag that indicates whether or not to use DHCP for IPv4.
+	// dhcp4 is a flag that indicates whether or not to use DHCP for IPv4.
 	// +optional
 	DHCP4 *bool `json:"dhcp4,omitempty"`
 
-	// DHCP6 is a flag that indicates whether or not to use DHCP for IPv6.
+	// dhcp6 is a flag that indicates whether or not to use DHCP for IPv6.
 	// +optional
 	DHCP6 *bool `json:"dhcp6,omitempty"`
 
-	// Nameservers is a list of IPv4 and/or IPv6 addresses used as DNS
+	// nameservers is a list of IPv4 and/or IPv6 addresses used as DNS
 	// nameservers.
 	// Please note that Linux allows only three nameservers (https://linux.die.net/man/5/resolv.conf).
 	// +optional
 	Nameservers []string `json:"nameservers,omitempty"`
 
-	// SearchDomains is a list of search domains used when resolving IP
+	// searchDomains is a list of search domains used when resolving IP
 	// addresses with DNS.
 	// +optional
 	SearchDomains []string `json:"searchDomains,omitempty"`
 
-	// DHCP4Overrides allows for the control over several DHCP behaviors.
+	// dhcp4Overrides allows for the control over several DHCP behaviors.
 	// Overrides will only be applied when the corresponding DHCP flag is set.
 	// Only configured values will be sent, omitted values will default to
 	// distribution defaults.
@@ -129,7 +128,7 @@ type NetworkConfiguration struct {
 	// +optional
 	DHCP4Overrides *DHCPOverrides `json:"dhcp4Overrides,omitempty"`
 
-	// DHCP6Overrides allows for the control over several DHCP behaviors.
+	// dhcp6Overrides allows for the control over several DHCP behaviors.
 	// Overrides will only be applied when the corresponding DHCP flag is set.
 	// Only configured values will be sent, omitted values will default to
 	// distribution defaults.
@@ -138,7 +137,7 @@ type NetworkConfiguration struct {
 	// +optional
 	DHCP6Overrides *DHCPOverrides `json:"dhcp6Overrides,omitempty"`
 
-	// AddressesFromPools is a list of IPAddressPools that should be assigned
+	// addressesFromPools is a list of IPAddressPools that should be assigned
 	// to IPAddressClaims. The machine's cloud-init metadata will be populated
 	// with IPAddresses fulfilled by an IPAM provider.
 	// +optional
@@ -147,10 +146,10 @@ type NetworkConfiguration struct {
 
 // FailureDomainHosts has information required for placement of machines on VSphere hosts.
 type FailureDomainHosts struct {
-	// VMGroupName is the name of the VM group
+	// vmGroupName is the name of the VM group
 	VMGroupName string `json:"vmGroupName"`
 
-	// HostGroupName is the name of the Host group
+	// hostGroupName is the name of the Host group
 	HostGroupName string `json:"hostGroupName"`
 }
 
@@ -161,8 +160,11 @@ type FailureDomainHosts struct {
 // VSphereFailureDomain is the Schema for the vspherefailuredomains API.
 type VSphereFailureDomain struct {
 	metav1.TypeMeta   `json:",inline"`
+	// metadata is the standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// spec is the desired state of VSphereFailureDomain.
 	Spec VSphereFailureDomainSpec `json:"spec,omitempty"`
 }
 

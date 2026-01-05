@@ -107,10 +107,10 @@ func NewVCenterVersion(version string) VCenterVersion {
 
 // VSphereClusterSpec defines the desired state of VSphereCluster.
 type VSphereClusterSpec struct {
-	// Server is the address of the vSphere endpoint.
+	// server is the address of the vSphere endpoint.
 	Server string `json:"server,omitempty"`
 
-	// Thumbprint is the colon-separated SHA-1 checksum of the given vCenter server's host certificate
+	// thumbprint is the colon-separated SHA-1 checksum of the given vCenter server's host certificate
 	// +optional
 	Thumbprint string `json:"thumbprint,omitempty"`
 
@@ -118,23 +118,23 @@ type VSphereClusterSpec struct {
 	// +optional
 	ControlPlaneEndpoint APIEndpoint `json:"controlPlaneEndpoint,omitempty,omitzero"`
 
-	// IdentityRef is a reference to either a Secret or VSphereClusterIdentity that contains
+	// identityRef is a reference to either a Secret or VSphereClusterIdentity that contains
 	// the identity to use when reconciling the cluster.
 	// +optional
 	IdentityRef *VSphereIdentityReference `json:"identityRef,omitempty"`
 
-	// ClusterModules hosts information regarding the anti-affinity vSphere constructs
+	// clusterModules hosts information regarding the anti-affinity vSphere constructs
 	// for each of the objects responsible for creation of VM objects belonging to the cluster.
 	// +optional
 	ClusterModules []ClusterModule `json:"clusterModules,omitempty"`
 
-	// DisableClusterModule is used to explicitly turn off the ClusterModule feature.
+	// disableClusterModule is used to explicitly turn off the ClusterModule feature.
 	// This should work along side NodeAntiAffinity feature flag.
 	// If the NodeAntiAffinity feature flag is turned off, this will be disregarded.
 	// +optional
 	DisableClusterModule bool `json:"disableClusterModule,omitempty"`
 
-	// FailureDomainSelector is the label selector to use for failure domain selection
+	// failureDomainSelector is the label selector to use for failure domain selection
 	// for the control plane nodes of the cluster.
 	// If not set (`nil`), selecting failure domains will be disabled.
 	// An empty value (`{}`) selects all existing failure domains.
@@ -146,16 +146,16 @@ type VSphereClusterSpec struct {
 // ClusterModule holds the anti affinity construct `ClusterModule` identifier
 // in use by the VMs owned by the object referred by the TargetObjectName field.
 type ClusterModule struct {
-	// ControlPlane indicates whether the referred object is responsible for control plane nodes.
+	// controlPlane indicates whether the referred object is responsible for control plane nodes.
 	// Currently, only the KubeadmControlPlane objects have this flag set to true.
 	// Only a single object in the slice can have this value set to true.
 	ControlPlane bool `json:"controlPlane"`
 
-	// TargetObjectName points to the object that uses the Cluster Module information to enforce
+	// targetObjectName points to the object that uses the Cluster Module information to enforce
 	// anti-affinity amongst its descendant VM objects.
 	TargetObjectName string `json:"targetObjectName"`
 
-	// ModuleUUID is the unique identifier of the `ClusterModule` used by the object.
+	// moduleUUID is the unique identifier of the `ClusterModule` used by the object.
 	ModuleUUID string `json:"moduleUUID"`
 }
 
@@ -182,7 +182,7 @@ type VSphereClusterStatus struct {
 	// +kubebuilder:validation:MaxItems=100
 	FailureDomains []clusterv1.FailureDomain `json:"failureDomains,omitempty"`
 
-	// VCenterVersion defines the version of the vCenter server defined in the spec.
+	// vCenterVersion defines the version of the vCenter server defined in the spec.
 	VCenterVersion VCenterVersion `json:"vCenterVersion,omitempty"`
 
 	// deprecated groups all the status fields that are deprecated and will be removed when all the nested field are removed.
@@ -241,10 +241,15 @@ type VSphereClusterV1Beta2Status struct {
 
 // VSphereCluster is the Schema for the vsphereclusters API.
 type VSphereCluster struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
+	// metadata is the standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VSphereClusterSpec   `json:"spec,omitempty"`
+	// spec is the desired state of VSphereCluster.
+	Spec VSphereClusterSpec `json:"spec,omitempty"`
+
+	// status is the observed state of VSphereCluster.
 	Status VSphereClusterStatus `json:"status,omitempty"`
 }
 

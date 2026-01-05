@@ -116,30 +116,29 @@ const (
 
 // VSphereDeploymentZoneSpec defines the desired state of VSphereDeploymentZone.
 type VSphereDeploymentZoneSpec struct {
-
-	// Server is the address of the vSphere endpoint.
+	// server is the address of the vSphere endpoint.
 	Server string `json:"server,omitempty"`
 
-	// FailureDomain is the name of the VSphereFailureDomain used for this VSphereDeploymentZone
+	// failureDomain is the name of the VSphereFailureDomain used for this VSphereDeploymentZone
 	FailureDomain string `json:"failureDomain,omitempty"`
 
-	// ControlPlane determines if this failure domain is suitable for use by control plane machines.
+	// controlPlane determines if this failure domain is suitable for use by control plane machines.
 	// +optional
 	ControlPlane *bool `json:"controlPlane,omitempty"`
 
-	// PlacementConstraint encapsulates the placement constraints
+	// placementConstraint encapsulates the placement constraints
 	// used within this deployment zone.
 	PlacementConstraint PlacementConstraint `json:"placementConstraint"`
 }
 
 // PlacementConstraint is the context information for VM placements within a failure domain.
 type PlacementConstraint struct {
-	// ResourcePool is the name or inventory path of the resource pool in which
+	// resourcePool is the name or inventory path of the resource pool in which
 	// the virtual machine is created/located.
 	// +optional
 	ResourcePool string `json:"resourcePool,omitempty"`
 
-	// Folder is the name or inventory path of the folder in which the
+	// folder is the name or inventory path of the folder in which the
 	// virtual machine is created/located.
 	// +optional
 	Folder string `json:"folder,omitempty"`
@@ -147,14 +146,14 @@ type PlacementConstraint struct {
 
 // Network holds information about the network.
 type Network struct {
-	// Name is the network name for this machine's VM.
+	// name is the network name for this machine's VM.
 	Name string `json:"name,omitempty"`
 
-	// DHCP4 is a flag that indicates whether or not to use DHCP for IPv4
+	// dhcp4 is a flag that indicates whether or not to use DHCP for IPv4
 	// +optional
 	DHCP4 *bool `json:"dhcp4,omitempty"`
 
-	// DHCP6 indicates whether or not to use DHCP for IPv6
+	// dhcp6 indicates whether or not to use DHCP for IPv6
 	// +optional
 	DHCP6 *bool `json:"dhcp6,omitempty"`
 }
@@ -169,7 +168,7 @@ type VSphereDeploymentZoneStatus struct {
 	// +kubebuilder:validation:MaxItems=32
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
-	// Ready is true when the VSphereDeploymentZone resource is ready.
+	// ready is true when the VSphereDeploymentZone resource is ready.
 	// If set to false, it will be ignored by VSphereClusters
 	// +optional
 	Ready *bool `json:"ready,omitempty"`
@@ -206,9 +205,14 @@ type VSphereDeploymentZoneV1Beta1DeprecatedStatus struct {
 // VSphereDeploymentZone is the Schema for the vspheredeploymentzones API.
 type VSphereDeploymentZone struct {
 	metav1.TypeMeta   `json:",inline"`
+	// metadata is the standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
+	// spec is the desired state of VSphereDeploymentZone.
 	Spec   VSphereDeploymentZoneSpec   `json:"spec,omitempty"`
+
+	// status is the observed state of VSphereDeploymentZone.
 	Status VSphereDeploymentZoneStatus `json:"status,omitempty"`
 }
 
