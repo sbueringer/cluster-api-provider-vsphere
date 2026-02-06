@@ -145,6 +145,17 @@ func patchKubeadmControlPlaneTemplate(_ context.Context, tpl *controlplanev1.Kub
 	// Remove CP taint (this is useful to run workloads on the test cluster if the cluster has no worker nodes).
 	tpl.Spec.Template.Spec.KubeadmConfigSpec.InitConfiguration.NodeRegistration.Taints = ptr.To([]corev1.Taint{})
 	tpl.Spec.Template.Spec.KubeadmConfigSpec.JoinConfiguration.NodeRegistration.Taints = ptr.To([]corev1.Taint{})
+	// Tune etcd for scale testing
+	tpl.Spec.Template.Spec.KubeadmConfigSpec.ClusterConfiguration.Etcd.Local.ExtraArgs = append(tpl.Spec.Template.Spec.KubeadmConfigSpec.ClusterConfiguration.Etcd.Local.ExtraArgs,
+		bootstrapv1.Arg{
+			Name:  "auto-compaction-retention",
+			Value: ptr.To("1"), // compact every hour
+		},
+		bootstrapv1.Arg{
+			Name:  "quota-backend-bytes",
+			Value: ptr.To("8589934592"), // 8 GB
+		},
+	)
 
 	// patch enableSSHIntoNodes
 	if err := patchUsers(&tpl.Spec.Template.Spec.KubeadmConfigSpec, templateVariables); err != nil {
@@ -475,6 +486,13 @@ func (h *ExtensionHandlers) DiscoverVariables(ctx context.Context, req *runtimeh
 
 	resp.Status = runtimehooksv1.ResponseStatusSuccess
 	resp.Variables = clusterclass.GetClusterClassVariables(req.Settings["testMode"] == "govmomi")
+
+	// Make kubeVipPodManifest optional for scale tests.
+	for i := range resp.Variables {
+		if resp.Variables[i].Name == "kubeVipPodManifest" {
+			resp.Variables[i].Required = ptr.To(false)
+		}
+	}
 
 	// Append
 	if req.Settings["testMode"] == "govmomi" {

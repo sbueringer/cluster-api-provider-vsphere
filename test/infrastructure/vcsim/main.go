@@ -21,6 +21,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"reflect"
 	goruntime "runtime"
@@ -47,20 +48,25 @@ import (
 	logsv1 "k8s.io/component-base/logs/api/v1"
 	_ "k8s.io/component-base/logs/json/register"
 	"k8s.io/klog/v2"
+	"k8s.io/utils/ptr"
 	clusterv1beta1 "sigs.k8s.io/cluster-api/api/core/v1beta1"
 	clusterv1 "sigs.k8s.io/cluster-api/api/core/v1beta2"
 	"sigs.k8s.io/cluster-api/controllers/remote"
 	"sigs.k8s.io/cluster-api/feature"
-	inmemoryruntime "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/runtime"
-	inmemoryserver "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/server"
 	"sigs.k8s.io/cluster-api/util/apiwarnings"
 	"sigs.k8s.io/cluster-api/util/flags"
 	"sigs.k8s.io/cluster-api/version"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/config"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	ctrlmgr "sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
+
+	inmemoryruntime "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/runtime"
+	inmemoryserver "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/server"
 
 	infrav1beta1 "sigs.k8s.io/cluster-api-provider-vsphere/api/govmomi/v1beta1"
 	vmwarev1beta1 "sigs.k8s.io/cluster-api-provider-vsphere/api/supervisor/v1beta1"
@@ -174,7 +180,7 @@ func InitFlags(fs *pflag.FlagSet) {
 	fs.IntVar(&vSphereVMConcurrency, "vsphere-vm-concurrency", 10,
 		"Number of VSphereVM to process simultaneously")
 
-	fs.IntVar(&virtualMachineConcurrency, "virtual-machine-concurrency", 10,
+	fs.IntVar(&virtualMachineConcurrency, "virtual-machine-concurrency", 100,
 		"Number of VirtualMachine to process simultaneously")
 
 	fs.IntVar(&vCenterSimulatorConcurrency, "vcenter-simulator-concurrency", 10,
@@ -192,10 +198,10 @@ func InitFlags(fs *pflag.FlagSet) {
 	fs.DurationVar(&syncPeriod, "sync-period", 10*time.Minute,
 		"The minimum interval at which watched resources are reconciled (e.g. 15m)")
 
-	fs.Float32Var(&restConfigQPS, "kube-api-qps", 100,
+	fs.Float32Var(&restConfigQPS, "kube-api-qps", 1000,
 		"Maximum queries per second from the controller client to the Kubernetes API server.")
 
-	fs.IntVar(&restConfigBurst, "kube-api-burst", 200,
+	fs.IntVar(&restConfigBurst, "kube-api-burst", 1000,
 		"Maximum number of queries that should be allowed in one burst from the controller client to the Kubernetes API server.")
 
 	fs.StringVar(&healthAddr, "health-addr", ":9440",
@@ -261,6 +267,10 @@ func main() {
 	}
 
 	ctrlOptions := ctrl.Options{
+		Controller: config.Controller{
+			CacheSyncTimeout: 30 * time.Minute, // FIXME: Machine informer is slow to start up
+			UsePriorityQueue: ptr.To[bool](feature.Gates.Enabled(feature.PriorityQueue)),
+		},
 		Scheme:                     scheme,
 		LeaderElection:             enableLeaderElection,
 		LeaderElectionID:           "vcsim-controller-leader-election-capi",
@@ -283,13 +293,7 @@ func main() {
 				},
 			},
 		},
-		// WebhookServer: webhook.NewServer(
-		//	webhook.Options{
-		//		Port:    webhookPort,
-		//		CertDir: webhookCertDir,
-		//		TLSOpts: tlsOptionOverrides,
-		//	},
-		// ),
+		WebhookServer: NoopWebhookServer(),
 	}
 
 	mgr, err := ctrl.NewManager(restConfig, ctrlOptions)
@@ -361,7 +365,11 @@ func setupReconcilers(ctx context.Context, mgr ctrl.Manager, supervisorMode bool
 
 	// Start an http server
 	podIP := os.Getenv("POD_IP")
-	apiServerMux, err := inmemoryserver.NewWorkloadClustersMux(inmemoryManager, podIP)
+	muxIP := podIP
+	if muxIPFromEnv := os.Getenv("MUX_IP"); muxIPFromEnv != "" {
+		muxIP = muxIPFromEnv
+	}
+	apiServerMux, err := inmemoryserver.NewWorkloadClustersMux(inmemoryManager, muxIP)
 	if err != nil {
 		setupLog.Error(err, "unable to create workload clusters mux")
 		os.Exit(1)
@@ -464,4 +472,30 @@ func isCRDDeployed(mgr ctrlmgr.Manager, gvr schema.GroupVersionResource) (bool, 
 		return false, err
 	}
 	return true, nil
+}
+
+func NoopWebhookServer() webhook.Server {
+	return &noopWebhookServer{}
+}
+
+type noopWebhookServer struct{}
+
+func (n noopWebhookServer) NeedLeaderElection() bool {
+	return false
+}
+
+func (n noopWebhookServer) Register(path string, hook http.Handler) {
+}
+
+func (n noopWebhookServer) Start(ctx context.Context) error {
+	<-ctx.Done()
+	return nil
+}
+
+func (n noopWebhookServer) StartedChecker() healthz.Checker {
+	return nil
+}
+
+func (n noopWebhookServer) WebhookMux() *http.ServeMux {
+	return nil
 }

@@ -23,8 +23,6 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	kerrors "k8s.io/apimachinery/pkg/util/errors"
 	"k8s.io/klog/v2"
-	inmemoryruntime "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/runtime"
-	inmemoryserver "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/server"
 	capicontrollerutil "sigs.k8s.io/cluster-api/util/controller"
 	"sigs.k8s.io/cluster-api/util/deprecated/v1beta1/patch"
 	"sigs.k8s.io/cluster-api/util/finalizers"
@@ -33,6 +31,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
+
+	inmemoryruntime "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/runtime"
+	inmemoryserver "sigs.k8s.io/cluster-api/test/infrastructure/inmemory/pkg/server"
 
 	vcsimv1 "sigs.k8s.io/cluster-api-provider-vsphere/test/infrastructure/vcsim/api/v1alpha1"
 )
@@ -96,7 +97,7 @@ func (r *ControlPlaneEndpointReconciler) reconcileNormal(ctx context.Context, co
 	// IMPORTANT: The fact that both the listener and the resourceGroup for a workload cluster have
 	// the same name is used as assumptions in other part of the implementation.
 	listenerName := klog.KObj(controlPlaneEndpoint).String()
-	listener, err := r.APIServerMux.InitWorkloadClusterListener(listenerName)
+	listener, err := r.APIServerMux.InitWorkloadClusterListenerWithPort(listenerName, controlPlaneEndpoint.Status.Port)
 	if err != nil {
 		return errors.Wrapf(err, "failed to init the listener for the control plane endpoint")
 	}
