@@ -2,11 +2,13 @@ module sigs.k8s.io/cluster-api-provider-vsphere/test
 
 go 1.26.0
 
-replace sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.13.0-rc.0.0.20260526071518-a4a42bdc39a8
+replace sigs.k8s.io/cluster-api => ../../cluster-api
 
-replace sigs.k8s.io/cluster-api/test => sigs.k8s.io/cluster-api/test v1.13.0-rc.0.0.20260526071518-a4a42bdc39a8
+replace sigs.k8s.io/cluster-api/test => ../../cluster-api/test
 
 replace sigs.k8s.io/cluster-api-provider-vsphere => ../
+
+replace sigs.k8s.io/controller-runtime => ../../controller-runtime
 
 require (
 	github.com/vmware-tanzu/net-operator-api v0.0.0-20250826165015-90a4bb21727b
@@ -141,9 +143,9 @@ require (
 	github.com/valyala/fastjson v1.6.10 // indirect
 	github.com/vmware-tanzu/vm-operator/external/ncp v0.0.0-20260506225634-46e3104c57d1 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	go.etcd.io/etcd/api/v3 v3.6.11 // indirect
-	go.etcd.io/etcd/client/pkg/v3 v3.6.11 // indirect
-	go.etcd.io/etcd/client/v3 v3.6.11 // indirect
+	go.etcd.io/etcd/api/v3 v3.6.12 // indirect
+	go.etcd.io/etcd/client/pkg/v3 v3.6.12 // indirect
+	go.etcd.io/etcd/client/v3 v3.6.12 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.65.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.65.0 // indirect
