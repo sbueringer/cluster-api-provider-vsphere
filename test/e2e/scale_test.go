@@ -22,14 +22,12 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/utils/ptr"
-	runtimev1 "sigs.k8s.io/cluster-api/api/runtime/v1beta2"
+
 	capi_e2e "sigs.k8s.io/cluster-api/test/e2e"
 	"sigs.k8s.io/cluster-api/test/framework"
 	"sigs.k8s.io/cluster-api/test/framework/clusterctl"
 	. "sigs.k8s.io/cluster-api/test/framework/ginkgoextensions"
-	ctrlclient "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -53,11 +51,6 @@ var _ = Describe("When testing the machinery for scale testing using vcsim provi
 				flavor = testSpecificSettingsGetter().FlavorForMode("topology-runtimesdk")
 			}
 
-			// Cleanup from previous test runs. // TODO: consider moving this into the core CAPI scale test
-			Expect(ctrlclient.IgnoreNotFound(bootstrapClusterProxy.GetClient().Delete(ctx, &runtimev1.ExtensionConfig{
-				ObjectMeta: metav1.ObjectMeta{Name: "capv-scale-test-extension"},
-			}))).To(Succeed(), "Failed to delete the ExtensionConfig")
-
 			return capi_e2e.ScaleSpecInput{
 				E2EConfig:              e2eConfig,
 				ClusterctlConfigPath:   testSpecificSettingsGetter().ClusterctlConfigPath,
@@ -65,27 +58,27 @@ var _ = Describe("When testing the machinery for scale testing using vcsim provi
 				BootstrapClusterProxy:  bootstrapClusterProxy,
 				ArtifactFolder:         artifactFolder,
 				Flavor:                 ptr.To(flavor),
-				SkipUpgrade:            false,
+				SkipUpgrade:            true,
 				SkipCleanup:            skipCleanup,
 				DumpResources:          true,
 				ClusterClassName:       getVariableOrFallback(testSpecificSettingsGetter().Variables["CLUSTER_CLASS_NAME"], e2eConfig.MustGetVariable("CLUSTER_CLASS_NAME")),
 
 				// ClusterCount can be overwritten via `CAPI_SCALE_CLUSTER_COUNT`.
-				ClusterCount: ptr.To[int64](5),
+				ClusterCount: ptr.To[int64](1000),
 				// Concurrency can be overwritten via `CAPI_SCALE_CONCURRENCY`.
-				Concurrency: ptr.To[int64](5),
+				Concurrency: ptr.To[int64](50),
 				// ControlPlaneMachineCount can be overwritten via `CAPI_SCALE_CONTROL_PLANE_MACHINE_COUNT`.
-				ControlPlaneMachineCount: ptr.To[int64](1),
+				ControlPlaneMachineCount: ptr.To[int64](3),
 				// MachineDeploymentCount can be overwritten via `CAPI_SCALE_MACHINE_DEPLOYMENT_COUNT`.
-				MachineDeploymentCount: ptr.To[int64](1),
+				MachineDeploymentCount: ptr.To[int64](3),
 				// WorkerPerMachineDeploymentCount can be overwritten via `CAPI_SCALE_WORKER_PER_MACHINE_DEPLOYMENT_COUNT`.
-				WorkerPerMachineDeploymentCount: ptr.To[int64](1),
+				WorkerPerMachineDeploymentCount: ptr.To[int64](8),
 				// AdditionalClusterClassCount can be overwritten via `CAPI_SCALE_ADDITIONAL_CLUSTER_CLASS_COUNT`.
 				AdditionalClusterClassCount: ptr.To[int64](4),
 				// DeployClusterInSeparateNamespaces can be overwritten via `CAPI_SCALE_DEPLOY_CLUSTER_IN_SEPARATE_NAMESPACES`.
 				DeployClusterInSeparateNamespaces: ptr.To(true),
 				// UseCrossNamespaceClusterClass can be overwritten via `CAPI_SCALE_USE_CROSS_NAMESPACE_CLUSTER_CLASS`.
-				UseCrossNamespaceClusterClass: ptr.To(false),
+				UseCrossNamespaceClusterClass: ptr.To(true),
 
 				// The runtime extension gets deployed to the test-extension-system namespace and is exposed
 				// by the test-extension-webhook-service.
