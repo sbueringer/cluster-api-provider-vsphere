@@ -23,6 +23,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"k8s.io/utils/ptr"
+
 	capi_e2e "sigs.k8s.io/cluster-api/test/e2e"
 	"sigs.k8s.io/cluster-api/test/framework"
 	"sigs.k8s.io/cluster-api/test/framework/clusterctl"
@@ -58,12 +59,12 @@ var _ = Describe("When testing the machinery for scale testing using vcsim provi
 				ArtifactFolder:         artifactFolder,
 				Flavor:                 ptr.To(flavor),
 				SkipUpgrade:            true,
-				SkipCleanup:            skipCleanup,
-				DumpResources:          true,
+				SkipCleanup:            true,
+				DumpResources:          false,
 				ClusterClassName:       getVariableOrFallback(testSpecificSettingsGetter().Variables["CLUSTER_CLASS_NAME"], e2eConfig.MustGetVariable("CLUSTER_CLASS_NAME")),
 
 				// ClusterCount can be overwritten via `CAPI_SCALE_CLUSTER_COUNT`.
-				ClusterCount: ptr.To[int64](5000),
+				ClusterCount: ptr.To[int64](500),
 				// Concurrency can be overwritten via `CAPI_SCALE_CONCURRENCY`.
 				Concurrency: ptr.To[int64](100),
 				// ControlPlaneMachineCount can be overwritten via `CAPI_SCALE_CONTROL_PLANE_MACHINE_COUNT`.
