@@ -55,8 +55,8 @@ var _ = Describe("When testing the machinery for scale testing using vcsim provi
 					return ptr.To(testSpecificSettingsGetter().FlavorForMode(flavor))
 				}(),
 				SkipUpgrade:      true,
-				SkipCleanup:      skipCleanup,
-				DumpResources:    true,
+				SkipCleanup:      true,
+				DumpResources:    false,
 				ClusterClassName: getVariableOrFallback(testSpecificSettingsGetter().Variables["CLUSTER_CLASS_NAME"], e2eConfig.MustGetVariable("CLUSTER_CLASS_NAME")),
 
 				// ClusterCount can be overwritten via `CAPI_SCALE_CLUSTER_COUNT`.
